@@ -1,0 +1,71 @@
+--- 
+title: "Using Spatial Data with R"
+author: "Claudia A Engel"
+date: "Last updated: `r format(Sys.time(), '%B %d, %Y')`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: cengel/R-spatial
+description: "Workshop materials for Using Spatial Data with R"
+---
+
+
+# Prerequisites and Preparations {-}
+
+To get the most out of this workshop you should have:
+
+- a **basic knowledge** of R and/or be familiar with the topics covered in the [Introduction to R](https://cengel.github.io/R-intro/).
+- have a recent version of [R](https://cran.r-project.org/) and [RStudio](https://www.rstudio.com/) installed. 
+
+**Recommended**: 
+
+- Create a new RStudio project `R-spatial` in a new folder `R-spatial`.
+
+- Create a new folder under `R-spatial` and call it `data`. 
+
+- If you have your working directory set to `R-spatial` which contains a folder called `data` you can copy, paste, and run the following lines in R:
+
+>> FIX PATH HERE!!
+
+```{r download-files, eval=FALSE}
+download.file("https://www.dropbox.com/s/g5p8b1xi2k5lydw/RSpatialDataTypes.zip?dl=1", "data/RSpatialDataTypes.zip")
+unzip("data/RSpatialDataTypes.zip", exdir = "data")
+```
+
+You can also download the data manually here [RSpatialDataTypes.zip]("https://www.dropbox.com/s/g5p8b1xi2k5lydw/RSpatialDataTypes.zip?dl=1", "data/RSpatialDataTypes.zip") and extract them
+ 
+- Open up a new R Script file `R-spatial.R` for the code you'll create during the workshop.
+
+- Install and load the following libraries: 
+    - [`sp`](https://CRAN.R-project.org/package=sp) (version 1.2-7)
+    - [`rgdal`](https://CRAN.R-project.org/package=rgdal) (version 1.2-18)
+    - [`sf`](https://cran.r-project.org/package=sf) (Mac use binary of version 0.6-1)
+    - [`raster`](https://CRAN.R-project.org/package=raster) (version 2.6-7)
+    - [`rgeos`](https://CRAN.R-project.org/package=rgeos) (version 0.3-26)
+
+- For the mapping section install and load these additional libraries:
+    - [`classInt`](https://cran.r-project.org/package=classInt)
+    - [`RColorBrewer`](https://cran.r-project.org/package=RColorBrewer)
+    - [`broom`](https://cran.r-project.org/package=broom)
+    - [`ggplot2`](https://cran.r-project.org/package=ggplot2)
+    - [`ggmap`](https://cran.r-project.org/package=ggmap)
+    - [`tmap`](https://cran.r-project.org/package=tmap)
+    - [`leaflet`](https://cran.r-project.org/package=leaflet)
+
+
+## References {-}
+
+Bivand, RS., Pebesma, E., Gómez-Rubio, V. (2013): [Applied Spatial Data Analysis with R](https://link.springer.com/book/10.1007%2F978-1-4614-7618-4)
+
+Brunsdon, C. and Comber, L. (2015): [An Introduction to R for Spatial Analysis and Mapping](https://us.sagepub.com/en-us/nam/an-introduction-to-r-for-spatial-analysis-and-mapping/book241031)
+
+Lovelace, R., Nowosad, J., Muenchow. J. (forthcoming): [Geocomputation with R](https://geocompr.robinlovelace.net)
+
+[CRAN Task View: Analysis of Spatial Data](https://CRAN.R-project.org/view=Spatial)
+
+
+## Acknowledgements {-}
+Some of the materials for this tutorial are adapted from http://datacarpentry.org and https://github.com/MicheleTobias/R-Projections-Workshop 
