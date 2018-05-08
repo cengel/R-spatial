@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Using Spatial Data with R</title>
+  <meta name="description" content="Workshop materials for Using Spatial Data with R">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Using Spatial Data with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Workshop materials for Using Spatial Data with R" />
+  <meta name="github-repo" content="cengel/R-spatial" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Using Spatial Data with R" />
+  
+  <meta name="twitter:description" content="Workshop materials for Using Spatial Data with R" />
+  
+
+<meta name="author" content="Claudia A Engel">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="intro.html">
+<link rel="next" href="mapping.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.0/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.1.17/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers-plugin-2.0.0/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Using Spatial Data with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites and Preparations</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction to spatial data in R</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#conceptualizing-spatial-vector-objects-in-r"><i class="fa fa-check"></i><b>1.1</b> Conceptualizing spatial vector objects in R</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="intro.html"><a href="intro.html#the-sp-package"><i class="fa fa-check"></i><b>1.1.1</b> The <code>sp</code> package</a></li>
+<li class="chapter" data-level="1.1.2" data-path="intro.html"><a href="intro.html#the-sf-package"><i class="fa fa-check"></i><b>1.1.2</b> The <code>sf</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#creating-a-spatial-object-from-a-latlon-table"><i class="fa fa-check"></i><b>1.2</b> Creating a spatial object from a lat/lon table</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#loading-shape-files-into-r"><i class="fa fa-check"></i><b>1.3</b> Loading shape files into R</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#how-to-work-with-rgdal"><i class="fa fa-check"></i><b>1.3.1</b> How to work with <code>rgdal</code></a></li>
+<li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#how-to-do-this-in-sf"><i class="fa fa-check"></i><b>1.3.2</b> How to do this in <code>sf</code></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#raster-data-in-r"><i class="fa fa-check"></i><b>1.4</b> Raster data in R</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="intro.html"><a href="intro.html#rasterstack-vs-rasterbrick-in-r"><i class="fa fa-check"></i><b>1.4.1</b> RasterStack vs RasterBrick in R</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="spatialops.html"><a href="spatialops.html"><i class="fa fa-check"></i><b>2</b> Spatial data manipulation in R</a><ul>
+<li class="chapter" data-level="2.1" data-path="spatialops.html"><a href="spatialops.html#attribute-join"><i class="fa fa-check"></i><b>2.1</b> Attribute Join</a></li>
+<li class="chapter" data-level="2.2" data-path="spatialops.html"><a href="spatialops.html#reprojecting"><i class="fa fa-check"></i><b>2.2</b> Reprojecting</a></li>
+<li class="chapter" data-level="2.3" data-path="spatialops.html"><a href="spatialops.html#points-in-polygons"><i class="fa fa-check"></i><b>2.3</b> Points in Polygons</a></li>
+<li class="chapter" data-level="2.4" data-path="spatialops.html"><a href="spatialops.html#select-polygons-by-location"><i class="fa fa-check"></i><b>2.4</b> Select Polygons by Location</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="spatialops.html"><a href="spatialops.html#using-the-sp-package"><i class="fa fa-check"></i><b>2.4.1</b> Using the <code>sp</code> package</a></li>
+<li class="chapter" data-level="2.4.2" data-path="spatialops.html"><a href="spatialops.html#using-the-sf-package"><i class="fa fa-check"></i><b>2.4.2</b> Using the <code>sf</code> package</a></li>
+<li class="chapter" data-level="2.4.3" data-path="spatialops.html"><a href="spatialops.html#sp---sf-comparison"><i class="fa fa-check"></i><b>2.4.3</b> <code>sp</code> - <code>sf</code> comparison</a></li>
+<li class="chapter" data-level="2.4.4" data-path="spatialops.html"><a href="spatialops.html#raster-operations"><i class="fa fa-check"></i><b>2.4.4</b> <code>raster</code> operations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="mapping.html"><a href="mapping.html"><i class="fa fa-check"></i><b>3</b> Making Maps in R</a><ul>
+<li class="chapter" data-level="3.1" data-path="mapping.html"><a href="mapping.html#choropleth-mapping-with-spplot"><i class="fa fa-check"></i><b>3.1</b> Choropleth mapping with <code>spplot</code></a></li>
+<li class="chapter" data-level="3.2" data-path="mapping.html"><a href="mapping.html#plotting-simple-features-sf-with-plot"><i class="fa fa-check"></i><b>3.2</b> Plotting simple features (<code>sf</code>) with <code>plot</code></a></li>
+<li class="chapter" data-level="3.3" data-path="mapping.html"><a href="mapping.html#choropleth-mapping-with-ggplot2"><i class="fa fa-check"></i><b>3.3</b> Choropleth mapping with <code>ggplot2</code></a></li>
+<li class="chapter" data-level="3.4" data-path="mapping.html"><a href="mapping.html#adding-basemaps-with-ggmap"><i class="fa fa-check"></i><b>3.4</b> Adding basemaps with <code>ggmap</code></a></li>
+<li class="chapter" data-level="3.5" data-path="mapping.html"><a href="mapping.html#choropleth-with-tmap"><i class="fa fa-check"></i><b>3.5</b> Choropleth with <code>tmap</code></a></li>
+<li class="chapter" data-level="3.6" data-path="mapping.html"><a href="mapping.html#web-mapping-with-leaflet"><i class="fa fa-check"></i><b>3.6</b> Web mapping with <code>leaflet</code></a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Using Spatial Data with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="spatialops" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Spatial data manipulation in R</h1>
+<blockquote>
+<p>Learning Objectives</p>
+<ul>
+<li>Join attribute data to a polygon vector file</li>
+<li>Reproject a vector file</li>
+<li>Select polygons of a vector by location</li>
+</ul>
+</blockquote>
+<hr />
+<p>In this section we will look at some libraries and commands that allow us to process spatial data in R and perform a few examples of commonly used operations.</p>
+<div id="attribute-join" class="section level2">
+<h2><span class="header-section-number">2.1</span> Attribute Join</h2>
+<p>An attribute join brings tabular data into a geographic context. It refers to the process of joining data in tabular format to data in a format that holds the geometries (polygon, line, or point).</p>
+<p>If you have done attribute joins of shapefiles in GIS software like <em>ArcGIS</em> or <em>QGis</em> you know that you need a <strong>unique identifier</strong> in both the attribute table of the shapefile and the table to be joined.</p>
+<p>In order to combine a <code>Spatial*Dataframe</code> with another table (which would be a dataframe in R) we do exactly the same. We have a <code>Spatial*Dataframe</code><a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a> that contains the geometries and an identifying index variable for each. We combine it with a dataframe, that includes the same index variable with additional variables.</p>
+<div class="figure">
+<img src="img/attrJoin.png" alt="Attribute Join of countryData table to worldCountries using unique ID variables" />
+<p class="caption">Attribute Join of countryData table to worldCountries using unique ID variables</p>
+</div>
+<p>The <code>sp</code> package has a <code>merge</code> command which extends the base <code>merge</code> command to works with <code>Spatial*</code> objects as argument.</p>
+<p>Assume we have:</p>
+<ul>
+<li>a <code>SpatialPolygonObject</code> named <em>worldCountries</em>, and</li>
+<li>a dataframe called <em>countryData</em> with the attribute data to join</li>
+</ul>
+<p>where:</p>
+<ul>
+<li><em>“id-number”</em> is the colum that contains the unique identifier in <em>worldCountries</em>, and</li>
+<li><em>“countryID”</em> is the column that contains the unique identifier in <em>countryData</em>.</li>
+</ul>
+<p>We would then say:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sp) <span class="co"># make sure that is loaded</span>
+worldCountries &lt;-<span class="st"> </span><span class="kw">merge</span>(worldCountries, countryData, <span class="dt">by.x =</span> <span class="st">&quot;id-number&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;countryID&quot;</span>)</code></pre></div>
+<p>(You may come across alternative suggestions for joins that operate on the data slot <code>@data</code> of the Spatial* object. While they may work, we don’t suggest them here, as good practice suggests not to use the slot explicitly if at all possible.)</p>
+<p>Load the CSV table <code>PhiladelphiaEduAttain.csv</code> into a dataframe in R and name it <code>ph_edu</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph_edu &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/PhiladelphiaEduAttain.csv&quot;</span>)
+<span class="kw">names</span>(ph_edu)</code></pre></div>
+<p>Read the <code>PhillyTotalPopHHinc</code> shapefile into an object named <code>philly_sf</code>. Check out the column names of <code>philly_sf</code> and and of <code>ph_edu</code> to determine which one might contain the unique identifier for the join.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## sf ##
+<span class="co"># if you need to read in again:</span>
+<span class="co"># philly_sf &lt;- st_read(&quot;data/Philly/&quot;)</span>
+<span class="kw">names</span>(philly_sf)</code></pre></div>
+<p>Join the <code>ph_edu</code> data frame with <code>philly</code> using <code>merge</code> as described above. Use the <code>names()</code> command to see if the join was successful.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># this is base::merge()</span>
+philly_sf_merged &lt;-<span class="st"> </span><span class="kw">merge</span>(philly_sf, ph_edu, <span class="dt">by.x =</span> <span class="st">&quot;GEOID10&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;GEOID&quot;</span>)
+<span class="kw">names</span>(philly_sf_merged) <span class="co"># note the geometry column</span></code></pre></div>
+<pre><code>#&gt;  [1] &quot;GEOID10&quot;         &quot;STATEFP10&quot;       &quot;COUNTYFP10&quot;     
+#&gt;  [4] &quot;TRACTCE10&quot;       &quot;NAME10&quot;          &quot;NAMELSAD10&quot;     
+#&gt;  [7] &quot;MTFCC10&quot;         &quot;FUNCSTAT10&quot;      &quot;ALAND10&quot;        
+#&gt; [10] &quot;AWATER10&quot;        &quot;INTPTLAT10&quot;      &quot;INTPTLON10&quot;     
+#&gt; [13] &quot;GISJOIN&quot;         &quot;Shape_area&quot;      &quot;Shape_len&quot;      
+#&gt; [16] &quot;medHHinc&quot;        &quot;totalPop&quot;        &quot;NAME&quot;           
+#&gt; [19] &quot;fem_bachelor&quot;    &quot;fem_doctorate&quot;   &quot;fem_highschool&quot; 
+#&gt; [22] &quot;fem_noschool&quot;    &quot;fem_ovr_25&quot;      &quot;male_bachelor&quot;  
+#&gt; [25] &quot;male_doctorate&quot;  &quot;male_highschool&quot; &quot;male_noschool&quot;  
+#&gt; [28] &quot;male_ovr_25&quot;     &quot;pop_ovr_25&quot;      &quot;geometry&quot;</code></pre>
+<p>The same with <code>sp</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## sp ##
+<span class="co"># if you need to read in again:</span>
+<span class="co"># philly_sp &lt;- readOGR(&quot;data/Philly/&quot;, &quot;PhillyTotalPopHHinc&quot;) </span>
+
+<span class="co"># this is sp::merge()</span>
+philly_sp_merged &lt;-<span class="st"> </span><span class="kw">merge</span>(philly_sp, ph_edu, <span class="dt">by.x =</span> <span class="st">&quot;GEOID10&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;GEOID&quot;</span>)
+
+<span class="kw">names</span>(philly_sp_merged) <span class="co"># no geometry column here</span></code></pre></div>
+<pre><code>#&gt;  [1] &quot;GEOID10&quot;         &quot;STATEFP10&quot;       &quot;COUNTYFP10&quot;     
+#&gt;  [4] &quot;TRACTCE10&quot;       &quot;NAME10&quot;          &quot;NAMELSAD10&quot;     
+#&gt;  [7] &quot;MTFCC10&quot;         &quot;FUNCSTAT10&quot;      &quot;ALAND10&quot;        
+#&gt; [10] &quot;AWATER10&quot;        &quot;INTPTLAT10&quot;      &quot;INTPTLON10&quot;     
+#&gt; [13] &quot;GISJOIN&quot;         &quot;Shape_area&quot;      &quot;Shape_len&quot;      
+#&gt; [16] &quot;medHHinc&quot;        &quot;totalPop&quot;        &quot;NAME&quot;           
+#&gt; [19] &quot;fem_bachelor&quot;    &quot;fem_doctorate&quot;   &quot;fem_highschool&quot; 
+#&gt; [22] &quot;fem_noschool&quot;    &quot;fem_ovr_25&quot;      &quot;male_bachelor&quot;  
+#&gt; [25] &quot;male_doctorate&quot;  &quot;male_highschool&quot; &quot;male_noschool&quot;  
+#&gt; [28] &quot;male_ovr_25&quot;     &quot;pop_ovr_25&quot;</code></pre>
+</div>
+<div id="reprojecting" class="section level2">
+<h2><span class="header-section-number">2.2</span> Reprojecting</h2>
+<p>Not unfrequently you may have to reproject spatial objects that you perhaps have acquired from various sources and that you need to be in the same Coordinate Reference System (CRS). The functions that do this typically take the following two arguments:</p>
+<ul>
+<li>the spatial object to reproject</li>
+<li>a CRS object with the new projection definition</li>
+</ul>
+<p>You can reproject</p>
+<ul>
+<li>a <code>Spatial*</code> object with <code>spTransform()</code></li>
+<li>a <code>sf</code> object with <code>st_transform()</code></li>
+<li>a <code>raster</code> object with <code>projectRaster()</code></li>
+</ul>
+<p>The perhaps trickiest part here is to determine the definition of the projection, which needs to be a character string in <a href="http://trac.osgeo.org/proj/">proj4</a> format. You can <a href="http://www.spatialreference.org">look it up online</a>. For example for <a href="http://spatialreference.org/ref/epsg/wgs-84-utm-zone-33n/">UTM zone 33N (EPSG:32633)</a> the string would be:</p>
+<p><a href="http://spatialreference.org/ref/epsg/wgs-84-utm-zone-33n/proj4js/"><code>+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs</code></a></p>
+<p>You can retrieve the CRS:</p>
+<ul>
+<li>from an existing <code>Spatial*</code> object with <code>proj4string()</code></li>
+<li>from an <code>sf</code> object with <code>st_crs()</code></li>
+<li>from a <code>raster</code> object with <code>crs()</code></li>
+</ul>
+<p>Let us now go back to the homicide shapefile we exported to <code>&quot;PhillyHomicides&quot;</code>. Let’s read it back in and transform it so it matches the projection of the Philadelphia Census tracts. We will assign it to a new object called <code>ph_homic_aea_</code>.</p>
+<p>First we read it in and check the CRS for both files. Then we use the respective transformation functions to reproject.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## sf ##
+ph_homic_sf &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/PhillyHomicides/&quot;</span>)</code></pre></div>
+<pre><code>#&gt; Reading layer `PhillyHomicides&#39; from data source `/Users/cengel/Anthro/R_Class/R_Workshops/R-spatial/data/PhillyHomicides&#39; using driver `ESRI Shapefile&#39;
+#&gt; Simple feature collection with 3883 features and 8 fields
+#&gt; geometry type:  POINT
+#&gt; dimension:      XY
+#&gt; bbox:           xmin: -75.26809 ymin: 39.87503 xmax: -74.95874 ymax: 40.13086
+#&gt; epsg (SRID):    4326
+#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(philly_sf)</code></pre></div>
+<pre><code>#&gt; Coordinate Reference System:
+#&gt;   No EPSG code
+#&gt;   proj4string: &quot;+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(ph_homic_sf)</code></pre></div>
+<pre><code>#&gt; Coordinate Reference System:
+#&gt;   EPSG: 4326 
+#&gt;   proj4string: &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph_homic_aea_sf &lt;-<span class="st"> </span><span class="kw">st_transform</span>(ph_homic_sf, <span class="kw">st_crs</span>(philly_sf))
+
+## sp ##
+ph_homic_sp &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="st">&quot;data/PhillyHomicides/&quot;</span>, <span class="st">&quot;PhillyHomicides&quot;</span>)</code></pre></div>
+<pre><code>#&gt; OGR data source with driver: ESRI Shapefile 
+#&gt; Source: &quot;/Users/cengel/Anthro/R_Class/R_Workshops/R-spatial/data/PhillyHomicides&quot;, layer: &quot;PhillyHomicides&quot;
+#&gt; with 3883 features
+#&gt; It has 8 fields</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">proj4string</span>(philly_sp)</code></pre></div>
+<pre><code>#&gt; [1] &quot;+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">proj4string</span>(ph_homic_sp)</code></pre></div>
+<pre><code>#&gt; [1] &quot;+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph_homic_aea_sp &lt;-<span class="st"> </span><span class="kw">spTransform</span>(ph_homic_sp, <span class="kw">CRS</span>(<span class="kw">proj4string</span>(philly_sp)))</code></pre></div>
+<p>We can use the <code>range()</code> command from the R base package to compare the coordinates before and after reprojection and confirm that you actually have transformed them. <code>range()</code> simply returns the <em>min</em> and <em>max</em> value of a vector of numbers that you give it. So you can check with:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(<span class="kw">st_coordinates</span>(ph_homic_aea_sf))</code></pre></div>
+<pre><code>#&gt; [1]  457489.7 1763671.8</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(<span class="kw">st_coordinates</span>(ph_homic_sf))</code></pre></div>
+<pre><code>#&gt; [1] -75.26809  40.13086</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(<span class="kw">coordinates</span>(ph_homic_aea_sp))</code></pre></div>
+<pre><code>#&gt; [1]  457489.7 1763671.8</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(<span class="kw">coordinates</span>(ph_homic_sp))</code></pre></div>
+<pre><code>#&gt; [1] -75.26809  40.13086</code></pre>
+<p>We can also compare them visually with:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)) 
+<span class="kw">plot</span>(ph_homic_aea_sp, <span class="dt">axes=</span><span class="ot">TRUE</span>)
+<span class="kw">plot</span>(ph_homic_sp, <span class="dt">axes=</span><span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="R-spatial_files/figure-html/compare-reproj-plots-1.png" width="672" /></p>
+<p>Here is what it would look like to reproject the HARV raster used earlier to a WGS84 projection.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># if you need to load again:</span>
+<span class="co">#HARV &lt;- raster(&quot;data/NEON-DS-Landsat-NDVI/005_HARV_landRGB.tif&quot;)</span>
+<span class="kw">crs</span>(HARV)</code></pre></div>
+<pre><code>#&gt; CRS arguments:
+#&gt;  +proj=utm +zone=19 +datum=WGS84 +units=m +no_defs +ellps=WGS84
+#&gt; +towgs84=0,0,0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HARV.WGS84 &lt;-<span class="st"> </span><span class="kw">projectRaster</span>(HARV, <span class="dt">crs=</span><span class="st">&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&quot;</span>)
+<span class="kw">plot</span>(HARV); <span class="kw">plot</span>(HARV.WGS84)</code></pre></div>
+<p><img src="R-spatial_files/figure-html/raster-reproject-1.png" width="672" /><img src="R-spatial_files/figure-html/raster-reproject-2.png" width="672" /></p>
+</div>
+<div id="points-in-polygons" class="section level2">
+<h2><span class="header-section-number">2.3</span> Points in Polygons</h2>
+<p>For the next exercise we want to calculate the density of homicides for each census tract in Philadelphia as</p>
+<pre><code>number of homicides per census tract / area per census tract</code></pre>
+<p>To achieve this this we join the points of homicide incidence to the census tract polygon. You might be familiar with this operation from other GIS packages.</p>
+<p>For <code>sp</code> objects we can use the <code>aggregate()</code> function<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a>. Here are the arguments that it needs:</p>
+<ul>
+<li>the <code>SpatialPointDataframe</code>with the homicide incidents as point locations,</li>
+<li>the <code>SpatialPolygonDataframe</code> with the census tract polygons to aggregate on, and</li>
+<li>an aggregate function. Since we are interested in counting the points (i.e. the rows of all the points that belong to a certain polygon), we can use length (of the respective vectors of the aggregated data).</li>
+</ul>
+<p>Let’s do this.</p>
+<p>To count homicides per census tract we use the <code>OBJ_ID</code> field from <code>ph_homic_aea</code> for homicide incidents and <code>philly</code> polygons to aggregate on and save the result as <code>ph_hom_count</code>. Use <code>length</code> as aggregate function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph_hom_count_sp &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> ph_homic_aea_sp[<span class="st">&quot;OBJ_ID&quot;</span>], <span class="dt">by =</span> philly_sp, <span class="dt">FUN =</span> length)
+<span class="co"># make sure we understand this error message:</span>
+<span class="co"># aggregate(x = ph_homic_sp, by = philly_sp, FUN = length) </span></code></pre></div>
+<p>Now let us investigate the object we created.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(ph_hom_count_sp)</code></pre></div>
+<pre><code>#&gt; [1] &quot;SpatialPolygonsDataFrame&quot;
+#&gt; attr(,&quot;package&quot;)
+#&gt; [1] &quot;sp&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(ph_hom_count_sp)</code></pre></div>
+<pre><code>#&gt; [1] &quot;OBJ_ID&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(ph_hom_count_sp)</code></pre></div>
+<pre><code>#&gt;   OBJ_ID
+#&gt; 0      2
+#&gt; 1      3
+#&gt; 2     11
+#&gt; 3      3
+#&gt; 4      4
+#&gt; 5      5</code></pre>
+<p>Now we can calculate the density of homicides in Philadelphia, normalized over the area for each census tract.</p>
+<p>We use <code>gArea()</code> from the <code>rgeos</code> library. <code>gArea</code>, when given a <code>SpatialPolygon</code>, calculates the size of the area covered. If we need that calculation for each polygon, we set <code>byid = TRUE</code>. Units are in map units.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgeos)</code></pre></div>
+<pre><code>#&gt; rgeos version: 0.3-26, (SVN revision 560)
+#&gt;  GEOS runtime version: 3.6.1-CAPI-1.10.1 r0 
+#&gt;  Linking to sp version: 1.2-5 
+#&gt;  Polygon checking: TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># we multiply by by 1000000 to get sq km.</span>
+ph_hom_count_sp<span class="op">$</span>homic_dens &lt;-<span class="st"> </span><span class="fl">1e6</span> <span class="op">*</span><span class="st"> </span>(ph_hom_count_sp<span class="op">$</span>OBJ_ID<span class="op">/</span><span class="kw">gArea</span>(ph_hom_count_sp, <span class="dt">byid =</span> <span class="ot">FALSE</span>))
+
+<span class="kw">hist</span>(ph_hom_count_sp<span class="op">$</span>homic_dens)</code></pre></div>
+<p><img src="R-spatial_files/figure-html/sp-crime-rate-1.png" width="672" /></p>
+<p>We will write it out for later. (Note that this will produce an error if the file already exists. You can force it to write out with the option <code>overwrite_layer = TRUE</code>)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">writeOGR</span>(ph_hom_count_sp, <span class="st">&quot;data/PhillyCrimerate&quot;</span>, <span class="st">&quot;PhillyCrimerate&quot;</span>, <span class="dt">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)</code></pre></div>
+<p>There might be other instances where we don’t want to aggregate, but might only want to know which polygon a point falls into. In that case we can use <code>over()</code>. In fact, the <code>aggregate()</code> function used above makes use of <code>over()</code>. See <a href="https://cran.r-project.org/web/packages/sp/vignettes/over.pdf" class="uri">https://cran.r-project.org/web/packages/sp/vignettes/over.pdf</a> for more details on the over-methods. <code>point.in.poly()</code> from the <a href="https://cran.r-project.org/package=spatialEco"><code>spatialEco</code></a> package intersects point and polygons and adds polygon attributes to points. There is also <code>point.in.polygon()</code> from the <code>sp</code> package which tests if a point or set of points fall in a given polygon.</p>
+<p>For <code>sf</code> objects we need to add one more step. We first use <code>st_within()</code> to determine which polygon a points falls into. We can then use the result to aggregate.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Need to add this</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</div>
+<div id="select-polygons-by-location" class="section level2">
+<h2><span class="header-section-number">2.4</span> Select Polygons by Location</h2>
+<p>For the next example our goal is to select all Philadelphia census tracts within a range of 2 kilometers from the city center.</p>
+<blockquote>
+<p>Think about this for a moment – what might be the steps you’d follow?</p>
+</blockquote>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## How about:
+
+<span class="co"># 1. Get the census tract polygons.</span>
+<span class="co"># 2. Find the Philadelphia city center coordinates.</span>
+<span class="co"># 3. Create a buffer around the city center point.</span>
+<span class="co"># 4. Select all census tract polygons that intersect with the center buffer</span></code></pre></div>
+<div id="using-the-sp-package" class="section level3">
+<h3><span class="header-section-number">2.4.1</span> Using the <code>sp</code> package</h3>
+<p>In order to perform those operations on an <code>sp</code> object we will need to make use of an additional package, called <code>rgeos</code>. Make sure you have it loaded.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgeos)
+<span class="co"># if you need to read it in again</span>
+<span class="co"># philly_sp &lt;- readOGR(&quot;data/Philly/&quot;, &quot;PhillyTotalPopHHinc&quot;, verbose = F)</span></code></pre></div>
+<p>We will use <code>philly_sp</code> for the census tract polygons.</p>
+<p>In addition, we need to create a <code>SpatialPoints</code> object with the Philadelphia city center coordinates.</p>
+<p>Lat is 39.95258 and Lon is -75.16522. This is in WGS84.</p>
+<p>With this information, we create a <code>SpatialPoints</code> object named <code>philly_ctr</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="op">-</span><span class="fl">75.16522</span>, <span class="dt">y =</span> <span class="fl">39.95258</span>) <span class="co"># set the coordinates</span>
+prj &lt;-<span class="st"> </span><span class="kw">CRS</span>(<span class="st">&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&quot;</span>) <span class="co"># the projection string for WGS84</span>
+philly_ctr &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>(coords, <span class="dt">proj4string =</span> prj) <span class="co"># create the spatialPoints</span></code></pre></div>
+<p>Next, we create a buffer around the city center point.<br />
+Here is where we will use the <code>gBuffer()</code> function from the <code>rgeos</code> package. For this purpose we will need to provide two arguments: the <strong>sp object</strong> and the <strong>width</strong> of the buffer, which is assumed to be in map units. The function returns a <code>SpatialPolygons</code> object to you with the buffer - name it <code>philly_buf</code>.<br />
+So our command would look something like</p>
+<pre><code>philly_buf &lt;- gBuffer(the_spatial_point_object, width = a_number_here)</code></pre>
+<p><strong>Now – before we create this buffer, think about what you need to do to <code>philly_ctr</code> before you proceed.</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">philly_ctr_aea &lt;-<span class="st"> </span><span class="kw">spTransform</span>(philly_ctr, <span class="kw">CRS</span>(<span class="kw">proj4string</span>(philly_sp))) <span class="co"># reproject!!</span>
+philly_buf &lt;-<span class="st"> </span><span class="kw">gBuffer</span>(philly_ctr_aea, <span class="dt">width=</span><span class="dv">2000</span>)  <span class="co"># create buffer around center</span></code></pre></div>
+<p>Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer.</p>
+<p>We will use the <code>gIntersects()</code> function from the <code>rgeos</code> package for this. The function tests if two geometries (let’s name them <em>spgeom1</em> and <em>spgeom2</em>) have points in common or not. <code>gIntersects</code> returns TRUE if <em>spgeom1</em> and <em>spgeom2</em> have at least one point in common.</p>
+<p>Here is where we determine if the census tracts fall within the buffer. In addition to our two <code>sp</code> objects (<code>philly_buf</code> and <code>philly_sp</code>) we need to provide one more argument, <code>byid</code>. It determines if the function should be applied across ids (TRUE) or the entire object (FALSE) for <em>spgeom1</em> and <em>spgeom2</em>. The default setting is FALSE. Since we want to compare <em>every single</em> census tract polygon in our <code>philly_sp</code> object we need to set it to TRUE.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">philly_buf_intersects &lt;-<span class="st">  </span><span class="kw">gIntersects</span> (philly_buf, philly_sp, <span class="dt">byid=</span><span class="ot">TRUE</span>) <span class="co"># determine which census tracts intersect with the buffer</span>
+
+<span class="co"># what kind of object is this?</span>
+<span class="kw">class</span>(philly_buf_intersects)</code></pre></div>
+<pre><code>#&gt; [1] &quot;matrix&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># subset</span>
+philly_sel &lt;-<span class="st"> </span>philly_sp[<span class="kw">as.vector</span>(philly_buf_intersects),]</code></pre></div>
+<p>Finally, we plot it all.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span> (philly_sp, <span class="dt">border=</span><span class="st">&quot;#aaaaaa&quot;</span>)
+<span class="kw">plot</span> (philly_sel, <span class="dt">add=</span>T, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>) 
+<span class="kw">plot</span> (philly_buf, <span class="dt">add=</span>T, <span class="dt">lwd =</span> <span class="dv">2</span>)</code></pre></div>
+<p><img src="R-spatial_files/figure-html/sp-plot-selection-1.png" width="672" /></p>
+</div>
+<div id="using-the-sf-package" class="section level3">
+<h3><span class="header-section-number">2.4.2</span> Using the <code>sf</code> package</h3>
+<p>To give you a sense of how this might be done using the <code>sf</code> package we will reproduce here the same example as above.</p>
+<p>For the spatial operations we can recur to the suite of geometric operations that come with the <code>sf</code> package , in particular we will use <code>st_buffer()</code> and <code>st_intersects()</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
+philly_sf &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/Philly/&quot;</span>, <span class="dt">quiet =</span> T)
+
+<span class="co"># make a simple feature point with CRS</span>
+philly_ctr_sfc &lt;-<span class="st"> </span><span class="kw">st_sfc</span>(<span class="kw">st_point</span>(<span class="kw">c</span>(<span class="op">-</span><span class="fl">75.16522</span>, <span class="fl">39.95258</span>)), <span class="dt">crs =</span> <span class="dv">4326</span>)
+
+<span class="co"># reproject</span>
+philly_ctr_aea_sf &lt;-<span class="st"> </span><span class="kw">st_transform</span>(philly_ctr_sfc, <span class="kw">st_crs</span>(philly_sf))
+
+<span class="co"># create buffer</span>
+philly_buf_sf &lt;-<span class="st"> </span><span class="kw">st_buffer</span>(philly_ctr_aea_sf, <span class="dv">2000</span>)
+
+<span class="co"># find intersection between buffer and census polygons</span>
+philly_buf_intersects &lt;-<span class="st"> </span><span class="kw">st_intersects</span>(philly_buf_sf, philly_sf)
+<span class="kw">class</span>(philly_buf_intersects)</code></pre></div>
+<pre><code>#&gt; [1] &quot;sgbp&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># subset</span>
+philly_sel_sf &lt;-<span class="st"> </span>philly_sf[<span class="kw">unlist</span>(philly_buf_intersects),]
+
+<span class="co"># plot</span>
+<span class="kw">plot</span>(<span class="kw">st_geometry</span>(philly_sf), <span class="dt">border=</span><span class="st">&quot;#aaaaaa&quot;</span>)
+<span class="kw">plot</span>(<span class="kw">st_geometry</span>(philly_sel_sf), <span class="dt">add=</span>T, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)
+<span class="kw">plot</span>(<span class="kw">st_geometry</span>(philly_buf_sf), <span class="dt">add=</span>T, <span class="dt">lwd =</span> <span class="dv">2</span>)</code></pre></div>
+<p><img src="R-spatial_files/figure-html/sf-intersect-1.png" width="672" /></p>
+</div>
+<div id="sp---sf-comparison" class="section level3">
+<h3><span class="header-section-number">2.4.3</span> <code>sp</code> - <code>sf</code> comparison</h3>
+<table>
+<thead>
+<tr class="header">
+<th>how to..</th>
+<th>for <code>sp</code> objects</th>
+<th>for <code>sf</code> objects</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>join attributes</td>
+<td><code>sp::merge()</code></td>
+<td><code>base::merge()</code></td>
+</tr>
+<tr class="even">
+<td>reproject</td>
+<td><code>spTransform()</code></td>
+<td><code>st_transform()</code></td>
+</tr>
+<tr class="odd">
+<td>retrieve (or assign) CRS</td>
+<td><code>proj4string()</code></td>
+<td><code>st_crs()</code></td>
+</tr>
+<tr class="even">
+<td>count points in polygons</td>
+<td><code>over()</code></td>
+<td><code>st_within</code> and <code>aggregate()</code></td>
+</tr>
+<tr class="odd">
+<td>buffer</td>
+<td><code>rgeos::gBuffer()</code> (separate package)</td>
+<td><code>st_buffer()</code></td>
+</tr>
+<tr class="even">
+<td>select by location</td>
+<td><a href="https://www.rdocumentation.org/packages/rgeos/"><code>g*</code> functions</a> from <code>rgeos</code></td>
+<td><a href="https://www.rdocumentation.org/packages/sf/topics/geos">geos functions</a> in <code>sf</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="raster-operations" class="section level3">
+<h3><span class="header-section-number">2.4.4</span> <code>raster</code> operations</h3>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>to come</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="5">
+<li id="fn5"><p>Per the <a href="http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf">ESRI specification</a> a shapefile always has an attribute table, so when we read it into R with the <code>readOGR</code> command from the <code>sp</code> package it automatically becomes a <code>Spatial*Dataframe</code> and the attribute table becomes the dataframe.<a href="spatialops.html#fnref5">↩</a></p></li>
+<li id="fn6"><p>There is also an <code>aggregate()</code> function in the <code>stats</code> package that comes with the R standard install. Note that <code>sp</code> extends this function so it can take <code>Spatial*</code> objects and aggregate over the geometric features.<a href="spatialops.html#fnref6">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="mapping.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/cengel/R-spatial/edit/master/02-spatial-operations.Rmd",
+"text": "Edit"
+},
+"download": ["R-spatial.pdf", "R-spatial.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

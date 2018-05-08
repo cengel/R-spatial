@@ -28,14 +28,12 @@ To get the most out of this workshop you should have:
 
 - If you have your working directory set to `R-spatial` which contains a folder called `data` you can copy, paste, and run the following lines in R:
 
->> FIX PATH HERE!!
-
 ```{r download-files, eval=FALSE}
-download.file("https://www.dropbox.com/s/g5p8b1xi2k5lydw/RSpatialDataTypes.zip?dl=1", "data/RSpatialDataTypes.zip")
-unzip("data/RSpatialDataTypes.zip", exdir = "data")
+download.file("https://github.com/cengel/R-spatial/raw/master/data/R-spatial-data.zip", "data/R-spatial-data.zip")
+unzip("data/R-spatial-data.zip", exdir = "data")
 ```
 
-You can also download the data manually here [RSpatialDataTypes.zip]("https://www.dropbox.com/s/g5p8b1xi2k5lydw/RSpatialDataTypes.zip?dl=1", "data/RSpatialDataTypes.zip") and extract them
+You can also download the data manually here [R-spatial-data.zip](https://github.com/cengel/R-spatial/raw/master/data/R-spatial-data.zip) and extract them.
  
 - Open up a new R Script file `R-spatial.R` for the code you'll create during the workshop.
 
