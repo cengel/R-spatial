@@ -66,4 +66,4 @@ Lovelace, R., Nowosad, J., Muenchow. J. (forthcoming): [Geocomputation with R](h
 
 
 ## Acknowledgements {-}
-Some of the materials for this tutorial are adapted from http://datacarpentry.org and https://github.com/MicheleTobias/R-Projections-Workshop 
+Some of the materials for this tutorial are adapted from http://datacarpentry.org 
