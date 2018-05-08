@@ -7,17 +7,13 @@ library(rgdal)
 library(raster)
 library(sf)
 
-## objects needed for examples below
-#philly_sp <- readOGR("data/Philly/", "PhillyTotalPopHHinc", verbose = F)
-#ph_df <- read.csv("data/philly_homicides.csv")
 
-#ph_sf <- st_as_sf(ph_df , coords = c("POINT_X", "POINT_Y"))
-#coordinates(ph_df) <- c("POINT_X", "POINT_Y")
 ```
 
 # Introduction to spatial data in R {#intro}
 
 > Learning Objectives
+> 
 > * Create point, line, and polygon shapefiles as `sp` and `sf` objects.
 > * Read shapefiles into `sp` and `sf` objects
 > * Examine `sp` and `sf` objects
@@ -202,10 +198,7 @@ methods(class="sf")
 Here are some of the other highlights of `sf` you might be interested in:
 
 - provides **fast** I/O, particularly relevant for large files 
-
-    (I did a quick microbenchmarking: st_read() took 23.1749 milliseconds and readOGR() took
-462.1470 milliseconds for the philly shapefile.)
-                                                                              
+  
 - directly reads from and writes to spatial **databases** such as PostGIS
 
 - stay tuned for a new `ggplot` release that will be able to read and plot the `sf` format without the need of conversion to a data frame, like the `sp` format
@@ -465,7 +458,7 @@ And to read in a raster file we can use the `raster()` function. This raster is 
 
 ```{r read-raster, results='show'}
 library(raster)
-HARV <- raster("data/NEON-DS-Landsat-NDVI/005_HARV_landRGB.tif")
+HARV <- raster("data/HARV_RGB_Ortho.tif")
 ```
 
 Typing the name of the object will give us what's in there: 
@@ -530,7 +523,7 @@ We can use the `raster()` function to import one single band from a _single_ **O
 
 ```{r one-multiband, results='show'}
 HARV_Band2 <-
-  raster("data/NEON-DS-Landsat-NDVI/005_HARV_landRGB.tif", band = 2)
+  raster("data/HARV_RGB_Ortho.tif", band = 2)
 
 plot(HARV_Band2)
 ```
@@ -539,7 +532,7 @@ To bring in all bands of a multi-band raster, we use the `stack()` function.
 
 ```{r stack, results='show', warning=FALSE}
 HARV_stack <-
-  stack("data/NEON-DS-Landsat-NDVI/005_HARV_landRGB.tif")
+  stack("data/HARV_RGB_Ortho.tif")
 
 # how many layers?
 nlayers(HARV)

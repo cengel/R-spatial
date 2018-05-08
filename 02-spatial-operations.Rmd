@@ -8,7 +8,7 @@ library(raster)
 
 philly_sf <- st_read("data/Philly/")
 philly_sp <- readOGR("data/Philly/", "PhillyTotalPopHHinc")
-HARV <- raster("data/NEON-DS-Landsat-NDVI/005_HARV_landRGB.tif")
+HARV <- raster("data/HARV_RGB_Ortho.tif")
 ```
 
 # Spatial data manipulation in R {#spatialops}
@@ -164,7 +164,7 @@ Here is what it would look like to reproject the HARV raster used earlier to a W
 
 ```{r raster-reproject, tidy=FALSE, warning=FALSE, results='show'}
 # if you need to load again:
-#HARV <- raster("data/NEON-DS-Landsat-NDVI/005_HARV_landRGB.tif")
+#HARV <- raster("data/HARV_RGB_Ortho.tif")
 crs(HARV)
 HARV.WGS84 <- projectRaster(HARV, crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 plot(HARV); plot(HARV.WGS84)
