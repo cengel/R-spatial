@@ -316,10 +316,10 @@ ph_homic_sp &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span 
 <p><img src="R-spatial_files/figure-html/compare-reproj-plots-1.png" width="672" /></p>
 <p>Here is what it would look like to reproject the HARV raster used earlier to a WGS84 projection.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># if you need to load again:</span>
-<span class="co">#HARV &lt;- raster(&quot;data/NEON-DS-Landsat-NDVI/005_HARV_landRGB.tif&quot;)</span>
+<span class="co">#HARV &lt;- raster(&quot;data/HARV_RGB_Ortho.tif&quot;)</span>
 <span class="kw">crs</span>(HARV)</code></pre></div>
 <pre><code>#&gt; CRS arguments:
-#&gt;  +proj=utm +zone=19 +datum=WGS84 +units=m +no_defs +ellps=WGS84
+#&gt;  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84
 #&gt; +towgs84=0,0,0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HARV.WGS84 &lt;-<span class="st"> </span><span class="kw">projectRaster</span>(HARV, <span class="dt">crs=</span><span class="st">&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&quot;</span>)
 <span class="kw">plot</span>(HARV); <span class="kw">plot</span>(HARV.WGS84)</code></pre></div>
