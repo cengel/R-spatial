@@ -43,4 +43,12 @@ ACS 5 year estimates on educational attainment
   `spread(variable, estimate) %>%` 
   `write.csv("data/PhiladelphiaEduAttain.csv", row.names=F)`
 
+## HARV_RGB_Ortho.tif
+
+Imagery collected using the [NEON Airborne Observation Platform](http://www.neonscience.org/science-design/collection-methods/airborne-remote-sensing) high resolution camera over the [NEON Harvard Forest field site](http://www.neonscience.org/science-design/field-sites/harvard-forest). Each RGB image is a 3-band raster.
+
+Source: datacarpentry.org.
+
+
+
 
