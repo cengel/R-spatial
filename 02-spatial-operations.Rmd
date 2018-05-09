@@ -193,7 +193,7 @@ For `sp` objects we can use the `aggregate()` function[^6]. Here are the argumen
 
 Let's do this.
 
-To count homicides per census tract we use the `OBJ_ID` field from `ph_homic_aea` for homicide incidents and `philly` polygons to aggregate on and save the result as `ph_hom_count`. Use `length` as aggregate function. 
+To count homicides per census tract we can use any field from `ph_homic_aea` for homicide incidents (we chose  `OBJ_ID`) and `philly` polygons to aggregate on and save the result as `ph_hom_count`. Use `length` as aggregate function. 
 
 ```{r aggregate-sp, results='show'}
 ph_hom_count_sp <- aggregate(x = ph_homic_aea_sp["OBJ_ID"], by = philly_sp, FUN = length)
