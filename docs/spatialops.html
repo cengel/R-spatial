@@ -321,9 +321,28 @@ ph_homic_sp &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span 
 <pre><code>#&gt; CRS arguments:
 #&gt;  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84
 #&gt; +towgs84=0,0,0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HARV.WGS84 &lt;-<span class="st"> </span><span class="kw">projectRaster</span>(HARV, <span class="dt">crs=</span><span class="st">&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&quot;</span>)
-<span class="kw">plot</span>(HARV); <span class="kw">plot</span>(HARV.WGS84)</code></pre></div>
-<p><img src="R-spatial_files/figure-html/raster-reproject-1.png" width="672" /><img src="R-spatial_files/figure-html/raster-reproject-2.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HARV.WGS84 &lt;-<span class="st"> </span><span class="kw">projectRaster</span>(HARV, <span class="dt">crs=</span><span class="st">&quot;+init=epsg:4326&quot;</span>)
+
+<span class="kw">extent</span>(HARV)</code></pre></div>
+<pre><code>#&gt; class       : Extent 
+#&gt; xmin        : 731998.5 
+#&gt; xmax        : 732766.8 
+#&gt; ymin        : 4712956 
+#&gt; ymax        : 4713536</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">extent</span>(HARV.WGS84)</code></pre></div>
+<pre><code>#&gt; class       : Extent 
+#&gt; xmin        : -72.17505 
+#&gt; xmax        : -72.16544 
+#&gt; ymin        : 42.53393 
+#&gt; ymax        : 42.5394</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ncell</span>(HARV)</code></pre></div>
+<pre><code>#&gt; [1] 7120141</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ncell</span>(HARV.WGS84)</code></pre></div>
+<pre><code>#&gt; [1] 7687552</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(HARV)</code></pre></div>
+<p><img src="R-spatial_files/figure-html/raster-reproject-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(HARV.WGS84)</code></pre></div>
+<p><img src="R-spatial_files/figure-html/raster-reproject-2.png" width="672" /></p>
 </div>
 <div id="points-in-polygons" class="section level2">
 <h2><span class="header-section-number">2.3</span> Points in Polygons</h2>
@@ -337,7 +356,7 @@ ph_homic_sp &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span 
 <li>an aggregate function. Since we are interested in counting the points (i.e. the rows of all the points that belong to a certain polygon), we can use length (of the respective vectors of the aggregated data).</li>
 </ul>
 <p>Let’s do this.</p>
-<p>To count homicides per census tract we use the <code>OBJ_ID</code> field from <code>ph_homic_aea</code> for homicide incidents and <code>philly</code> polygons to aggregate on and save the result as <code>ph_hom_count</code>. Use <code>length</code> as aggregate function.</p>
+<p>To count homicides per census tract we can use any field from <code>ph_homic_aea</code> for homicide incidents (we chose <code>OBJ_ID</code>) and <code>philly</code> polygons to aggregate on and save the result as <code>ph_hom_count</code>. Use <code>length</code> as aggregate function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph_hom_count_sp &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> ph_homic_aea_sp[<span class="st">&quot;OBJ_ID&quot;</span>], <span class="dt">by =</span> philly_sp, <span class="dt">FUN =</span> length)
 <span class="co"># make sure we understand this error message:</span>
 <span class="co"># aggregate(x = ph_homic_sp, by = philly_sp, FUN = length) </span></code></pre></div>
@@ -403,7 +422,7 @@ ph_hom_count_sp<span class="op">$</span>homic_dens &lt;-<span class="st"> </span
 <p>Lat is 39.95258 and Lon is -75.16522. This is in WGS84.</p>
 <p>With this information, we create a <code>SpatialPoints</code> object named <code>philly_ctr</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="op">-</span><span class="fl">75.16522</span>, <span class="dt">y =</span> <span class="fl">39.95258</span>) <span class="co"># set the coordinates</span>
-prj &lt;-<span class="st"> </span><span class="kw">CRS</span>(<span class="st">&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&quot;</span>) <span class="co"># the projection string for WGS84</span>
+prj &lt;-<span class="st"> </span><span class="kw">CRS</span>(<span class="st">&quot;+init=epsg:4326&quot;</span>) <span class="co"># the projection string for WGS84</span>
 philly_ctr &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>(coords, <span class="dt">proj4string =</span> prj) <span class="co"># create the spatialPoints</span></code></pre></div>
 <p>Next, we create a buffer around the city center point.<br />
 Here is where we will use the <code>gBuffer()</code> function from the <code>rgeos</code> package. For this purpose we will need to provide two arguments: the <strong>sp object</strong> and the <strong>width</strong> of the buffer, which is assumed to be in map units. The function returns a <code>SpatialPolygons</code> object to you with the buffer - name it <code>philly_buf</code>.<br />

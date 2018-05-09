@@ -213,14 +213,14 @@ Challenge
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ln1 &lt;-<span class="st"> </span><span class="kw">Line</span>(<span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">6</span>), <span class="dt">ncol=</span><span class="dv">2</span>))
 <span class="kw">str</span>(ln1)</code></pre></div>
 <pre><code>#&gt; Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   ..@ coords: num [1:3, 1:2] 0.364 0.111 0.305 0.387 0.688 ...</code></pre>
+#&gt;   ..@ coords: num [1:3, 1:2] 0.286 0.733 0.433 0.203 0.244 ...</code></pre>
 <p>See here for a very simple example for how to create a <code>Lines</code> object:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lns &lt;-<span class="st"> </span><span class="kw">Lines</span>(<span class="kw">list</span>(ln1), <span class="dt">ID =</span> <span class="kw">c</span>(<span class="st">&quot;hwy1&quot;</span>)) <span class="co"># this contains just one Line!</span>
 <span class="kw">str</span>(lns)</code></pre></div>
 <pre><code>#&gt; Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
 #&gt;   ..@ Lines:List of 1
 #&gt;   .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. ..@ coords: num [1:3, 1:2] 0.364 0.111 0.305 0.387 0.688 ...
+#&gt;   .. .. .. ..@ coords: num [1:3, 1:2] 0.286 0.733 0.433 0.203 0.244 ...
 #&gt;   ..@ ID   : chr &quot;hwy1&quot;</code></pre>
 <blockquote>
 <ol start="2" style="list-style-type: upper-roman">
@@ -236,9 +236,9 @@ Challenge
 #&gt;   .. ..$ :Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
 #&gt;   .. .. .. ..@ Lines:List of 1
 #&gt;   .. .. .. .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.364 0.111 0.305 0.387 0.688 ...
+#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.286 0.733 0.433 0.203 0.244 ...
 #&gt;   .. .. .. ..@ ID   : chr &quot;hwy1&quot;
-#&gt;   ..@ bbox       : num [1:2, 1:2] 0.111 0.387 0.364 0.688
+#&gt;   ..@ bbox       : num [1:2, 1:2] 0.286 0.203 0.733 0.701
 #&gt;   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
 #&gt;   .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
 #&gt;   .. .. ..$ : chr [1:2] &quot;min&quot; &quot;max&quot;
@@ -264,9 +264,9 @@ sp_lns_dfr &lt;-<span class="st"> </span><span class="kw">SpatialLinesDataFrame<
 #&gt;   .. ..$ :Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
 #&gt;   .. .. .. ..@ Lines:List of 1
 #&gt;   .. .. .. .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.364 0.111 0.305 0.387 0.688 ...
+#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.286 0.733 0.433 0.203 0.244 ...
 #&gt;   .. .. .. ..@ ID   : chr &quot;hwy1&quot;
-#&gt;   ..@ bbox       : num [1:2, 1:2] 0.111 0.387 0.364 0.688
+#&gt;   ..@ bbox       : num [1:2, 1:2] 0.286 0.203 0.733 0.701
 #&gt;   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
 #&gt;   .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
 #&gt;   .. .. ..$ : chr [1:2] &quot;min&quot; &quot;max&quot;
@@ -354,10 +354,10 @@ Figure 1.2: Well-Known-Text Multipart geometries (wikipedia)
 <pre><code>#&gt; Geometry set for 1 feature 
 #&gt; geometry type:  LINESTRING
 #&gt; dimension:      XY
-#&gt; bbox:           xmin: 0.8056329 ymin: 0.2465331 xmax: 0.9631369 ymax: 0.947507
+#&gt; bbox:           xmin: 0.02397248 ymin: 0.1355328 xmax: 0.3947794 ymax: 0.9765345
 #&gt; epsg (SRID):    NA
 #&gt; proj4string:    NA</code></pre>
-<pre><code>#&gt; LINESTRING (0.8725909 0.4839223, 0.9631369 0.24...</code></pre>
+<pre><code>#&gt; LINESTRING (0.02397248 0.1355328, 0.3947794 0.9...</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(lnstr_sfc) </code></pre></div>
 <pre><code>#&gt; [1] &quot;sfc_LINESTRING&quot; &quot;sfc&quot;</code></pre>
 <blockquote>
@@ -370,11 +370,11 @@ Figure 1.2: Well-Known-Text Multipart geometries (wikipedia)
 <pre><code>#&gt; Simple feature collection with 1 feature and 3 fields
 #&gt; geometry type:  LINESTRING
 #&gt; dimension:      XY
-#&gt; bbox:           xmin: 0.8056329 ymin: 0.2465331 xmax: 0.9631369 ymax: 0.947507
+#&gt; bbox:           xmin: 0.02397248 ymin: 0.1355328 xmax: 0.3947794 ymax: 0.9765345
 #&gt; epsg (SRID):    NA
 #&gt; proj4string:    NA
 #&gt;     id  use cars_per_hour                      lnstr_sfc
-#&gt; 1 hwy1 road            10 LINESTRING (0.8725909 0.483...</code></pre>
+#&gt; 1 hwy1 road            10 LINESTRING (0.02397248 0.13...</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(lnstr_sf)</code></pre></div>
 <pre><code>#&gt; [1] &quot;sf&quot;         &quot;data.frame&quot;</code></pre>
 <p>There are many methods available in the <code>sf</code> package, to find out use</p>
@@ -491,7 +491,7 @@ Challenge
 <p>This is how it’s done:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.projected</span>(ph_df) <span class="co"># see if a projection is defined  </span></code></pre></div>
 <pre><code>#&gt; [1] NA</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">proj4string</span>(ph_df) &lt;-<span class="st"> </span><span class="kw">CRS</span>(<span class="st">&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&quot;</span>) <span class="co"># this is WGS84</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">proj4string</span>(ph_df) &lt;-<span class="st"> </span><span class="kw">CRS</span>(<span class="st">&quot;+init=epsg:4326&quot;</span>) <span class="co"># this is WGS84</span>
 <span class="kw">is.projected</span>(ph_df) <span class="co"># voila! hm. wait a minute..</span></code></pre></div>
 <pre><code>#&gt; [1] FALSE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># For the `sf` object you want to use </span>
@@ -502,12 +502,14 @@ Challenge
 <pre><code>#&gt; Coordinate Reference System:
 #&gt;   EPSG: 4326 
 #&gt;   proj4string: &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
-<p>We will save this for later use.</p>
+<p>We will save this for later use. (Note that this will likely generate an error message. By default <code>sf_write</code> checks if the file already exists, and if so it will not overwrite it. If you want to force it to overwrite use the option <code>delete_layer = TRUE</code>.)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_write</span>(ph_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="dt">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)
 
 <span class="co"># to save out using writeOGR from rgdal</span>
 <span class="co"># note that we need to save the ph_df, which we converted to sp object!</span>
-<span class="co"># writeOGR(ph_df, &quot;data/PhillyHomicides&quot;, &quot;PhillyHomcides&quot;, driver = &quot;ESRI Shapefile&quot;)</span></code></pre></div>
+<span class="co"># writeOGR(ph_df, &quot;data/PhillyHomicides&quot;, &quot;PhillyHomcides&quot;, driver = &quot;ESRI Shapefile&quot;)</span>
+<span class="co"># to force save:</span>
+<span class="co"># writeOGR(ph_df, &quot;data/PhillyHomicides&quot;, &quot;PhillyHomcides&quot;, driver = &quot;ESRI Shapefile&quot;, overwrite_layer = TRUE)</span></code></pre></div>
 </div>
 <div id="loading-shape-files-into-r" class="section level2">
 <h2><span class="header-section-number">1.3</span> Loading shape files into R</h2>
@@ -746,9 +748,6 @@ HARV &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="s
 <p>We can plot it like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(HARV)</code></pre></div>
 <p><img src="R-spatial_files/figure-html/plot-raster-1.png" width="672" /></p>
-<p>And we can apply functions, like this one:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">contour</span>(HARV)</code></pre></div>
-<p><img src="R-spatial_files/figure-html/contour-1.png" width="672" /></p>
 <p>We can find out about the Coordinate Reference System with this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">crs</span>(HARV)</code></pre></div>
 <pre><code>#&gt; CRS arguments:
@@ -826,8 +825,8 @@ HARV &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="s
 <span class="st">  </span><span class="kw">stack</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)
 
 <span class="co"># how many layers?</span>
-<span class="kw">nlayers</span>(HARV)</code></pre></div>
-<pre><code>#&gt; [1] 1</code></pre>
+<span class="kw">nlayers</span>(HARV_stack)</code></pre></div>
+<pre><code>#&gt; [1] 3</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># view attributes of stack object</span>
 HARV_stack</code></pre></div>
 <pre><code>#&gt; class       : RasterStack 
