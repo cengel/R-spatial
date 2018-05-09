@@ -166,7 +166,7 @@ Here is what it would look like to reproject the HARV raster used earlier to a W
 # if you need to load again:
 #HARV <- raster("data/HARV_RGB_Ortho.tif")
 crs(HARV)
-HARV.WGS84 <- projectRaster(HARV, crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+HARV.WGS84 <- projectRaster(HARV, crs="+init=epsg:4326")
 plot(HARV); plot(HARV.WGS84)
 ```
 
@@ -284,7 +284,7 @@ Lat is 39.95258 and Lon is -75.16522. This is in WGS84.
 With this information, we create a `SpatialPoints` object named `philly_ctr`.  
 ```{r sp-ph-center, results='show'}
 coords <- data.frame(x = -75.16522, y = 39.95258) # set the coordinates
-prj <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs") # the projection string for WGS84
+prj <- CRS("+init=epsg:4326") # the projection string for WGS84
 philly_ctr <- SpatialPoints(coords, proj4string = prj) # create the spatialPoints
 ```
 

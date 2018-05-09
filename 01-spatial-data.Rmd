@@ -299,7 +299,7 @@ This is how it's done:
 
 ```{r projection, results='show'}
 is.projected(ph_df) # see if a projection is defined  
-proj4string(ph_df) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs") # this is WGS84
+proj4string(ph_df) <- CRS("+init=epsg:4326") # this is WGS84
 is.projected(ph_df) # voila! hm. wait a minute..
 
 # For the `sf` object you want to use 
