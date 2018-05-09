@@ -29,7 +29,8 @@ To get the most out of this workshop you should have:
 - If you have your working directory set to `R-spatial` which contains a folder called `data` you can copy, paste, and run the following lines in R:
 
 ```{r download-files, eval=FALSE}
-download.file("https://github.com/cengel/R-spatial/raw/master/data/R-spatial-data.zip", "R-spatial-data.zip")
+download.file("https://github.com/cengel/R-spatial/raw/master/data/R-spatial-data.zip", 
+              "R-spatial-data.zip")
 unzip("R-spatial-data.zip", exdir = "data")
 ```
 
