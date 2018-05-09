@@ -308,7 +308,7 @@ st_crs(ph_sf) <- 4326 # we can use EPSG as numeric here
 st_crs(ph_sf)
 ```
 
-We will save this for later use.
+We will save this for later use. (Note that this will likely generate an error message. By default `sf_write` checks if the file already exists, and if so it will not overwrite it. If you want to force it to overwrite use the option `delete_layer = TRUE`.)
 
 ```{r sf-save-homicides, eval=FALSE}
 st_write(ph_sf, "data/PhillyHomicides", driver = "ESRI Shapefile")
@@ -316,6 +316,8 @@ st_write(ph_sf, "data/PhillyHomicides", driver = "ESRI Shapefile")
 # to save out using writeOGR from rgdal
 # note that we need to save the ph_df, which we converted to sp object!
 # writeOGR(ph_df, "data/PhillyHomicides", "PhillyHomcides", driver = "ESRI Shapefile")
+# to force save:
+# writeOGR(ph_df, "data/PhillyHomicides", "PhillyHomcides", driver = "ESRI Shapefile", overwrite_layer = TRUE)
 ```
 
 
