@@ -476,11 +476,6 @@ We can plot it like this:
 plot(HARV)
 ```
 
-And we can apply functions, like this one:
-
-```{r contour, results='show'}
-contour(HARV)
-```
 
 We can find out about the Coordinate Reference System with this:
 ```{r raster-crs, results='show'}
