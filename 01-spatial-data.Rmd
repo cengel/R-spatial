@@ -532,7 +532,7 @@ HARV_stack <-
   stack("data/HARV_RGB_Ortho.tif")
 
 # how many layers?
-nlayers(HARV)
+nlayers(HARV_stack)
 
 # view attributes of stack object
 HARV_stack
