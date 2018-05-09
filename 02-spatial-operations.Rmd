@@ -167,7 +167,15 @@ Here is what it would look like to reproject the HARV raster used earlier to a W
 #HARV <- raster("data/HARV_RGB_Ortho.tif")
 crs(HARV)
 HARV.WGS84 <- projectRaster(HARV, crs="+init=epsg:4326")
-plot(HARV); plot(HARV.WGS84)
+
+extent(HARV)
+extent(HARV.WGS84)
+
+ncell(HARV)
+ncell(HARV.WGS84)
+
+plot(HARV)
+plot(HARV.WGS84)
 ```
 
 
