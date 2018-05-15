@@ -65,6 +65,8 @@ Lovelace, R., Nowosad, J., Muenchow. J. (forthcoming): [Geocomputation with R](h
 
 [CRAN Task View: Analysis of Spatial Data](https://CRAN.R-project.org/view=Spatial)
 
+[map school](https://mapschool.io)
+
 
 ## Acknowledgements {-}
 Some of the materials for this tutorial are adapted from http://datacarpentry.org 
