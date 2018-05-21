@@ -380,3 +380,13 @@ plot(st_geometry(philly_buf_sf), add=T, lwd = 2)
 ### `raster` operations
 
 >>> to come
+
+### working with geojson format
+
+There are packages thast specialize on the [GeoJSON](https://tools.ietf.org/html/rfc7946) format specifically and for that reason are more lightweight, for example:
+
+- [`geojson`](https://cran.r-project.org/package=geojson) and
+- [`geoops`](https://CRAN.R-project.org/package=geoops)
+
+https://cran.r-project.org/web/packages/geoops/vignettes/geoops_vignette.html
+https://cran.r-project.org/web/packages/geojson/index.html
