@@ -381,6 +381,8 @@ plot(st_geometry(philly_buf_sf), add=T, lwd = 2)
 
 >>> to come
 
+[`landscapetools`](https://CRAN.R-project.org/package=landscapetools) provides utility functions to complete tasks involved in common landscape analysis.
+
 ### working with geojson format
 
 There are packages thast specialize on the [GeoJSON](https://tools.ietf.org/html/rfc7946) format specifically and for that reason are more lightweight, for example:
