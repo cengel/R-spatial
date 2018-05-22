@@ -376,12 +376,18 @@ plot(st_geometry(philly_buf_sf), add=T, lwd = 2)
 |buffer|  `rgeos::gBuffer()` (separate package) | `st_buffer()` |
 |select by location | [`g*` functions](https://www.rdocumentation.org/packages/rgeos/) from `rgeos` | [geos functions](https://www.rdocumentation.org/packages/sf/topics/geos) in `sf` |
 
+### some additional packages that use vector data
+
+[`stplanr`](https://CRAN.R-project.org/package=stplanr): Functionality and data access tools for transport planning, including origin-destination analysis, route allocation and modelling travel patterns.
+
 
 ### `raster` operations
 
 >>> to come
 
 [`landscapetools`](https://CRAN.R-project.org/package=landscapetools) provides utility functions to complete tasks involved in common landscape analysis.
+
+[`getlandsat`](https://CRAN.R-project.org/package=getlandsat): Get Landsat 8 Data from [Amazon Public Data Sets](https://registry.opendata.aws/landsat-8/)
 
 ### working with geojson format
 
