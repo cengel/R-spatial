@@ -63,9 +63,13 @@ Brunsdon, C. and Comber, L. (2015): [An Introduction to R for Spatial Analysis a
 
 Lovelace, R., Nowosad, J., Muenchow. J. (forthcoming): [Geocomputation with R](https://geocompr.robinlovelace.net)
 
-[CRAN Task View: Analysis of Spatial Data](https://CRAN.R-project.org/view=Spatial)
+[Spatial Data Analysis and Modeling with R](http://www.rspatial.org/index.html)
 
 [map school](https://mapschool.io)
+
+[CRAN Task View: Analysis of Spatial Data](https://CRAN.R-project.org/view=Spatial)
+
+
 
 
 ## Acknowledgements {-}
