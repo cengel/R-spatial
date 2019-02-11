@@ -29,8 +29,7 @@ To get the most out of this workshop you should have:
 - If you have your working directory set to `R-spatial` which contains a folder called `data` you can copy, paste, and run the following lines in R:
 
 ```{r download-files, eval=FALSE}
-download.file("https://github.com/cengel/R-spatial/raw/master/data/R-spatial-data.zip", 
-              "R-spatial-data.zip")
+download.file("http://bit.ly/R-spatial-data", "R-spatial-data.zip")
 unzip("R-spatial-data.zip", exdir = "data")
 ```
 
@@ -39,20 +38,20 @@ You can also download the data manually here [R-spatial-data.zip](https://github
 - Open up a new R Script file `R-spatial.R` for the code you'll create during the workshop.
 
 - Install and load the following libraries: 
-    - [`sp`](https://CRAN.R-project.org/package=sp) (version 1.2-7)
-    - [`rgdal`](https://CRAN.R-project.org/package=rgdal) (version 1.2-18)
-    - [`sf`](https://cran.r-project.org/package=sf) (Mac use binary of version 0.6-1)
-    - [`raster`](https://CRAN.R-project.org/package=raster) (version 2.6-7)
-    - [`rgeos`](https://CRAN.R-project.org/package=rgeos) (version 0.3-26)
+    - [`sf`](https://cran.r-project.org/package=sf) 
+    - [`sp`](https://CRAN.R-project.org/package=sp) 
+    - [`rgdal`](https://CRAN.R-project.org/package=rgdal)
+    - [`raster`](https://CRAN.R-project.org/package=raster) 
+    - [`rgeos`](https://CRAN.R-project.org/package=rgeos) 
+    - [`dplyr`](https://cran.r-project.org/package=dplyr)
 
 - For the mapping section install and load these additional libraries:
     - [`classInt`](https://cran.r-project.org/package=classInt)
     - [`RColorBrewer`](https://cran.r-project.org/package=RColorBrewer)
-    - [`broom`](https://cran.r-project.org/package=broom)
     - [`ggplot2`](https://cran.r-project.org/package=ggplot2)
     - [`ggmap`](https://cran.r-project.org/package=ggmap)
     - [`tmap`](https://cran.r-project.org/package=tmap)
-    - [`leaflet`](https://cran.r-project.org/package=leaflet)
+    - [`leaflet`](https://cran.r-project.org/package=leaflet)(On Mac installing binary version is ok)
 
 
 ## References {-}
@@ -61,15 +60,17 @@ Bivand, RS., Pebesma, E., Gómez-Rubio, V. (2013): [Applied Spatial Data Analysi
 
 Brunsdon, C. and Comber, L. (2015): [An Introduction to R for Spatial Analysis and Mapping](https://us.sagepub.com/en-us/nam/an-introduction-to-r-for-spatial-analysis-and-mapping/book241031)
 
-Lovelace, R., Nowosad, J., Muenchow. J. (forthcoming): [Geocomputation with R](https://geocompr.robinlovelace.net)
+Lovelace, R., Nowosad, J., Muenchow. J. (2019): [Geocomputation with R](https://geocompr.robinlovelace.net)
 
 [Spatial Data Analysis and Modeling with R](http://www.rspatial.org/index.html)
 
-[map school](https://mapschool.io)
-
 [CRAN Task View: Analysis of Spatial Data](https://CRAN.R-project.org/view=Spatial)
 
+Engel, C. (2019). R for Geospatial Analysis and Mapping. The Geographic Information Science & Technology Body of Knowledge (1st Quarter 2019 Edition), John P. Wilson (Ed.). [DOI:10.22224/gistbok/2019.1.3](https://doi.org/10.22224/gistbok/2019.1.3).
 
+
+
+For a quick introduction to all things geo check out [map school](https://mapschool.io).
 
 
 ## Acknowledgements {-}

@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Using Spatial Data with R</title>
   <meta name="description" content="Workshop materials for Using Spatial Data with R">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="Using Spatial Data with R" />
   <meta property="og:type" content="book" />
@@ -35,6 +35,7 @@
 <link rel="next" href="intro.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -46,16 +47,6 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
-<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
-<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.0/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.1.17/leaflet-providers.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.0/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
@@ -121,34 +112,39 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1.1.1" data-path="intro.html"><a href="intro.html#the-sp-package"><i class="fa fa-check"></i><b>1.1.1</b> The <code>sp</code> package</a></li>
 <li class="chapter" data-level="1.1.2" data-path="intro.html"><a href="intro.html#the-sf-package"><i class="fa fa-check"></i><b>1.1.2</b> The <code>sf</code> package</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#creating-a-spatial-object-from-a-latlon-table"><i class="fa fa-check"></i><b>1.2</b> Creating a spatial object from a lat/lon table</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#creating-a-spatial-object-from-a-latlon-table"><i class="fa fa-check"></i><b>1.2</b> Creating a spatial object from a lat/lon table</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#with-sf"><i class="fa fa-check"></i><b>1.2.1</b> With <code>sf</code></a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#with-sp"><i class="fa fa-check"></i><b>1.2.2</b> With <code>sp</code></a></li>
+</ul></li>
 <li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#loading-shape-files-into-r"><i class="fa fa-check"></i><b>1.3</b> Loading shape files into R</a><ul>
-<li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#how-to-work-with-rgdal"><i class="fa fa-check"></i><b>1.3.1</b> How to work with <code>rgdal</code></a></li>
-<li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#how-to-do-this-in-sf"><i class="fa fa-check"></i><b>1.3.2</b> How to do this in <code>sf</code></a></li>
+<li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#how-to-do-this-in-sf"><i class="fa fa-check"></i><b>1.3.1</b> How to do this in <code>sf</code></a></li>
+<li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#how-to-work-with-rgdal-and-sp"><i class="fa fa-check"></i><b>1.3.2</b> How to work with <code>rgdal</code> and <code>sp</code></a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#raster-data-in-r"><i class="fa fa-check"></i><b>1.4</b> Raster data in R</a><ul>
-<li class="chapter" data-level="1.4.1" data-path="intro.html"><a href="intro.html#rasterstack-vs-rasterbrick-in-r"><i class="fa fa-check"></i><b>1.4.1</b> RasterStack vs RasterBrick in R</a></li>
+<li class="chapter" data-level="1.4.1" data-path="intro.html"><a href="intro.html#rasterstack-vs-rasterbrick"><i class="fa fa-check"></i><b>1.4.1</b> RasterStack vs RasterBrick</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="spatialops.html"><a href="spatialops.html"><i class="fa fa-check"></i><b>2</b> Spatial data manipulation in R</a><ul>
-<li class="chapter" data-level="2.1" data-path="spatialops.html"><a href="spatialops.html#attribute-join"><i class="fa fa-check"></i><b>2.1</b> Attribute Join</a></li>
-<li class="chapter" data-level="2.2" data-path="spatialops.html"><a href="spatialops.html#reprojecting"><i class="fa fa-check"></i><b>2.2</b> Reprojecting</a></li>
-<li class="chapter" data-level="2.3" data-path="spatialops.html"><a href="spatialops.html#points-in-polygons"><i class="fa fa-check"></i><b>2.3</b> Points in Polygons</a></li>
-<li class="chapter" data-level="2.4" data-path="spatialops.html"><a href="spatialops.html#select-polygons-by-location"><i class="fa fa-check"></i><b>2.4</b> Select Polygons by Location</a><ul>
-<li class="chapter" data-level="2.4.1" data-path="spatialops.html"><a href="spatialops.html#using-the-sp-package"><i class="fa fa-check"></i><b>2.4.1</b> Using the <code>sp</code> package</a></li>
-<li class="chapter" data-level="2.4.2" data-path="spatialops.html"><a href="spatialops.html#using-the-sf-package"><i class="fa fa-check"></i><b>2.4.2</b> Using the <code>sf</code> package</a></li>
+<li class="chapter" data-level="2.1" data-path="spatialops.html"><a href="spatialops.html#attribute-join"><i class="fa fa-check"></i><b>2.1</b> Attribute Join</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="spatialops.html"><a href="spatialops.html#how-to-do-this-in-sf-1"><i class="fa fa-check"></i><b>2.1.1</b> How to do this in <code>sf</code></a></li>
+<li class="chapter" data-level="2.1.2" data-path="spatialops.html"><a href="spatialops.html#the-same-with-sp"><i class="fa fa-check"></i><b>2.1.2</b> The same with <code>sp</code></a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="spatialops.html"><a href="spatialops.html#topological-subsetting-select-polygons-by-location"><i class="fa fa-check"></i><b>2.2</b> Topological Subsetting: Select Polygons by Location</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="spatialops.html"><a href="spatialops.html#using-the-sf-package"><i class="fa fa-check"></i><b>2.2.1</b> Using the <code>sf</code> package</a></li>
+<li class="chapter" data-level="2.2.2" data-path="spatialops.html"><a href="spatialops.html#using-the-sp-package"><i class="fa fa-check"></i><b>2.2.2</b> Using the <code>sp</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="spatialops.html"><a href="spatialops.html#reprojecting"><i class="fa fa-check"></i><b>2.3</b> Reprojecting</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="spatialops.html"><a href="spatialops.html#for-sp"><i class="fa fa-check"></i><b>2.3.1</b> For <code>sp</code></a></li>
+<li class="chapter" data-level="2.3.2" data-path="spatialops.html"><a href="spatialops.html#raster-reprojection"><i class="fa fa-check"></i><b>2.3.2</b> Raster reprojection</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="spatialops.html"><a href="spatialops.html#spatial-aggregation-points-in-polygons"><i class="fa fa-check"></i><b>2.4</b> Spatial Aggregation: Points in Polygons</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="spatialops.html"><a href="spatialops.html#with-sf-1"><i class="fa fa-check"></i><b>2.4.1</b> With <code>sf</code></a></li>
+<li class="chapter" data-level="2.4.2" data-path="spatialops.html"><a href="spatialops.html#with-sp-1"><i class="fa fa-check"></i><b>2.4.2</b> With <code>sp</code></a></li>
 <li class="chapter" data-level="2.4.3" data-path="spatialops.html"><a href="spatialops.html#sp---sf-comparison"><i class="fa fa-check"></i><b>2.4.3</b> <code>sp</code> - <code>sf</code> comparison</a></li>
-<li class="chapter" data-level="2.4.4" data-path="spatialops.html"><a href="spatialops.html#raster-operations"><i class="fa fa-check"></i><b>2.4.4</b> <code>raster</code> operations</a></li>
 </ul></li>
+<li class="chapter" data-level="2.5" data-path="spatialops.html"><a href="spatialops.html#raster-operations"><i class="fa fa-check"></i><b>2.5</b> <code>raster</code> operations</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="mapping.html"><a href="mapping.html"><i class="fa fa-check"></i><b>3</b> Making Maps in R</a><ul>
-<li class="chapter" data-level="3.1" data-path="mapping.html"><a href="mapping.html#choropleth-mapping-with-spplot"><i class="fa fa-check"></i><b>3.1</b> Choropleth mapping with <code>spplot</code></a></li>
-<li class="chapter" data-level="3.2" data-path="mapping.html"><a href="mapping.html#plotting-simple-features-sf-with-plot"><i class="fa fa-check"></i><b>3.2</b> Plotting simple features (<code>sf</code>) with <code>plot</code></a></li>
-<li class="chapter" data-level="3.3" data-path="mapping.html"><a href="mapping.html#choropleth-mapping-with-ggplot2"><i class="fa fa-check"></i><b>3.3</b> Choropleth mapping with <code>ggplot2</code></a></li>
-<li class="chapter" data-level="3.4" data-path="mapping.html"><a href="mapping.html#adding-basemaps-with-ggmap"><i class="fa fa-check"></i><b>3.4</b> Adding basemaps with <code>ggmap</code></a></li>
-<li class="chapter" data-level="3.5" data-path="mapping.html"><a href="mapping.html#choropleth-with-tmap"><i class="fa fa-check"></i><b>3.5</b> Choropleth with <code>tmap</code></a></li>
-<li class="chapter" data-level="3.6" data-path="mapping.html"><a href="mapping.html#web-mapping-with-leaflet"><i class="fa fa-check"></i><b>3.6</b> Web mapping with <code>leaflet</code></a></li>
-</ul></li>
+<li class="chapter" data-level="3" data-path="mapping.html"><a href="mapping.html"><i class="fa fa-check"></i><b>3</b> Making Maps in R</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -171,8 +167,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">Using Spatial Data with R</h1>
-<h4 class="author"><em>Claudia A Engel</em></h4>
-<h4 class="date"><em>Last updated: May 09, 2018</em></h4>
+<p class="author"><em>Claudia A Engel</em></p>
+<p class="date"><em>Last updated: February 11, 2019</em></p>
 </div>
 <div id="prerequisites-and-preparations" class="section level1 unnumbered">
 <h1>Prerequisites and Preparations</h1>
@@ -187,37 +183,39 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>Create a new folder under <code>R-spatial</code> and call it <code>data</code>.</p></li>
 <li><p>If you have your working directory set to <code>R-spatial</code> which contains a folder called <code>data</code> you can copy, paste, and run the following lines in R:</p></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download.file</span>(<span class="st">&quot;https://github.com/cengel/R-spatial/raw/master/data/R-spatial-data.zip&quot;</span>, 
-              <span class="st">&quot;R-spatial-data.zip&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">download.file</span>(<span class="st">&quot;http://bit.ly/R-spatial-data&quot;</span>, <span class="st">&quot;R-spatial-data.zip&quot;</span>)
 <span class="kw">unzip</span>(<span class="st">&quot;R-spatial-data.zip&quot;</span>, <span class="dt">exdir =</span> <span class="st">&quot;data&quot;</span>)</code></pre></div>
 <p>You can also download the data manually here <a href="https://github.com/cengel/R-spatial/raw/master/data/R-spatial-data.zip">R-spatial-data.zip</a> and extract them.</p>
 <ul>
 <li><p>Open up a new R Script file <code>R-spatial.R</code> for the code you’ll create during the workshop.</p></li>
 <li>Install and load the following libraries:
 <ul>
-<li><a href="https://CRAN.R-project.org/package=sp"><code>sp</code></a> (version 1.2-7)</li>
-<li><a href="https://CRAN.R-project.org/package=rgdal"><code>rgdal</code></a> (version 1.2-18)</li>
-<li><a href="https://cran.r-project.org/package=sf"><code>sf</code></a> (Mac use binary of version 0.6-1)</li>
-<li><a href="https://CRAN.R-project.org/package=raster"><code>raster</code></a> (version 2.6-7)</li>
-<li><a href="https://CRAN.R-project.org/package=rgeos"><code>rgeos</code></a> (version 0.3-26)</li>
+<li><a href="https://cran.r-project.org/package=sf"><code>sf</code></a></li>
+<li><a href="https://CRAN.R-project.org/package=sp"><code>sp</code></a></li>
+<li><a href="https://CRAN.R-project.org/package=rgdal"><code>rgdal</code></a></li>
+<li><a href="https://CRAN.R-project.org/package=raster"><code>raster</code></a></li>
+<li><a href="https://CRAN.R-project.org/package=rgeos"><code>rgeos</code></a></li>
+<li><a href="https://cran.r-project.org/package=dplyr"><code>dplyr</code></a></li>
 </ul></li>
 <li>For the mapping section install and load these additional libraries:
 <ul>
 <li><a href="https://cran.r-project.org/package=classInt"><code>classInt</code></a></li>
 <li><a href="https://cran.r-project.org/package=RColorBrewer"><code>RColorBrewer</code></a></li>
-<li><a href="https://cran.r-project.org/package=broom"><code>broom</code></a></li>
 <li><a href="https://cran.r-project.org/package=ggplot2"><code>ggplot2</code></a></li>
 <li><a href="https://cran.r-project.org/package=ggmap"><code>ggmap</code></a></li>
 <li><a href="https://cran.r-project.org/package=tmap"><code>tmap</code></a></li>
-<li><a href="https://cran.r-project.org/package=leaflet"><code>leaflet</code></a></li>
+<li><a href="https://cran.r-project.org/package=leaflet"><code>leaflet</code></a>(On Mac installing binary version is ok)</li>
 </ul></li>
 </ul>
 <div id="references" class="section level2 unnumbered">
 <h2>References</h2>
 <p>Bivand, RS., Pebesma, E., Gómez-Rubio, V. (2013): <a href="https://link.springer.com/book/10.1007%2F978-1-4614-7618-4">Applied Spatial Data Analysis with R</a></p>
 <p>Brunsdon, C. and Comber, L. (2015): <a href="https://us.sagepub.com/en-us/nam/an-introduction-to-r-for-spatial-analysis-and-mapping/book241031">An Introduction to R for Spatial Analysis and Mapping</a></p>
-<p>Lovelace, R., Nowosad, J., Muenchow. J. (forthcoming): <a href="https://geocompr.robinlovelace.net">Geocomputation with R</a></p>
+<p>Lovelace, R., Nowosad, J., Muenchow. J. (2019): <a href="https://geocompr.robinlovelace.net">Geocomputation with R</a></p>
+<p><a href="http://www.rspatial.org/index.html">Spatial Data Analysis and Modeling with R</a></p>
 <p><a href="https://CRAN.R-project.org/view=Spatial">CRAN Task View: Analysis of Spatial Data</a></p>
+<p>Engel, C. (2019). R for Geospatial Analysis and Mapping. The Geographic Information Science &amp; Technology Body of Knowledge (1st Quarter 2019 Edition), John P. Wilson (Ed.). <a href="https://doi.org/10.22224/gistbok/2019.1.3">DOI:10.22224/gistbok/2019.1.3</a>.</p>
+<p>For a quick introduction to all things geo check out <a href="https://mapschool.io">map school</a>.</p>
 </div>
 <div id="acknowledgements" class="section level2 unnumbered">
 <h2>Acknowledgements</h2>
@@ -251,7 +249,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -264,6 +262,10 @@ gitbook.start({
 "link": "https://github.com/cengel/R-spatial/edit/master/index.Rmd",
 "text": "Edit"
 },
+"history": {
+"link": null,
+"text": null
+},
 "download": ["R-spatial.pdf", "R-spatial.epub"],
 "toc": {
 "collapse": "subsection"
@@ -272,6 +274,19 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
