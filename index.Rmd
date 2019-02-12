@@ -10,6 +10,7 @@ biblio-style: apalike
 link-citations: yes
 github-repo: cengel/R-spatial
 description: "Workshop materials for Using Spatial Data with R"
+always_allow_html: yes
 ---
 
 

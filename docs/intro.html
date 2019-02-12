@@ -47,6 +47,16 @@
 
 
 
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.1.17/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers-plugin-2.0.2/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
@@ -144,7 +154,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="spatialops.html"><a href="spatialops.html#raster-operations"><i class="fa fa-check"></i><b>2.5</b> <code>raster</code> operations</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="mapping.html"><a href="mapping.html"><i class="fa fa-check"></i><b>3</b> Making Maps in R</a></li>
+<li class="chapter" data-level="3" data-path="mapping.html"><a href="mapping.html"><i class="fa fa-check"></i><b>3</b> Making Maps in R</a><ul>
+<li class="chapter" data-level="3.1" data-path="mapping.html"><a href="mapping.html#plotting-simple-features-sf-with-plot"><i class="fa fa-check"></i><b>3.1</b> Plotting simple features (<code>sf</code>) with <code>plot</code></a></li>
+<li class="chapter" data-level="3.2" data-path="mapping.html"><a href="mapping.html#choropleth-mapping-with-spplot"><i class="fa fa-check"></i><b>3.2</b> Choropleth mapping with <code>spplot</code></a></li>
+<li class="chapter" data-level="3.3" data-path="mapping.html"><a href="mapping.html#choropleth-mapping-with-ggplot2"><i class="fa fa-check"></i><b>3.3</b> Choropleth mapping with <code>ggplot2</code></a></li>
+<li class="chapter" data-level="3.4" data-path="mapping.html"><a href="mapping.html#adding-basemaps-with-ggmap"><i class="fa fa-check"></i><b>3.4</b> Adding basemaps with <code>ggmap</code></a></li>
+<li class="chapter" data-level="3.5" data-path="mapping.html"><a href="mapping.html#choropleth-with-tmap"><i class="fa fa-check"></i><b>3.5</b> Choropleth with <code>tmap</code></a></li>
+<li class="chapter" data-level="3.6" data-path="mapping.html"><a href="mapping.html#web-mapping-with-leaflet"><i class="fa fa-check"></i><b>3.6</b> Web mapping with <code>leaflet</code></a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -219,7 +236,7 @@ Challenge
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ln1 &lt;-<span class="st"> </span><span class="kw">Line</span>(<span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">6</span>), <span class="dt">ncol=</span><span class="dv">2</span>))
 <span class="kw">str</span>(ln1)</code></pre></div>
 <pre><code>#&gt; Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   ..@ coords: num [1:3, 1:2] 0.876 0.195 0.572 0.608 0.606 ...</code></pre>
+#&gt;   ..@ coords: num [1:3, 1:2] 0.468 0.341 0.407 0.252 0.971 ...</code></pre>
 <p>Note the <code>@ coords</code> slot which holds the coordinates.</p>
 <p>Ok, let’s create another <code>Line</code> object for another highway:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ln2 &lt;-<span class="st"> </span><span class="kw">Line</span>(<span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">6</span>), <span class="dt">ncol=</span><span class="dv">2</span>))</code></pre></div>
@@ -230,7 +247,7 @@ lns2 &lt;-<span class="st"> </span><span class="kw">Lines</span>(<span class="kw
 <pre><code>#&gt; Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
 #&gt;   ..@ Lines:List of 1
 #&gt;   .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. ..@ coords: num [1:3, 1:2] 0.876 0.195 0.572 0.608 0.606 ...
+#&gt;   .. .. .. ..@ coords: num [1:3, 1:2] 0.468 0.341 0.407 0.252 0.971 ...
 #&gt;   ..@ ID   : chr &quot;hwy1&quot;</code></pre>
 <p>The <code>Line</code> objects are now in a list and we have an additional <code>ID</code> slot, which uniquely identifies each <code>Line</code> object.</p>
 <p>Now we turn this into a geospatial object by creating a <code>SpatialLines</code> object:</p>
@@ -241,14 +258,14 @@ lns2 &lt;-<span class="st"> </span><span class="kw">Lines</span>(<span class="kw
 #&gt;   .. ..$ :Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
 #&gt;   .. .. .. ..@ Lines:List of 1
 #&gt;   .. .. .. .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.876 0.195 0.572 0.608 0.606 ...
+#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.468 0.341 0.407 0.252 0.971 ...
 #&gt;   .. .. .. ..@ ID   : chr &quot;hwy1&quot;
 #&gt;   .. ..$ :Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
 #&gt;   .. .. .. ..@ Lines:List of 1
 #&gt;   .. .. .. .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.5703 0.0478 0.714 0.0805 0.0864 ...
+#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.926 0.813 0.584 0.384 0.196 ...
 #&gt;   .. .. .. ..@ ID   : chr &quot;hwy2&quot;
-#&gt;   ..@ bbox       : num [1:2, 1:2] 0.0478 0.0805 0.8757 0.6081
+#&gt;   ..@ bbox       : num [1:2, 1:2] 0.341 0.196 0.926 0.971
 #&gt;   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
 #&gt;   .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
 #&gt;   .. .. ..$ : chr [1:2] &quot;min&quot; &quot;max&quot;
@@ -268,14 +285,14 @@ sp_lns_dfr &lt;-<span class="st"> </span><span class="kw">SpatialLinesDataFrame<
 #&gt;   .. ..$ :Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
 #&gt;   .. .. .. ..@ Lines:List of 1
 #&gt;   .. .. .. .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.876 0.195 0.572 0.608 0.606 ...
+#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.468 0.341 0.407 0.252 0.971 ...
 #&gt;   .. .. .. ..@ ID   : chr &quot;hwy1&quot;
 #&gt;   .. ..$ :Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
 #&gt;   .. .. .. ..@ Lines:List of 1
 #&gt;   .. .. .. .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.5703 0.0478 0.714 0.0805 0.0864 ...
+#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.926 0.813 0.584 0.384 0.196 ...
 #&gt;   .. .. .. ..@ ID   : chr &quot;hwy2&quot;
-#&gt;   ..@ bbox       : num [1:2, 1:2] 0.0478 0.0805 0.8757 0.6081
+#&gt;   ..@ bbox       : num [1:2, 1:2] 0.341 0.196 0.926 0.971
 #&gt;   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
 #&gt;   .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
 #&gt;   .. .. ..$ : chr [1:2] &quot;min&quot; &quot;max&quot;
@@ -369,22 +386,22 @@ lnstr_sfg2 &lt;-<span class="st"> </span><span class="kw">st_linestring</span>(<
 <pre><code>#&gt; Geometry set for 2 features 
 #&gt; geometry type:  LINESTRING
 #&gt; dimension:      XY
-#&gt; bbox:           xmin: 0.04102844 ymin: 0.2676338 xmax: 0.9185135 ymax: 0.7792707
+#&gt; bbox:           xmin: 0.1160083 ymin: 0.07180527 xmax: 0.8961863 ymax: 0.8873388
 #&gt; epsg (SRID):    NA
 #&gt; proj4string:    NA</code></pre>
-<pre><code>#&gt; LINESTRING (0.1994692 0.6058746, 0.4585503 0.31...</code></pre>
-<pre><code>#&gt; LINESTRING (0.7090667 0.2778002, 0.6872457 0.77...</code></pre>
+<pre><code>#&gt; LINESTRING (0.266583 0.6571762, 0.2915551 0.887...</code></pre>
+<pre><code>#&gt; LINESTRING (0.8961863 0.5288989, 0.7907187 0.43...</code></pre>
 <p>And lastly use our data frame from above to generate the <code>sf</code> object:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(lnstr_sf &lt;-<span class="st"> </span><span class="kw">st_sf</span>(dfr , lnstr_sfc))</code></pre></div>
 <pre><code>#&gt; Simple feature collection with 2 features and 2 fields
 #&gt; geometry type:  LINESTRING
 #&gt; dimension:      XY
-#&gt; bbox:           xmin: 0.04102844 ymin: 0.2676338 xmax: 0.9185135 ymax: 0.7792707
+#&gt; bbox:           xmin: 0.1160083 ymin: 0.07180527 xmax: 0.8961863 ymax: 0.8873388
 #&gt; epsg (SRID):    NA
 #&gt; proj4string:    NA
 #&gt;     id cars_per_hour                      lnstr_sfc
-#&gt; 1 hwy1            78 LINESTRING (0.1994692 0.605...
-#&gt; 2 hwy2            22 LINESTRING (0.7090667 0.277...</code></pre>
+#&gt; 1 hwy1            78 LINESTRING (0.266583 0.6571...
+#&gt; 2 hwy2            22 LINESTRING (0.8961863 0.528...</code></pre>
 <p>There are many methods available in the <code>sf</code> package, to find out use</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">methods</span>(<span class="dt">class=</span><span class="st">&quot;sf&quot;</span>)</code></pre></div>
 <pre><code>#&gt;  [1] [                     [[&lt;-                  $&lt;-                  
@@ -819,13 +836,13 @@ SpGdf &lt;-<span class="st"> </span><span class="kw">SpatialGridDataFrame</span>
 #&gt; 1                 0        1         5
 #&gt; 2                 0        1         5
 #&gt; Data attributes:
-#&gt;    runif.25.       
-#&gt;  Min.   :0.005639  
-#&gt;  1st Qu.:0.258501  
-#&gt;  Median :0.472664  
-#&gt;  Mean   :0.503794  
-#&gt;  3rd Qu.:0.816009  
-#&gt;  Max.   :0.996774</code></pre>
+#&gt;    runif.25.      
+#&gt;  Min.   :0.01797  
+#&gt;  1st Qu.:0.30836  
+#&gt;  Median :0.55850  
+#&gt;  Mean   :0.52374  
+#&gt;  3rd Qu.:0.73536  
+#&gt;  Max.   :0.96848</code></pre>
 
 </div>
 </div>

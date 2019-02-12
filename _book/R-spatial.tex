@@ -406,7 +406,7 @@ coordinates.
 
 \begin{verbatim}
 #> Formal class 'Line' [package "sp"] with 1 slot
-#>   ..@ coords: num [1:3, 1:2] 0.478 0.353 0.406 0.234 0.821 ...
+#>   ..@ coords: num [1:3, 1:2] 0.449 0.94 0.249 0.435 0.208 ...
 \end{verbatim}
 
 Note the \texttt{@\ coords} slot which holds the coordinates.
@@ -435,7 +435,7 @@ multiple line strings, so we could add more lines under the same ID.
 #> Formal class 'Lines' [package "sp"] with 2 slots
 #>   ..@ Lines:List of 1
 #>   .. ..$ :Formal class 'Line' [package "sp"] with 1 slot
-#>   .. .. .. ..@ coords: num [1:3, 1:2] 0.478 0.353 0.406 0.234 0.821 ...
+#>   .. .. .. ..@ coords: num [1:3, 1:2] 0.449 0.94 0.249 0.435 0.208 ...
 #>   ..@ ID   : chr "hwy1"
 \end{verbatim}
 
@@ -458,14 +458,14 @@ Now we turn this into a geospatial object by creating a
 #>   .. ..$ :Formal class 'Lines' [package "sp"] with 2 slots
 #>   .. .. .. ..@ Lines:List of 1
 #>   .. .. .. .. ..$ :Formal class 'Line' [package "sp"] with 1 slot
-#>   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.478 0.353 0.406 0.234 0.821 ...
+#>   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.449 0.94 0.249 0.435 0.208 ...
 #>   .. .. .. ..@ ID   : chr "hwy1"
 #>   .. ..$ :Formal class 'Lines' [package "sp"] with 2 slots
 #>   .. .. .. ..@ Lines:List of 1
 #>   .. .. .. .. ..$ :Formal class 'Line' [package "sp"] with 1 slot
-#>   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.357 0.354 0.547 0.205 0.439 ...
+#>   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.3428 0.928 0.0464 0.6182 0.5911 ...
 #>   .. .. .. ..@ ID   : chr "hwy2"
-#>   ..@ bbox       : num [1:2, 1:2] 0.353 0.205 0.547 0.888
+#>   ..@ bbox       : num [1:2, 1:2] 0.0464 0.208 0.9402 0.6182
 #>   .. ..- attr(*, "dimnames")=List of 2
 #>   .. .. ..$ : chr [1:2] "x" "y"
 #>   .. .. ..$ : chr [1:2] "min" "max"
@@ -500,14 +500,14 @@ unique ID.
 #>   .. ..$ :Formal class 'Lines' [package "sp"] with 2 slots
 #>   .. .. .. ..@ Lines:List of 1
 #>   .. .. .. .. ..$ :Formal class 'Line' [package "sp"] with 1 slot
-#>   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.478 0.353 0.406 0.234 0.821 ...
+#>   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.449 0.94 0.249 0.435 0.208 ...
 #>   .. .. .. ..@ ID   : chr "hwy1"
 #>   .. ..$ :Formal class 'Lines' [package "sp"] with 2 slots
 #>   .. .. .. ..@ Lines:List of 1
 #>   .. .. .. .. ..$ :Formal class 'Line' [package "sp"] with 1 slot
-#>   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.357 0.354 0.547 0.205 0.439 ...
+#>   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.3428 0.928 0.0464 0.6182 0.5911 ...
 #>   .. .. .. ..@ ID   : chr "hwy2"
-#>   ..@ bbox       : num [1:2, 1:2] 0.353 0.205 0.547 0.888
+#>   ..@ bbox       : num [1:2, 1:2] 0.0464 0.208 0.9402 0.6182
 #>   .. ..- attr(*, "dimnames")=List of 2
 #>   .. .. ..$ : chr [1:2] "x" "y"
 #>   .. .. ..$ : chr [1:2] "min" "max"
@@ -679,17 +679,17 @@ We would then combine this into a simple feature collection :
 #> Geometry set for 2 features 
 #> geometry type:  LINESTRING
 #> dimension:      XY
-#> bbox:           xmin: 0.1538548 ymin: 0.0949929 xmax: 0.9989873 ymax: 0.9816153
+#> bbox:           xmin: 0.1472823 ymin: 0.03795971 xmax: 0.6951138 ymax: 0.9930134
 #> epsg (SRID):    NA
 #> proj4string:    NA
 \end{verbatim}
 
 \begin{verbatim}
-#> LINESTRING (0.6232523 0.8006577, 0.9429675 0.26...
+#> LINESTRING (0.6951138 0.3978693, 0.2638811 0.03...
 \end{verbatim}
 
 \begin{verbatim}
-#> LINESTRING (0.1848177 0.2227957, 0.9989873 0.98...
+#> LINESTRING (0.4910172 0.1953684, 0.4145963 0.30...
 \end{verbatim}
 
 And lastly use our data frame from above to generate the \texttt{sf}
@@ -705,12 +705,12 @@ object:
 #> Simple feature collection with 2 features and 2 fields
 #> geometry type:  LINESTRING
 #> dimension:      XY
-#> bbox:           xmin: 0.1538548 ymin: 0.0949929 xmax: 0.9989873 ymax: 0.9816153
+#> bbox:           xmin: 0.1472823 ymin: 0.03795971 xmax: 0.6951138 ymax: 0.9930134
 #> epsg (SRID):    NA
 #> proj4string:    NA
 #>     id cars_per_hour                      lnstr_sfc
-#> 1 hwy1            78 LINESTRING (0.6232523 0.800...
-#> 2 hwy2            22 LINESTRING (0.1848177 0.222...
+#> 1 hwy1            78 LINESTRING (0.6951138 0.397...
+#> 2 hwy2            22 LINESTRING (0.4910172 0.195...
 \end{verbatim}
 
 There are many methods available in the \texttt{sf} package, to find out
@@ -1706,13 +1706,13 @@ this:
 #> 1                 0        1         5
 #> 2                 0        1         5
 #> Data attributes:
-#>    runif.25.       
-#>  Min.   :0.008003  
-#>  1st Qu.:0.260418  
-#>  Median :0.494006  
-#>  Mean   :0.446363  
-#>  3rd Qu.:0.576674  
-#>  Max.   :0.885643
+#>    runif.25.     
+#>  Min.   :0.0249  
+#>  1st Qu.:0.2283  
+#>  Median :0.4203  
+#>  Mean   :0.4679  
+#>  3rd Qu.:0.7446  
+#>  Max.   :0.9867
 \end{verbatim}
 
 \chapter{Spatial data manipulation in R}\label{spatialops}
@@ -2586,10 +2586,684 @@ Some helpful packages that deal with raster data:
 \chapter{Making Maps in R}\label{mapping}
 
 \begin{quote}
-In the works.
+Learning Objectives
+
+\begin{itemize}
+\tightlist
+\item
+  plot an \texttt{sf} object
+\item
+  create a choropleth map with \texttt{ggplot}
+\item
+  add a basemap with \texttt{ggmap}
+\item
+  use \texttt{RColorBrewer} to improve legend colors
+\item
+  use \texttt{classInt}to improve legend breaks
+\item
+  create a choropleth map with \texttt{tmap}
+\item
+  create an interactive map with \texttt{leaflet}
+\item
+  customize a \texttt{leaflet} map with popups and layer controls
+\end{itemize}
 \end{quote}
 
 \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+In the preceding examples we have used the base \texttt{plot} command to
+take a quick look at our spatial objects.
+
+In this section we will explore several alternatives to map spatial data
+with R. For more packages see the ``Visualisation'' section of the
+\href{https://cran.r-project.org/web/views/Spatial.html}{CRAN Task
+View}.
+
+Mapping packages are in the process of keeping up with the development
+of the new \texttt{sf} package, so they typicall accept both \texttt{sp}
+and \texttt{sf} objects. However, there are a few exceptions.
+
+Of the packages shown here \texttt{spplot()}, which is part of the good
+old \texttt{sp} package, only takes \texttt{sp} objects. The
+\href{https://github.com/tidyverse/ggplot2/releases}{development version
+of \texttt{ggplot2}} can take \texttt{sf} objects, though \texttt{ggmap}
+\href{https://github.com/tidyverse/ggplot2/issues/2130}{seems to still
+have issues} with \texttt{sf}. Both \texttt{tmap} and \texttt{leaflet}
+can also handle both \texttt{sp} and \texttt{sf} objects.
+
+\section{\texorpdfstring{Plotting simple features (\texttt{sf}) with
+\texttt{plot}}{Plotting simple features (sf) with plot}}\label{plotting-simple-features-sf-with-plot}
+
+As we have already briefly seen, the \texttt{sf} package extends the
+base \texttt{plot} command, so it can be used on \texttt{sf} objects. If
+used without any arguments it will plot all the attributes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{philly_crimes_sf <-}\StringTok{  }\KeywordTok{st_read}\NormalTok{(}\StringTok{"data/PhillyCrimerate/"}\NormalTok{, }\DataTypeTok{quiet =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(philly_crimes_sf)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{R-spatial_files/figure-latex/sf-plot-default-1.pdf}
+
+To plot a single attribute we need to provide an object of class
+\texttt{sf}, like so:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(philly_crimes_sf}\OperatorTok{$}\NormalTok{homic_rate) }\CommentTok{# this is a numeric vector!}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{R-spatial_files/figure-latex/sf-plot-single-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(philly_crimes_sf[}\StringTok{"homic_rate"}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{R-spatial_files/figure-latex/sf-plot-single-2.pdf}
+
+Since our values are unevenly distributed\ldots{}:
+
+\includegraphics{R-spatial_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+\ldots{}we might want to set the breaks to quantiles in order to better
+distinguish the census tracts with low values. This can be done by using
+the \texttt{breaks} argument for the sf plot function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(philly_crimes_sf[}\StringTok{"homic_rate"}\NormalTok{], }
+     \DataTypeTok{main =} \StringTok{"Philadelphia homicide density per square km"}\NormalTok{, }
+     \DataTypeTok{breaks =} \StringTok{"quantile"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{R-spatial_files/figure-latex/sf-plot-qantile-1.pdf}
+
+We can change the color palette using a library called
+\texttt{RColorBrewer}\footnote{This is not the only way to provide color
+  palettes. You can create your customized palette in many different
+  ways or simply as a vector of hexbin color codes, like
+  \texttt{c(\ "\#FDBB84"\ "\#FC8D59"\ "\#EF6548")}.}. For more about
+ColorBrewer palettes read \href{http://colorbrewer2.org}{this}.
+
+To make the color palettes from ColorBrewer available as R palettes we
+use the \texttt{brewer.pal()} function. It takes two arguments: - the
+number of different colors desired and - the name of the palette as
+character string.
+
+We select 7 colors from the `Orange-Red' plaette and assign it to an
+object \texttt{pal}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(RColorBrewer)}
+\NormalTok{pal <-}\StringTok{ }\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{7}\NormalTok{, }\StringTok{"OrRd"}\NormalTok{) }\CommentTok{# we select 7 colors from the palette}
+\KeywordTok{class}\NormalTok{(pal)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> [1] "character"
+\end{verbatim}
+
+Finally, we add this to the plot
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(philly_crimes_sf[}\StringTok{"homic_rate"}\NormalTok{], }
+     \DataTypeTok{main =} \StringTok{"Philadelphia homicide density per square km"}\NormalTok{, }
+     \DataTypeTok{breaks =} \StringTok{"quantile"}\NormalTok{, }\DataTypeTok{nbreaks =} \DecValTok{7}\NormalTok{,}
+     \DataTypeTok{pal =}\NormalTok{ pal)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{R-spatial_files/figure-latex/sf-plot-legend-1.pdf}
+
+\section{\texorpdfstring{Choropleth mapping with
+\texttt{spplot}}{Choropleth mapping with spplot}}\label{choropleth-mapping-with-spplot}
+
+\texttt{sp} comes with a plot command \texttt{spplot()}, which takes
+\texttt{Spatial*} objects to plot. \texttt{spplot()} is one of the
+earlier functions around to plot geographic objects.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{philly_crimes_sp <-}\StringTok{ }\KeywordTok{readOGR}\NormalTok{(}\StringTok{"data/PhillyCrimerate/"}\NormalTok{, }\StringTok{"PhillyCrimerate"}\NormalTok{, }\DataTypeTok{verbose =} \OtherTok{FALSE}\NormalTok{) }\CommentTok{# verbose = FALSE omits the message on loading}
+\KeywordTok{names}\NormalTok{(philly_crimes_sp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> [1] "GEOID10"    "n_homic"    "tract_area" "homic_rate"
+\end{verbatim}
+
+Like plot, by default \texttt{spplot} maps all everything it can find in
+the attribute table. Sometimes this does not work, depending on the data
+types in the attribute table. In order to select specific values to map
+we can provide the \texttt{spplot} function with the name (or names) of
+the attribute variable(s) we want to plot. It is the name of the column
+of the \texttt{Spatial*Dataframe} as character string (or a vector if
+several).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{spplot}\NormalTok{(philly_crimes_sp, }\StringTok{"homic_rate"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{R-spatial_files/figure-latex/spplot-single-1.pdf}
+
+Many improvements can be made here as well, below is an
+example\footnote{For more details see Chaps 2 and 3 in
+  \href{https://asdar-book.org}{Applied Spatial Data Analysis with R}.
+  Also, \texttt{spplot} is a wrapper for the
+  \href{https://cran.r-project.org/package=lattice}{\texttt{lattice}
+  package}, see there for more advanced options.} \footnote{For the
+  correction of breaks after using classIntervals with spplot/levelplot
+  see here
+  \url{http://r.789695.n4.nabble.com/SpatialPolygon-with-the-max-value-gets-no-color-assigned-in-spplot-function-when-using-quot-at-quot-r-td4654672.html}}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# quantile breaks}
+\NormalTok{breaks_qt <-}\StringTok{ }\KeywordTok{classIntervals}\NormalTok{(philly_crimes_sp}\OperatorTok{$}\NormalTok{homic_rate, }\DataTypeTok{n =} \DecValTok{7}\NormalTok{, }\DataTypeTok{style =} \StringTok{"quantile"}\NormalTok{)}
+\NormalTok{br <-}\StringTok{ }\NormalTok{breaks_qt}\OperatorTok{$}\NormalTok{brks }
+\NormalTok{offs <-}\StringTok{ }\FloatTok{0.0000001} 
+\NormalTok{br[}\DecValTok{1}\NormalTok{] <-}\StringTok{ }\NormalTok{br[}\DecValTok{1}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{offs }
+\NormalTok{br[}\KeywordTok{length}\NormalTok{(br)] <-}\StringTok{ }\NormalTok{br[}\KeywordTok{length}\NormalTok{(br)] }\OperatorTok{+}\StringTok{ }\NormalTok{offs }
+\CommentTok{# categoreis for choropleth map}
+\NormalTok{philly_crimes_sp}\OperatorTok{$}\NormalTok{homic_rate_bracket <-}\StringTok{ }\KeywordTok{cut}\NormalTok{(philly_crimes_sp}\OperatorTok{$}\NormalTok{homic_rate, br)}
+\CommentTok{# plot}
+\KeywordTok{spplot}\NormalTok{(philly_crimes_sp, }\StringTok{"homic_rate_bracket"}\NormalTok{, }\DataTypeTok{col.regions=}\NormalTok{pal, }\DataTypeTok{main =} \StringTok{"Philadelphia homicide density per square km"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{R-spatial_files/figure-latex/spplot-final-map-1.pdf}
+
+\section{\texorpdfstring{Choropleth mapping with
+\texttt{ggplot2}}{Choropleth mapping with ggplot2}}\label{choropleth-mapping-with-ggplot2}
+
+\href{http://ggplot2.org/}{\texttt{ggplot2}} is a widely used and
+powerful plotting library for R. It is not specifically geared towards
+mapping, but one can generate great maps.
+
+The \texttt{ggplot()} syntax is different from the previous as a plot is
+built up by adding components with a \texttt{+}. You can start with a
+layer showing the raw data then add layers of annotations and
+statistical summaries. This allows to easily superimpose either
+different visualizations of one dataset (e.g.~a scatterplot and a fitted
+line) or different datasets (like different layers of the same
+geographical area)\footnote{See Wilkinson L (2005): ``The grammar of
+  graphics''. Statistics and computing, 2nd ed. Springer, New York.}.
+
+For an introduction to \texttt{ggplot} check out
+\href{http://link.springer.com/book/10.1007\%2F978-3-319-24277-4}{this
+book by the package creator} or
+\href{http://ggplot2.tidyverse.org/}{this} for more pointers.
+
+In order to build a plot you start with initializing a ggplot object. In
+order to do that \texttt{ggplot()} takes:
+
+\begin{itemize}
+\tightlist
+\item
+  a data argument usually a \textbf{dataframe} and
+\item
+  a mapping argument where x and y values to be plotted are supplied.
+\end{itemize}
+
+In addition, minimally a geometry to be used to determine how the values
+should be displayed. This is to be added after an \texttt{+}.
+
+\begin{verbatim}
+ggplot(data = my_data_frame, mapping = aes(x = name_of_column_with_x_value, y = name_of_column_with_y_value)) +
+  geom_point()
+\end{verbatim}
+
+Or shorter:
+
+\begin{verbatim}
+ggplot(my_data_frame, aes(name_of_column_with_x_value, name_of_column_with_y_value)) +
+  geom_point()
+\end{verbatim}
+
+The great news is that \textbf{\texttt{ggplot} can plot \texttt{sf}
+objects directly} by using \texttt{geom\_sf}. So all we have to do is:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(philly_crimes_sf) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_sf}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill=}\NormalTok{homic_rate))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{R-spatial_files/figure-latex/ggplot-sf-1.pdf}
+
+Homicide rate is a continuous variable and is plotted by \texttt{ggplot}
+as such. If we wanted to plot our map as a `true' choropleth map we need
+to convert our continouse variable into a categoriacal one, according to
+whichever brackets we want to use.
+
+This requires two steps:
+
+\begin{itemize}
+\tightlist
+\item
+  Determine the quantile breaks.
+\item
+  Add a categorical variable to the object which assigns each continious
+  vaule to a bracket.
+\end{itemize}
+
+We will use the \texttt{classInt} package to explicitly determine the
+breaks.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(classInt)}
+
+\CommentTok{# get quantile breaks. Add .00001 offset to catch the lowest value}
+\NormalTok{breaks_qt <-}\StringTok{ }\KeywordTok{classIntervals}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{min}\NormalTok{(philly_crimes_sf}\OperatorTok{$}\NormalTok{homic_rate) }\OperatorTok{-}\StringTok{ }\NormalTok{.}\DecValTok{00001}\NormalTok{, philly_crimes_sf}\OperatorTok{$}\NormalTok{homic_rate), }\DataTypeTok{n =} \DecValTok{7}\NormalTok{, }\DataTypeTok{style =} \StringTok{"quantile"}\NormalTok{)}
+
+\NormalTok{breaks_qt}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> style: quantile
+#> [0.2997339,1.856692)  [1.856692,4.814503)  [4.814503,8.495498) 
+#>                   55                   55                   55 
+#>  [8.495498,16.14234)  [16.14234,23.20642)  [23.20642,36.16089) 
+#>                   55                   55                   55 
+#>  [36.16089,137.5028] 
+#>                   55
+\end{verbatim}
+
+Ok. We can retrieve the breaks with \texttt{breaks\$brks}.
+
+We use \texttt{cut} to divice \texttt{homic\_rate} into intervals and
+code them according to which interval they are in.
+
+Lastly, we can use \texttt{scale\_fill\_brewer} and add our color
+palette.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{philly_crimes_sf <-}\StringTok{ }\KeywordTok{mutate}\NormalTok{(philly_crimes_sf, }\DataTypeTok{homic_rate_cat =} \KeywordTok{cut}\NormalTok{(homic_rate, breaks_qt}\OperatorTok{$}\NormalTok{brks)) }
+
+\KeywordTok{ggplot}\NormalTok{(philly_crimes_sf) }\OperatorTok{+}\StringTok{ }
+\StringTok{    }\KeywordTok{geom_sf}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill=}\NormalTok{homic_rate_cat)) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{scale_fill_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"OrRd"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{R-spatial_files/figure-latex/ggplot-sf-categorical-1.pdf}
+
+\section{\texorpdfstring{Adding basemaps with
+\texttt{ggmap}}{Adding basemaps with ggmap}}\label{adding-basemaps-with-ggmap}
+
+\texttt{ggmap} builds on \texttt{ggplot} and allows to pull in tiled
+basemaps from different services, like Google Maps, OpenStreetMaps, or
+Stamen Maps\footnote{Google now
+  \href{https://cloud.google.com/maps-platform/.}{requires an API key}.
+  Cloudmade maps retired its API so it is no longer possible to be used
+  as basemap.
+  \href{https://CRAN.R-project.org/package=RgoogleMaps}{\texttt{RgoogleMaps}}
+  is another library that provides an interface to query the Google
+  server for static maps.}.
+
+So let's overlay the map from above on a terrain map we pull from
+Stamen.
+
+First we use the \texttt{get\_map()} command from \texttt{ggmap} to pull
+down the basemap. We need to tell it the location or the boundaries of
+the map, the zoom level, and what kind of map service we like (default
+is Google terrain). It will actually download the tile.
+\texttt{get\_map()} returns a ggmap object, name it
+\texttt{ph\_basemap}. In order to view the map we then use
+\texttt{ggmap()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggmap)}
+
+\CommentTok{# Philadelphia Lat 39.95258 and Lon is -75.16522}
+\NormalTok{ph_basemap <-}\StringTok{ }\KeywordTok{get_map}\NormalTok{(}\DataTypeTok{location=}\KeywordTok{c}\NormalTok{(}\DataTypeTok{lon =} \OperatorTok{-}\FloatTok{75.16522}\NormalTok{, }\DataTypeTok{lat =} \FloatTok{39.95258}\NormalTok{), }\DataTypeTok{zoom=}\DecValTok{11}\NormalTok{, }\DataTypeTok{maptype =} \StringTok{'terrain-background'}\NormalTok{, }\DataTypeTok{source =} \StringTok{'stamen'}\NormalTok{)}
+
+\KeywordTok{ggmap}\NormalTok{(ph_basemap)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{R-spatial_files/figure-latex/ggmap-getmap-1.pdf}
+
+Then we can reuse the code from the ggplot example above, just replacing
+the first line, where we initialized a ggplot object above
+
+\begin{verbatim}
+    ggplot() + 
+\end{verbatim}
+
+with the line to call our basemap:
+
+\begin{verbatim}
+    ggmap(ph_basemap) +
+\end{verbatim}
+
+We also have to set \texttt{inherit.aes} to \texttt{FALSE}, so it
+overrides the default aesthetics (from the ggmap object).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggmap}\NormalTok{(ph_basemap) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_sf}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ philly_crimes_sf, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill=}\NormalTok{homic_rate_cat), }\DataTypeTok{inherit.aes =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{scale_fill_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"OrRd"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> Coordinate system already present. Adding new coordinate system, which will replace the existing one.
+\end{verbatim}
+
+\includegraphics{R-spatial_files/figure-latex/ggmap-plot-misaligned-1.pdf}
+
+Oops. Any idea what might be going on?
+
+We need to set our CRS to WGS84, which is the one the tiles are
+downloaded in. We can add \texttt{coord\_sf} to do this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggmap}\NormalTok{(ph_basemap) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_sf}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ philly_crimes_sf, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{fill=}\NormalTok{homic_rate_cat), }\DataTypeTok{inherit.aes =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{scale_fill_brewer}\NormalTok{(}\DataTypeTok{palette =} \StringTok{"OrRd"}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{coord_sf}\NormalTok{(}\DataTypeTok{crs =} \KeywordTok{st_crs}\NormalTok{(}\DecValTok{4326}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{R-spatial_files/figure-latex/ggmap-plot-aligned-1.pdf}
+
+The \texttt{ggmap} package also includes functions for distance
+calculations, geocoding, and calculating routes.
+
+\section{\texorpdfstring{Choropleth with
+\texttt{tmap}}{Choropleth with tmap}}\label{choropleth-with-tmap}
+
+\texttt{tmap} is specifically designed to make creation of thematic maps
+more convenient. It borrows from teh ggplot syntax and takes care of a
+lot of the styling and aesthetics. This reduces our amount of code
+significantly. We only need:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{tm\_shape()} where we provide
+
+  \begin{itemize}
+  \tightlist
+  \item
+    the \texttt{sf} object (we could also provide an
+    \texttt{SpatialPolygonsDataframe})
+  \end{itemize}
+\item
+  \texttt{tm\_polygons()} where we set
+
+  \begin{itemize}
+  \tightlist
+  \item
+    the attribute variable to map,
+  \item
+    the break style, and
+  \item
+    a title.
+  \end{itemize}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tmap)}
+\KeywordTok{tm_shape}\NormalTok{(philly_crimes_sf) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{tm_polygons}\NormalTok{(}\StringTok{"homic_rate"}\NormalTok{, }
+              \DataTypeTok{style=}\StringTok{"quantile"}\NormalTok{, }
+              \DataTypeTok{title=}\StringTok{"Philadelphia }\CharTok{\textbackslash{}n}\StringTok{homicide density }\CharTok{\textbackslash{}n}\StringTok{per sqKm"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
+\end{verbatim}
+
+\hypertarget{htmlwidget-5f5f8684d951cb546c80}{}
+
+\texttt{tmap} has a very nice feature that allows us to give basic
+interactivity to the map. We can switch from ``plot'' mode into ``view''
+mode and call the last plot, like so:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tmap_mode}\NormalTok{(}\StringTok{"view"}\NormalTok{)}
+\KeywordTok{tmap_last}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{htmlwidget-bb462369a55246093d7c}{}
+
+Cool huh?
+
+The \texttt{tmap} library also includes functions for simple spatial
+operations, geocoding and reverse geocoding using OSM. For more check
+\texttt{vignette("tmap-getstarted")}.
+
+\section{\texorpdfstring{Web mapping with
+\texttt{leaflet}}{Web mapping with leaflet}}\label{web-mapping-with-leaflet}
+
+\texttt{leaflet} provides bindings to the
+\href{http://leafletjs.com}{`Leaflet' JavaScript library}, ``the leading
+open-source JavaScript library for mobile-friendly interactive maps''.
+We have already seen a simple use of leaflet in the \texttt{tmap}
+example.
+
+The good news is that the \texttt{leaflet} library gives us loads of
+options to customize the web look and feel of the map.
+
+The bad news is that the \texttt{leaflet} library gives us loads of
+options to customize the web look and feel of the map.
+
+Let's build up the map step by step.
+
+First we load the \texttt{leaflet} library. Use the \texttt{leaflet()}
+function with an \texttt{sp} or \texttt{Spatial*} object and pipe it to
+\texttt{addPolygons()} function. It is not required, but improves
+readability if you use \href{https://github.com/tidyverse/magrittr}{the
+pipe operator \texttt{\%\textgreater{}\%}} to chain the elements
+together when building up a map with \texttt{leaflet}.
+
+And while \texttt{tmap} was tolerant about our AEA projection of
+\texttt{philly\_crimes\_sf}, \texttt{leaflet} does require us to
+explicitly reproject the \texttt{sf} object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(leaflet) }
+
+\CommentTok{# reproject}
+\NormalTok{philly_WGS84 <-}\StringTok{ }\KeywordTok{st_transform}\NormalTok{(philly_crimes_sf, }\DecValTok{4326}\NormalTok{)}
+
+\KeywordTok{leaflet}\NormalTok{(philly_WGS84) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addPolygons}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{htmlwidget-efe98f31523f93920651}{}
+
+To map the homicide density we use \texttt{addPolygons()} and:
+
+\begin{itemize}
+\tightlist
+\item
+  remove stroke (polygon borders)\\
+\item
+  set a fillColor for each polygon based on \texttt{homic\_rate} and
+  make it look nice by adjusting fillOpacity and smoothFactor (how much
+  to simplify the polyline on each zoom level). The fill color is
+  generated using \texttt{leaflet}'s \texttt{colorQuantile()} function,
+  which takes the color scheme and the desired number of classes. To
+  constuct the color scheme \texttt{colorQuantile()} returns a function
+  that we supply to \texttt{addPolygons()} together with the name of the
+  attribute variable to map.\\
+\item
+  add a popup with the \texttt{homic\_rate} values. We will create as a
+  vector of strings, that we then supply to \texttt{addPolygons()}.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pal_fun <-}\StringTok{ }\KeywordTok{colorQuantile}\NormalTok{(}\StringTok{"YlOrRd"}\NormalTok{, }\OtherTok{NULL}\NormalTok{, }\DataTypeTok{n =} \DecValTok{5}\NormalTok{)}
+
+\NormalTok{p_popup <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(}\StringTok{"<strong>Homicide Density: </strong>"}\NormalTok{, philly_WGS84}\OperatorTok{$}\NormalTok{homic_rate)}
+
+\KeywordTok{leaflet}\NormalTok{(philly_WGS84) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addPolygons}\NormalTok{(}
+    \DataTypeTok{stroke =} \OtherTok{FALSE}\NormalTok{, }\CommentTok{# remove polygon borders}
+    \DataTypeTok{fillColor =} \OperatorTok{~}\KeywordTok{pal_fun}\NormalTok{(homic_rate), }\CommentTok{# set fill color with function from above and value}
+    \DataTypeTok{fillOpacity =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{smoothFactor =} \FloatTok{0.5}\NormalTok{, }\CommentTok{# make it nicer}
+    \DataTypeTok{popup =}\NormalTok{ p_popup)  }\CommentTok{# add popup}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{htmlwidget-326bbb586065c8d62175}{}
+
+Here we add a basemap, which defaults to OSM, with \texttt{addTiles()}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{leaflet}\NormalTok{(philly_WGS84) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addPolygons}\NormalTok{(}
+    \DataTypeTok{stroke =} \OtherTok{FALSE}\NormalTok{, }
+    \DataTypeTok{fillColor =} \OperatorTok{~}\KeywordTok{pal_fun}\NormalTok{(homic_rate),}
+    \DataTypeTok{fillOpacity =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{smoothFactor =} \FloatTok{0.5}\NormalTok{,}
+    \DataTypeTok{popup =}\NormalTok{ p_popup) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addTiles}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{htmlwidget-bb2179248924f8cd92ed}{}
+
+Lastly, we add a legend. We will provide the \texttt{addLegend()}
+function with:
+
+\begin{itemize}
+\tightlist
+\item
+  the location of the legend on the map\\
+\item
+  the function that creates the color palette\\
+\item
+  the value we want the palette function to use\\
+\item
+  a title
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{leaflet}\NormalTok{(philly_WGS84) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addPolygons}\NormalTok{(}
+    \DataTypeTok{stroke =} \OtherTok{FALSE}\NormalTok{, }
+    \DataTypeTok{fillColor =} \OperatorTok{~}\KeywordTok{pal_fun}\NormalTok{(homic_rate),}
+    \DataTypeTok{fillOpacity =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{smoothFactor =} \FloatTok{0.5}\NormalTok{,}
+    \DataTypeTok{popup =}\NormalTok{ p_popup) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addTiles}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addLegend}\NormalTok{(}\StringTok{"bottomright"}\NormalTok{,  }\CommentTok{# location}
+            \DataTypeTok{pal=}\NormalTok{pal_fun,    }\CommentTok{# palette function}
+            \DataTypeTok{values=}\OperatorTok{~}\NormalTok{homic_rate,  }\CommentTok{# value to be passed to palette function}
+            \DataTypeTok{title =} \StringTok{'Philadelphia homicide density per sqkm'}\NormalTok{) }\CommentTok{# legend title}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{htmlwidget-98d9098218d1aa7f6f9b}{}
+
+The labels of the legend show percentages instead of the actual value
+breaks\footnote{The formatting is set with \texttt{labFormat()} and in
+  the
+  \href{https://cran.r-project.org/web/packages/leaflet/leaflet.pdf}{documentation}
+  we discover that: ``By default, \texttt{labFormat} is basically
+  \texttt{format(scientific\ =\ FALSE,big.mark\ =\ \textquotesingle{},\textquotesingle{})}
+  for the numeric palette, \texttt{as.character()} for the factor
+  palette, and a function to return labels of the form
+  \texttt{x{[}i{]}\ -\ x{[}i\ +\ 1{]}} for bin and quantile palettes
+  (\textbf{in the case of quantile palettes, x is the probabilities
+  instead of the values of breaks}).''}.
+
+To set the labels for our breaks manually we replace the \texttt{pal}
+and \texttt{values} with the \texttt{colors} and \texttt{labels}
+arguments and set those directly using \texttt{brewer.pal()} and
+\texttt{breaks\_qt} from an earlier section above.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{leaflet}\NormalTok{(philly_WGS84) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addPolygons}\NormalTok{(}
+    \DataTypeTok{stroke =} \OtherTok{FALSE}\NormalTok{, }
+    \DataTypeTok{fillColor =} \OperatorTok{~}\KeywordTok{pal_fun}\NormalTok{(homic_rate),}
+    \DataTypeTok{fillOpacity =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{smoothFactor =} \FloatTok{0.5}\NormalTok{,}
+    \DataTypeTok{popup =}\NormalTok{ p_popup) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addTiles}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addLegend}\NormalTok{(}\StringTok{"bottomright"}\NormalTok{, }
+            \DataTypeTok{colors =} \KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{7}\NormalTok{, }\StringTok{"YlOrRd"}\NormalTok{), }
+            \DataTypeTok{labels =} \KeywordTok{paste0}\NormalTok{(}\StringTok{"up to "}\NormalTok{, }\KeywordTok{format}\NormalTok{(breaks_qt}\OperatorTok{$}\NormalTok{brks[}\OperatorTok{-}\DecValTok{1}\NormalTok{], }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{)),}
+            \DataTypeTok{title =}  \StringTok{'Philadelphia homicide density per sqkm'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{htmlwidget-5be8ceb733a66c2ac986}{}
+
+That's more like it. Finally, I have added for you a control to switch
+to another basemap and turn the philly polygon off and on. Take a look
+at the changes in the code below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{leaflet}\NormalTok{(philly_WGS84) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addPolygons}\NormalTok{(}
+    \DataTypeTok{stroke =} \OtherTok{FALSE}\NormalTok{, }
+    \DataTypeTok{fillColor =} \OperatorTok{~}\KeywordTok{pal_fun}\NormalTok{(homic_rate),}
+    \DataTypeTok{fillOpacity =} \FloatTok{0.8}\NormalTok{, }\DataTypeTok{smoothFactor =} \FloatTok{0.5}\NormalTok{,}
+    \DataTypeTok{popup =}\NormalTok{ p_popup,}
+    \DataTypeTok{group =} \StringTok{"philly"}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addTiles}\NormalTok{(}\DataTypeTok{group =} \StringTok{"OSM"}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addProviderTiles}\NormalTok{(}\StringTok{"CartoDB.DarkMatter"}\NormalTok{, }\DataTypeTok{group =} \StringTok{"Carto"}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addLegend}\NormalTok{(}\StringTok{"bottomright"}\NormalTok{, }
+            \DataTypeTok{colors =} \KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{7}\NormalTok{, }\StringTok{"YlOrRd"}\NormalTok{), }
+            \DataTypeTok{labels =} \KeywordTok{paste0}\NormalTok{(}\StringTok{"up to "}\NormalTok{, }\KeywordTok{format}\NormalTok{(breaks_qt}\OperatorTok{$}\NormalTok{brks[}\OperatorTok{-}\DecValTok{1}\NormalTok{], }\DataTypeTok{digits =} \DecValTok{2}\NormalTok{)),}
+            \DataTypeTok{title =} \StringTok{'Philadelphia homicide density per sqkm'}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{addLayersControl}\NormalTok{(}\DataTypeTok{baseGroups =} \KeywordTok{c}\NormalTok{(}\StringTok{"OSM"}\NormalTok{, }\StringTok{"Carto"}\NormalTok{), }
+                   \DataTypeTok{overlayGroups =} \KeywordTok{c}\NormalTok{(}\StringTok{"philly"}\NormalTok{))  }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{htmlwidget-3b43a8bbf2d6b0bb95c2}{}
+
+If you'd like to take this further here are a few pointers.
+
+\begin{itemize}
+\tightlist
+\item
+  \href{http://rstudio.github.io/leaflet/}{Leaflet for R}
+\item
+  \href{https://github.com/Robinlovelace/Creating-maps-in-R/blob/master/vignettes/vspd-base-shiny.Rmd}{Creating
+  maps in R}
+\item
+  \href{https://cyberhelp.sesync.org/maps-in-R-lesson/}{Maps in R}
+\end{itemize}
+
+\href{https://cengel.shinyapps.io/RioSlaveMarket/}{Here is an example}
+using \texttt{ggplot}, \texttt{leaflet}, \texttt{shiny}, and
+\href{http://rmarkdown.rstudio.com/flexdashboard/}{RStudio's
+flexdashboard} template to bring it all together.
 
 \bibliography{book.bib,packages.bib}
 
