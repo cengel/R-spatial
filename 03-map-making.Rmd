@@ -257,7 +257,7 @@ The `ggmap` package also includes functions for distance calculations, geocoding
 
 ## Choropleth with `tmap`
 
-`tmap` is specifically designed to make creation of thematic maps more convenient. It borrows from teh ggplot syntax and takes care of a lot of the styling and aesthetics. This reduces our amount of code significantly. We only need: 
+`tmap` is specifically designed to make creation of thematic maps more convenient. It borrows from the ggplot syntax and takes care of a lot of the styling and aesthetics. This reduces our amount of code significantly. We only need: 
 
 - `tm_shape()` where we provide 
     - the `sf` object (we could also provide an `SpatialPolygonsDataframe`)
