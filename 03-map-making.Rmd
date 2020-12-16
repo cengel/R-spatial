@@ -206,7 +206,7 @@ ggplot(philly_crimes_sf) +
 
 ## Adding basemaps with `ggmap`
 
-`ggmap` builds on `ggplot` and allows to pull in tiled basemaps from different services, like Google Maps, OpenStreetMaps, or Stamen Maps[^19].
+`ggmap` builds on `ggplot` and allows to pull in tiled basemaps from different services, like Google Maps, OpenStreetMap, or Stamen Maps[^19].
 
 [^19]: Google now [requires an API key](https://cloud.google.com/maps-platform/. ). Cloudmade maps retired its API so it is no longer possible to be used as basemap. [`RgoogleMaps`](https://CRAN.R-project.org/package=RgoogleMaps) is another library that provides an interface to query the Google server for static maps.
 
