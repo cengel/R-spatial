@@ -374,7 +374,7 @@ philly_sf <- st_read("data/Philly/")
 str(philly_sf) # note again the geometry column
 ```
 
-Two more words about the geometry column: You can name this column any way you wish. Secondly, you can remove this column and revert to a regular, non-spatial data frame at any dime wiht `st_drop_geometry()`.
+Two more words about the geometry column: You can name this column any way you wish. Secondly, you can remove this column and revert to a regular, non-spatial data frame at any time with `st_drop_geometry()`.
 
 The default `plot` of an `sf` object is a multi-plot of the first attributes, with a warning if not all can be plotted:
 
