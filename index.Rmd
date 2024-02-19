@@ -27,6 +27,8 @@ To get the most out of this workshop you should have:
 
 - Create a new folder under `R-spatial` and call it `data`. 
 
+- Open up a new R Script file and call it `R-spatial.R` for the code you'll create during the workshop.
+
 - If you have your working directory set to `R-spatial` which contains a folder called `data` you can copy, paste, and run the following lines in R:
 
 ```{r download-files, eval=FALSE}
@@ -34,17 +36,12 @@ download.file("http://bit.ly/R-spatial-data", "R-spatial-data.zip")
 unzip("R-spatial-data.zip", exdir = "data")
 ```
 
-You can also download the data manually here [R-spatial-data.zip](https://github.com/cengel/R-spatial/raw/master/data/R-spatial-data.zip) and extract them.
+You can also download the data manually here [R-spatial-data.zip](https://github.com/cengel/R-spatial/raw/master/data/R-spatial-data.zip) and extract them in the `data` folder.
  
-- Open up a new R Script file `R-spatial.R` for the code you'll create during the workshop.
-
 - Install and load the following libraries: 
     - [`sf`](https://cran.r-project.org/package=sf) 
-    - [`sp`](https://CRAN.R-project.org/package=sp) 
-    - [`rgdal`](https://CRAN.R-project.org/package=rgdal)
-    - [`raster`](https://CRAN.R-project.org/package=raster) 
-    - [`rgeos`](https://CRAN.R-project.org/package=rgeos) 
-    - [`dplyr`](https://cran.r-project.org/package=dplyr)
+    - [`terra`](https://cran.r-project.org/package=terra)
+    - [`tidyverse`](https://cran.r-project.org/package=tidyverse)
 
 - For the mapping section install and load these additional libraries:
     - [`classInt`](https://cran.r-project.org/package=classInt)
@@ -57,21 +54,15 @@ You can also download the data manually here [R-spatial-data.zip](https://github
 
 ## References {-}
 
-Bivand, RS., Pebesma, E., Gómez-Rubio, V. (2013): [Applied Spatial Data Analysis with R](https://link.springer.com/book/10.1007%2F978-1-4614-7618-4)
+Lovelace, R., Nowosad, J., Muenchow. J. (2024): [Geocomputation with R](https://r.geocompx.org/)
 
-Brunsdon, C. and Comber, L. (2015): [An Introduction to R for Spatial Analysis and Mapping](https://us.sagepub.com/en-us/nam/an-introduction-to-r-for-spatial-analysis-and-mapping/book241031)
+Pebesma, E. Bivand, R. (2023): [Spatial Data Science](https://r-spatial.org/book/)
 
-Lovelace, R., Nowosad, J., Muenchow. J. (2019): [Geocomputation with R](https://geocompr.robinlovelace.net)
+Gimond, M (2023): [Intro to GIS and Spatial Analysis](https://mgimond.github.io/Spatial/index.html)
 
-[Spatial Data Analysis and Modeling with R](http://www.rspatial.org/index.html)
+[Spatial Data Analysis and Modeling with R and *terra*](http://www.rspatial.org/index.html)
 
 [CRAN Task View: Analysis of Spatial Data](https://CRAN.R-project.org/view=Spatial)
-
-Engel, C. (2019). R for Geospatial Analysis and Mapping. The Geographic Information Science & Technology Body of Knowledge (1st Quarter 2019 Edition), John P. Wilson (Ed.). [DOI:10.22224/gistbok/2019.1.3](https://doi.org/10.22224/gistbok/2019.1.3).
-
-
-
-For a quick introduction to all things geo check out [map school](https://mapschool.io).
 
 
 ## Acknowledgements {-}

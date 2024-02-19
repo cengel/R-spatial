@@ -1,17 +1,16 @@
 ```{r, echo=FALSE, purl=FALSE, message=FALSE}
 knitr::opts_chunk$set(results='hide', comment = "#>", purl = FALSE)
 
+## libraries needed for R code examples
 library(sf)
-library(rgdal)
-library(sp)
-library(raster)
-library(dplyr)
-library(rgeos)
+library(terra)
+library(tidyverse)
 
 philly_sf <- st_read("data/Philly/")
-philly_sp <- readOGR("data/Philly/", "PhillyTotalPopHHinc")
-HARV <- raster("data/HARV_RGB_Ortho.tif")
+#philly_sp <- readOGR("data/Philly/", "PhillyTotalPopHHinc")
+HARV <- rast("data/HARV_RGB_Ortho.tif")
 philly_homicides_sf <- st_read("data/PhillyHomicides/")
+philly_crimes_sf <- st_read("data/PhillyCrimerate") # DONT NOT NEED THIS IF CREATION BELOW IS FIXED
 
 ```
 
@@ -25,33 +24,29 @@ philly_homicides_sf <- st_read("data/PhillyHomicides/")
 
 ------------
 
-There are a wide variety of spatial, topological, and attribute data operations you can perform with R. [Lovelace et al's recent publication](https://geocompr.robinlovelace.net)[^11] goes into great depth about this and is highly recommended.
+There are a wide variety of spatial, topological, and attribute data operations you can perform with R. [Lovelace et al's recent publication](https://r.geocompx.org/)[^11] goes into great depth about this and is highly recommended.
 
-[^11]: Lovelace, R., Nowosad, J., & Muenchow, J. (2019). Geocomputation with R. CRC Press.
+[^11]: Lovelace, R., Nowosad, J., & Muenchow, J. (2024). Geocomputation with R. CRC Press.
 
-In this section we will look at just a few examples for libraries and commands that allow us to process spatial data in R and perform a few commonly used operations.
+In this section we will look at a few examples for libraries and commands that allow us to process spatial data in R and perform a few commonly used operations.
 
 ## Attribute Join
 
-An attribute join on vector data brings tabular data into a geographic context. It refers to the process of joining data in tabular format to data in a format that holds the geometries (polygon, line, or point)[^12]. 
+An attribute join on vector data brings tabular data into a geographic context. It refers to the process of joining data in tabular format to data in a format that holds the geometries (polygon, line, or point). 
 
 If you have done attribute joins of shapefiles in GIS software like _ArcGIS_ or _QGis_ you know that you need a __unique identifier__ in both the attribute table of the shapefile and the table to be joined. 
-
-[^12]: Per the [ESRI specification](http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf) a shapefile must have an attribute table, so when we read it into R with the `readOGR` command from the `sp` package it automatically becomes a `Spatial*Dataframe` and the attribute table becomes the dataframe.
 
 First we will load the CSV table `PhiladelphiaEduAttain.csv` into a dataframe in R and name it `ph_edu`.
 
 ```{r load-edu-csv}
-ph_edu <- read.csv("data/PhiladelphiaEduAttain.csv")
+ph_edu <- read_csv("data/PhiladelphiaEduAttain.csv")
 names(ph_edu)
 ```
 
-### How to do this in `sf`
 
 If you don't have the object still loaded read the the `PhillyTotalPopHHinc` shapefile into an object named `philly_sf`. Check out the column names of `philly_sf` and of `ph_edu` to determine which one might contain the unique identifier for the join.
 
 ```{r load-philly-sf}
-## sf ##
 # if you need to read in again:
 # philly_sf <- st_read("data/Philly/")
 names(philly_sf)
@@ -60,32 +55,10 @@ names(philly_sf)
 To join the `ph_edu` data frame with `philly_sf` we can use `merge` like this: 
 
 ```{r sf-attr-merge, results='show'}
-philly_sf_merged <- merge(philly_sf, ph_edu, by.x = "GEOID10", by.y = "GEOID")
+philly_sf_merged <- left_join(philly_sf, ph_edu, by = c("GEOID10" = "GEOID"))
 names(philly_sf_merged) 
 ```
 We see the new attribute columns added, as well as the geometry column.
-
-
-### The same with `sp`
-
-In `sp` we have a `Spatial*Dataframe` that contains the geometries and an identifying index variable for each. We combine it with a dataframe, that includes the same index variable with additional variables.
-
-The `sp` package has a `merge` command which extends the base `merge` command to work with `Spatial*` objects as argument[^13].
-
-[^13]: The `geo_join()` command from the [`tigris` package](https://cran.r-project.org/web/packages/tigris/index.html) also provides a convenient way to merge a data frame to a spatial data frame.
-
-
-```{r sp-attr-join}
-## sp ##
-# if you need to read in again:
-# philly_sp <- readOGR("data/Philly/", "PhillyTotalPopHHinc") 
-
-# this is sp::merge()
-philly_sp_merged <- merge(philly_sp, ph_edu, by.x = "GEOID10", by.y = "GEOID")
-names(philly_sp_merged) # no geometry column here
-```
-
-(You may come across alternative suggestions for joins that operate on the data slot `@data` of the Spatial* object. While they may work, we don't suggest them here, as good practice suggests not to use the slot explicitly if at all possible.)
 
 
 ## Topological Subsetting: Select Polygons by Location
@@ -104,8 +77,6 @@ For the next example our goal is to select all Philadelphia census tracts within
 
 ```
 
-### Using the `sf` package
-
 We will use `philly_sf` for the census tract polygons.
 
 In addition, we need to create a `sf` Point object with the Philadelphia city center coordinates:
@@ -113,7 +84,7 @@ In addition, we need to create a `sf` Point object with the Philadelphia city ce
 $$x = 1750160$$ 
 $$y = 467499.9$$ 
 
-These coordinates are in the _USA Contiguous Albers Equal Area Conic_ projected CRS and the EPSG code is 102003.
+These coordinates are also in the _USA Contiguous Albers Equal Area Conic_ projected CRS, which is the same as CRS as `philly_sf`.
 
 With this information, we create a object that holds the coordinates of the city center. Since we don't have attributes we will just create it as a simple feature collection, `scf`.
 
@@ -122,7 +93,7 @@ With this information, we create a object that holds the coordinates of the city
 # philly_sf <- st_read("data/Philly/", quiet = T)
 
 # make a simple feature point with CRS
-philly_ctr_sfc <- st_sfc(st_point(c(1750160, 467499.9)), crs = 102003)
+philly_ctr_sfc <- st_sfc(st_point(c(1750160, 467499.9)), crs = st_crs(philly_sf))
 ```
 
 
@@ -131,100 +102,35 @@ For the spatial operations we can recur to the suite of geometric operations tha
 We create a 2km buffer around the city center point:
 
 ```{r sf-buffer-point, results='show'}
-philly_buf_sf <- st_buffer(philly_ctr_sfc, 2000)
+philly_buf <- st_buffer(philly_ctr_sfc, 2000)
 ```
 
-Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer. In order to determine the polygons we use `st_intersects`, a geometric binary which returns a vector of logical values, which we we can use for subsetting. Note the difference to `st_intersection`, which performs a geometric operation and creates a new sf object which cuts out the area of the buffer from the polygons a like cookie cutter.
+Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer. In order to determine the polygons we use `st_intersects`, a geometric binary which returns a vector of indices of the polygons that intersect with the buffer. 
 
-Let us try this:
-
-```{r sf-intersects-error, eval=FALSE}
-philly_buf_intersects <- st_intersects(philly_buf_sf, philly_sf)
-
-#> Error in st_geos_binop("intersects", x, y, sparse = sparse, prepared = prepared) : 
-#>   st_crs(x) == st_crs(y) is not TRUE
+```{r sf-intersects, results='show'}
+philly_intersects <- st_intersects(philly_buf, philly_sf)
+philly_intersects
 ```
 
-Oh, what happened? Are these projections not the same?
+We have created a `sgbp` object, which is a "Sparse Geometry Binary Predicate". It is a so called sparse matrix, which is a list with integer vectors only holding the indices for each polygon that intersects. In our case we only have one vector, because we only intersect with one buffer polygon, so we can extract this first vector with `philly_buf_intersects[[1]]` and use it for subsetting:
 
-```{r sf-intersects-crs, results='show'}
-st_crs(philly_sf)
-st_crs(philly_buf_sf)
-```
-
-Ah. The difference seems to be that there is no EPSG code for `philly_sf`. Poking around [the documentation](https://r-spatial.github.io/sf/articles/sf1.html) we see that :
-
-> ...`st_read` typically reads the coordinate reference system as `proj4string`, but not the EPSG (SRID). GDAL cannot retrieve SRID (EPSG code) from proj4string strings, and, **when needed, it has to be set by the user**... 
-
-Ok, so we need to fix this. 
-
-```{r sf-intersects-setcrs, results='show'}
-st_crs(philly_sf) <- 102003
-```
-
-This warning is ok, we know what we are doing. So now try again:
-
-```{r sf-intersection-fixed, results='show'}
-philly_buf_intersects <- st_intersects(philly_buf_sf, philly_sf)
-class(philly_buf_intersects)
-```
-
-We have created a `sgbp` object, which is a "Sparse Geomtry Binary Predicate". It is a so called sparse matrix, which is a list with integer vectors only holding the indices for each polygon that intersects. In our case we only have one vector, because we only intersect with one buffer polygon, so we can extract this first vector with `philly_buf_intersects[[1]]` and use it for subsetting:
-
-```{r sf-intersection-subset, results='show'}
-philly_sel_sf <- philly_sf[philly_buf_intersects[[1]],]
+```{r sf-intersects-subset, results='show'}
+philly_sel<- philly_sf[philly_intersects[[1]],]
 
 # plot
-plot(st_geometry(philly_sf), border="#aaaaaa", main="Census tracts that fall within 2km of city center")
-plot(st_geometry(philly_sel_sf), add=T, col="red")
-plot(st_geometry(philly_buf_sf), add=T, lwd = 2)
+plot(st_geometry(philly_sf), border="#aaaaaa", main="Census tracts that overlap with 2km buffer around city center")
+plot(st_geometry(philly_sel), add=T, col="red")
+plot(st_geometry(philly_buf), add=T, lwd = 2)
 ```
 
 
-### Using the `sp` package
+Note the difference to `st_intersection`, which performs a geometric operation and creates a new sf object which cuts out the area of the buffer from the polygons like cookie a cutter:
 
-In order to perform those operations on an `sp` object we will need to make use of an additional package, called `rgeos`. Make sure you have it loaded. 
-
-```{r}
-library(rgeos)
-# if you need to read it in again
-# philly_sp <- readOGR("data/Philly/", "PhillyTotalPopHHinc", verbose = F)
-```
-
-We will use `philly_sp` for the census tract polygons.
-
-Create a `SpatialPoints` object with the Philadelphia city center coordinates named `philly_ctr_sp`.  
-
-```{r sp-ph-center, results='show'}
-coords <- data.frame(x = 1750160, y = 467499.9) # set the coordinates
-prj <- CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs") # the projection string for AEA
-philly_ctr_sp <- SpatialPoints(coords, proj4string = prj) # create the spatialPoints
-```
-
-Next, we create a buffer around the city center point.  
-Here is where we will use the `gBuffer()` function from the `rgeos` package. For this purpose we will need to provide two arguments: the __sp object__ and the __width__ of the buffer, which is assumed to be in map units. The function returns a `SpatialPolygons` object to you with the buffer.
-
-```{r sp-buffer, results='show'}
-philly_buf_sp <- gBuffer(philly_ctr_sp, width=2000)  # create buffer around center
-```
-
-We will use the `gIntersects()` function from the `rgeos` package to select all census tract polygons that intersect with the center buffer. The function tests if two geometries (let's name them _spgeom1_ and _spgeom2_) have points in common or not. `gIntersects` returns TRUE if _spgeom1_ and _spgeom2_ have at least one point in common.  
-
-Here is where we determine if the census tracts fall within the buffer. In addition to our two `sp` objects (`philly_buf` and `philly_sp`) we need to provide one more argument, `byid`. It determines if the function should be applied across ids (TRUE) or the entire object (FALSE) for _spgeom1_ and _spgeom2_. The default setting is FALSE. Since we want to compare _every single_ census tract polygon in our `philly_sp` object we need to set it to TRUE.  Then we subset the object with the census tract polygons.
-
-```{r sp-intersect, eval = FALSE}
-philly_buf_intersects <-  gIntersects (philly_buf_sp, philly_sp, byid=TRUE) 
-
-# what kind of object is this?
-class(philly_buf_intersects)
-
-# subset
-philly_sel_sp <- philly_sp[as.vector(philly_buf_intersects),]
-
-# plot
-plot (philly_sp, border="#aaaaaa")
-plot (philly_sel_sp, add=T, col="red") 
-plot (philly_buf_sp, add=T, lwd = 2)
+```{r sf-intersection, results='show'}
+philly_intersection <- st_intersection(philly_buf, philly_sf)
+philly_intersection
+plot(st_geometry(philly_sf), border="#aaaaaa", main="Census tracts around city center, clipped by 2km buffer ")
+plot(philly_intersection, add=T, lwd = 2, border = "red")
 ```
 
 
@@ -238,8 +144,7 @@ Occasionally you may have to change the coordinates of your spatial object into 
 You can reproject
 
   - a `sf` object with `st_transform()`  
-  - a `Spatial*` object with `spTransform()`   
-  - a `raster` object with `projectRaster()`  
+  - a `SpatRaster` object with `project()`  
 
 The perhaps trickiest part here is to determine the definition of the projection, which needs to be a character string in [proj4](http://trac.osgeo.org/proj/) format. You can [look it up online](http://www.spatialreference.org). For example for [UTM zone 33N (EPSG:32633)](http://spatialreference.org/ref/epsg/wgs-84-utm-zone-33n/) the string would be:
 
@@ -248,8 +153,7 @@ The perhaps trickiest part here is to determine the definition of the projection
 You can retrieve the CRS: 
 
   - from an `sf` object with `st_crs()`
-  - from an existing `Spatial*` object with `proj4string()` 
-  - from a `raster` object with `crs()`
+  - from a `SpatRaster` object with `crs()`  
 
 Let us go back to the `"PhillyHomicides"` shapefile we exported earlier. Let's read it back in and reproject it so it matches the projection of the Philadelphia Census tracts.
 
@@ -259,13 +163,13 @@ Now let us check the CRS for both files.
 #If you need to read the file back in:
 #philly_homicides_sf <- st_read("data/PhillyHomicides/")
 
-st_crs(philly_sf)
-st_crs(philly_homicides_sf)
+st_crs(philly_sf)$proj4string
+st_crs(philly_homicides_sf)$proj4string
 ```
 
-We see that the CRS are different: we have `+proj=aea...` and `+proj=longlat...`. AEA refers to [USA Contiguous Albers Equal Area Conic](http://spatialreference.org/ref/esri/102003/) which is a projected coordinate system with numeric units. We will need this below for our spatial operations, so we will make sure both files are in that same CRS. 
+We see that the CRS are different: we have `+proj=aea...` and `+proj=longlat...`. AEA refers to *USA Contiguous Albers Equal Area Conic* which is a projected coordinate system with numeric units. We will need this below for our spatial operations, so we will make sure both files are in that same CRS. 
 
-We use `st_transform` and assign the result to a new object. Note how we also use `str_crs` to extract the projection defitition from `philly_sf`, so we don't have to type it out.
+We use `st_transform` and assign the result to a new object. Note how we also use `str_crs` to extract the projection definition from `philly_sf`, so we don't have to type it out.
 
 ```{r vector-reproject-sf, results='show'}
 philly_homicides_sf_aea <- st_transform(philly_homicides_sf, st_crs(philly_sf))
@@ -293,43 +197,28 @@ st_write(philly_homicides_sf_aea, "data/PhillyHomicides_aea", driver = "ESRI Sha
 ```
 
 
-### For `sp`
-
-Below is the equivalent for `sp` objects. This is very similar, except that we wrap the `CRS` function ariound the result of `proj4string`, because  `spTransform` requires a CRS object.
-
-```{r vector-reproject-sp, eval=FALSE}
-ph_homic_sp <- readOGR("data/PhillyHomicides/", "PhillyHomicides")
-proj4string(philly_sp)
-proj4string(philly_homicides_sp)
-philly_homicides_sp_aea <- spTransform(philly_homicides_sp, CRS(proj4string(philly_sp)))
-
-## check the coordinates ##
-range(coordinates(ph_homic_aea_sp))
-range(coordinates(ph_homic_sp))
-
-## write out
-writeOGR(philly_homicides_sp_aea, "data/PhillyHomicides_AEA", "PhillyHomcides_AEA", driver = "ESRI Shapefile")
-```
-
-
-
 ### Raster reprojection
 
-Here is what it would look like to reproject the HARV raster used earlier to a WGS84 projection. We see that the original projection is in UTM.
+Here is what it would look like to reproject the HARV raster used earlier to a WGS84 projection. We see that see that the original projection is in UTM.
 
 ```{r raster-reproject, tidy=FALSE, warning=FALSE, results='show'}
 # if you need to load again:
 #HARV <- raster("data/HARV_RGB_Ortho.tif")
-crs(HARV)
-HARV_WGS84 <- projectRaster(HARV, crs="+init=epsg:4326")
+crs(HARV, proj = TRUE)
+HARV_WGS84 <- project(HARV, "+init=epsg:4326")
+crs(HARV, proj = TRUE)
 ```
 
 Let's look at the coordinates to see the effect:
 
-```{r raster-reproject-check, tidy=FALSE, warning=FALSE, results='show'}
-extent(HARV)
-extent(HARV_WGS84)
+```{r raster-reproject-ext, tidy=FALSE, warning=FALSE, results='show'}
+ext(HARV)
+ext(HARV_WGS84)
+```
 
+Due to the reprojection the number of cells has also changed:
+
+```{r raster-reproject-cells, tidy=FALSE, warning=FALSE, results='show'}
 ncell(HARV)
 ncell(HARV_WGS84)
 ```
@@ -352,8 +241,6 @@ Now that we have both homicides and census tracts in the same projection we will
 To achieve this this we join the points of homicide incidence to the census tract polygon and count them up for each polygon. You might be familiar with this operation from other GIS packages.
 
 
-### With `sf`
-
 We will use piping and build up our object in the following way. First we calculate the area for each tract. We use the `st_area` function on the geometry column and add the result.
 
 
@@ -372,112 +259,68 @@ philly_sf %>%
   head()
 ```      
 
-Now we can group by a variable that uiquely identifies the census tracts, (we choose _GEOID10_) and use `summarize` to count the points for each tract and calculate the homicide rate. Since our units are in sq meter. multiply by by 1000000 to get sq km. We also need to carry over the area, which I do using `unique`.     
+Now we can group by a variable that uiquely identifies the census tracts, (we choose _GEOID10_) and use `summarize` to count the points for each tract and calculate the homicide rate. Since our units are in sq meter we multiply by by 1000000 to get sq km. We also need to carry over the area, which I do using `unique`.     
 
-We also assign the output to a new object `crime_rate`.
+We also assign the output to a new object `philly_crimes_sf`.
       
 ```{r sf-hom-ratio, results='show'}
-crime_rate <- philly_sf %>% 
+
+philly_crimes_sf <- philly_sf %>%
       mutate(tract_area = st_area(geometry)) %>%
       st_join(philly_homicides_sf_aea) %>%
-      group_by(GEOID10) %>% 
+      group_by(GEOID10) %>%
       summarize(n_homic = n(),
                 tract_area = unique(tract_area),
-                homic_rate = n_homic/tract_area * 1e6) 
-```
-
-
-And here is a simple plot:
-
-```{r sf-hom-ratio-plot, results='show'}
-plot(crime_rate["homic_rate"])
+                homic_rate = as.numeric(1e6 * (n_homic/tract_area))) 
 ```
 
 
 Finally, we write this out for later:
 
 ```{r sf-homiciderate-write, eval=FALSE}
-st_write(crime_rate, "data/PhillyCrimerate", driver = "ESRI Shapefile")
+st_write(philly_crimes_sf, "data/PhillyCrimerate", driver = "ESRI Shapefile")
+```
+
+## Raster calculations with `terra`
+
+We often want to perform calculations on two or more rasters to create a new output raster. For example, if we are interested in mapping the heights of trees across an entire field site, we might want to calculate the difference between the Digital Surface Model (DSM, tops of trees) and the Digital Terrain Model (DTM, ground level). The resulting dataset is referred to as a Canopy Height Model (CHM) and represents the actual height of trees, buildings, etc. with the influence of ground elevation removed.
+
+First let's read in the two datasets.
+
+```{r read-dsm-dtm, results = 'show'}
+HARV_DTM <- rast("data/HARV_dtmCrop.tif")
+HARV_DSM <- rast("data/HARV_dsmCrop.tif")
+```
+
+Now we can subtract the DTM from the DSM to create a Canopy Height Model. It will for each CHM pixel calculate the difference of the respective DTM and DSM pixels.
+
+```{r chm, results = 'show'}
+HARV_CHM <- HARV_DSM - HARV_DTM
+par(mfrow = c(1, 2))
+plot(HARV_CHM)
+hist(HARV_CHM)
 ```
 
 
-### With `sp`
+This works fine for the small rasters in this tutorial. However, the calculation above becomes less efficient when computations are more complex or file sizes become large.
 
-For `sp` objects we can use the `aggregate()` function[^14]. Here are the arguments that it needs:
+Thet `terra` package contains a function called `lapp() `function to make processing more efficient. It takes two or more rasters and applies a function to them. The generic syntax is:
 
-* the `SpatialPointDataframe`with the homicide incidents as point locations,
-* the `SpatialPolygonDataframe` with the census tract polygons to aggregate on, and
-* an aggregate function. Since we are interested in counting the points (i.e. the rows of all the points that belong to a certain polygon), we can use length (of the respective vectors of the aggregated data). 
+    outputRaster <- lapp(x, fun)
 
+where x is a `SpatRasterDataset` and fun is a custom function for the operation you want to perform.
 
-[^14]: There is also an `aggregate()` function in the `stats` package that comes with the R standard install. Note that `sp` extends this function so it can take `Spatial*` objects and aggregate over the geometric features.
-
-
-To count homicides per census tract we can use any field from `ph_homic_aea` for homicide incidents (we chose  `OBJ_ID`) and `philly` polygons to aggregate on and save the result as `ph_hom_count`. Use `length` as aggregate function. 
-
-```{r aggregate-sp, eval=FALSE}
-ph_hom_count_sp <- aggregate(x = ph_homic_aea_sp["OBJ_ID"], by = philly_sp, FUN = length)
-# make sure we understand this error message:
-# aggregate(x = ph_homic_sp, by = philly_sp, FUN = length) 
+```{r lapp, results = 'show'}
+CHM_ov_HARV <- lapp(sds(list(HARV_DSM, HARV_DTM)), 
+                    fun = function(r1, r2) { 
+                      return( r1 - r2) 
+                      })
 ```
 
+As arguments for our `lapp` operation we use the `sds()` function and provide it with the list of rasters that we want to operate on. As custom function we provide the function with two arguments (`r1` and `r1`) that subtracts the second (`r2`) from the first (`r1`) and returns the difference. The output of `lapp` is a `SpatRaster` and we assign it to a new variable `CHM_ov_HARV.`
 
-Now let us investigate the object we created.
-
-```{r inspect-aggr-sp, eval=FALSE}
-class(ph_hom_count_sp)
-names(ph_hom_count_sp)
-head(ph_hom_count_sp)
+```{r plot-lapp, results = 'show'}
+par(mfrow = c(1, 2))
+plot(CHM_ov_HARV)
+hist(CHM_ov_HARV)
 ```
-
-
-Now we can calculate the density of homicides in Philadelphia, normalized over the area for each census tract.
-
-We use `gArea()` from the `rgeos` library. `gArea`, when given a `SpatialPolygon`, calculates the size of the area covered. If we need that calculation for each polygon, we set `byid = TRUE`. Units are in map units.
-
-
-```{r sp-crime-rate, eval=FALSE}
-library(rgeos)
-# we multiply by by 1000000 to get sq km.
-ph_hom_count_sp$homic_dens <- 1e6 * (ph_hom_count_sp$OBJ_ID/gArea(ph_hom_count_sp, byid = FALSE))
-
-hist(ph_hom_count_sp$homic_dens)
-```
-
-
-We will write it out for later. (Note that this will produce an error if the file already exists. You can force it to write out with the option `overwrite_layer = TRUE`)
-
-```{r sp-crime-write, eval=FALSE}
-writeOGR(ph_hom_count_sp, "data/PhillyCrimerate", "PhillyCrimerate", driver = "ESRI Shapefile")
-```
-
-There might be other instances where we don't want to aggregate, but might only want to know which polygon a point falls into. In that case we can use `over()`. In fact, the `aggregate()` function used above makes use of `over()`. See https://cran.r-project.org/web/packages/sp/vignettes/over.pdf for more details on the over-methods. `point.in.poly()` from the [`spatialEco`](https://cran.r-project.org/package=spatialEco) package intersects point and polygons and adds polygon attributes to points. There is also `point.in.polygon()` from the `sp` package which tests if a point or set of points fall in a given polygon.
-
-
-### `sp` - `sf` comparison
-|how to.. | for `sp` objects | for `sf` objects |
-|---|---|---|
-|join attributes| `sp::merge()` | `dplyr::*_join()` (also `sf::merge()`) |
-|reproject | `spTransform()` | `st_transform()`|
-|retrieve (or assign) CRS | `proj4string()` | `st_crs()` |
-|count points in polygons| `over()` | `st_within` and `aggregate()` |
-|buffer|  `rgeos::gBuffer()` (separate package) | `st_buffer()` |
-|select by location | [`g*` functions](https://www.rdocumentation.org/packages/rgeos/) from `rgeos` | [st_* geos functions](https://www.rdocumentation.org/packages/sf/topics/geos) in `sf` |
-
-
-Here are some additional packages that use vector data:
-
-- [`stplanr`](https://CRAN.R-project.org/package=stplanr): Functionality and data access tools for transport planning, including origin-destination analysis, route allocation and modelling travel patterns.
-- [`bikedata`](https://CRAN.R-project.org/package=bikedata): Data from public hire bicycle systems,including London, New York, Chicago, Washington DC, Boston, Los Angeles, and Philadelphia
-
-## `raster` operations
-
->>> to come
-
-Some helpful packages that deal with raster data:
-
-- [`landscapetools`](https://CRAN.R-project.org/package=landscapetools) provides utility functions to complete tasks involved in common landscape analysis.
-- [`getlandsat`](https://CRAN.R-project.org/package=getlandsat): Get Landsat 8 Data from [Amazon Public Data Sets](https://registry.opendata.aws/landsat-8/)
-- [`MODIStsp`](https://CRAN.R-project.org/package=MODIStsp): automates the creation of time series of rasters derived from MODIS Land Products data
-- [`FedData`](https://cran.r-project.org/package=FedData): Download geospatial Data from federated data sources, including the The National Elevation Dataset digital elevation models, the Global Historical Climatology Network, the National Land Cover Database, and more.
-

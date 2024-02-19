@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html >
-
+<html lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 Introduction to spatial data in R | Using Spatial Data with R</title>
-  <meta name="description" content="Workshop materials for Using Spatial Data with R">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="Workshop materials for Using Spatial Data with R" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Introduction to spatial data in R | Using Spatial Data with R" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="Workshop materials for Using Spatial Data with R" />
   <meta name="github-repo" content="cengel/R-spatial" />
@@ -22,24 +20,26 @@
   <meta name="twitter:description" content="Workshop materials for Using Spatial Data with R" />
   
 
-<meta name="author" content="Claudia A Engel">
+<meta name="author" content="Claudia A Engel" />
 
 
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html">
-<link rel="next" href="spatialops.html">
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="spatialops.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
 
 
 
@@ -47,54 +47,90 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.1.17/leaflet-providers.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.2/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-binding-2.2.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.1/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -113,54 +149,36 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="./">Using Spatial Data with R</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites and Preparations</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites and Preparations</a>
+<ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction to spatial data in R</a><ul>
-<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#conceptualizing-spatial-vector-objects-in-r"><i class="fa fa-check"></i><b>1.1</b> Conceptualizing spatial vector objects in R</a><ul>
-<li class="chapter" data-level="1.1.1" data-path="intro.html"><a href="intro.html#the-sp-package"><i class="fa fa-check"></i><b>1.1.1</b> The <code>sp</code> package</a></li>
-<li class="chapter" data-level="1.1.2" data-path="intro.html"><a href="intro.html#the-sf-package"><i class="fa fa-check"></i><b>1.1.2</b> The <code>sf</code> package</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction to spatial data in R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#the-sf-package"><i class="fa fa-check"></i><b>1.1</b> The <code>sf</code> package</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#creating-a-spatial-object-from-a-latlon-table"><i class="fa fa-check"></i><b>1.2</b> Creating a spatial object from a lat/lon table</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#loading-shape-files-into-r"><i class="fa fa-check"></i><b>1.3</b> Loading shape files into R</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#raster-data-in-r"><i class="fa fa-check"></i><b>1.4</b> Raster data in R</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#creating-a-spatial-object-from-a-latlon-table"><i class="fa fa-check"></i><b>1.2</b> Creating a spatial object from a lat/lon table</a><ul>
-<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#with-sf"><i class="fa fa-check"></i><b>1.2.1</b> With <code>sf</code></a></li>
-<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#with-sp"><i class="fa fa-check"></i><b>1.2.2</b> With <code>sp</code></a></li>
+<li class="chapter" data-level="2" data-path="spatialops.html"><a href="spatialops.html"><i class="fa fa-check"></i><b>2</b> Spatial data manipulation in R</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="spatialops.html"><a href="spatialops.html#attribute-join"><i class="fa fa-check"></i><b>2.1</b> Attribute Join</a></li>
+<li class="chapter" data-level="2.2" data-path="spatialops.html"><a href="spatialops.html#topological-subsetting-select-polygons-by-location"><i class="fa fa-check"></i><b>2.2</b> Topological Subsetting: Select Polygons by Location</a></li>
+<li class="chapter" data-level="2.3" data-path="spatialops.html"><a href="spatialops.html#reprojecting"><i class="fa fa-check"></i><b>2.3</b> Reprojecting</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="spatialops.html"><a href="spatialops.html#raster-reprojection"><i class="fa fa-check"></i><b>2.3.1</b> Raster reprojection</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#loading-shape-files-into-r"><i class="fa fa-check"></i><b>1.3</b> Loading shape files into R</a><ul>
-<li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#how-to-do-this-in-sf"><i class="fa fa-check"></i><b>1.3.1</b> How to do this in <code>sf</code></a></li>
-<li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#how-to-work-with-rgdal-and-sp"><i class="fa fa-check"></i><b>1.3.2</b> How to work with <code>rgdal</code> and <code>sp</code></a></li>
+<li class="chapter" data-level="2.4" data-path="spatialops.html"><a href="spatialops.html#spatial-aggregation-points-in-polygons"><i class="fa fa-check"></i><b>2.4</b> Spatial Aggregation: Points in Polygons</a></li>
+<li class="chapter" data-level="2.5" data-path="spatialops.html"><a href="spatialops.html#raster-calculations-with-terra"><i class="fa fa-check"></i><b>2.5</b> Raster calculations with <code>terra</code></a></li>
 </ul></li>
-<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#raster-data-in-r"><i class="fa fa-check"></i><b>1.4</b> Raster data in R</a><ul>
-<li class="chapter" data-level="1.4.1" data-path="intro.html"><a href="intro.html#rasterstack-vs-rasterbrick"><i class="fa fa-check"></i><b>1.4.1</b> RasterStack vs RasterBrick</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="spatialops.html"><a href="spatialops.html"><i class="fa fa-check"></i><b>2</b> Spatial data manipulation in R</a><ul>
-<li class="chapter" data-level="2.1" data-path="spatialops.html"><a href="spatialops.html#attribute-join"><i class="fa fa-check"></i><b>2.1</b> Attribute Join</a><ul>
-<li class="chapter" data-level="2.1.1" data-path="spatialops.html"><a href="spatialops.html#how-to-do-this-in-sf-1"><i class="fa fa-check"></i><b>2.1.1</b> How to do this in <code>sf</code></a></li>
-<li class="chapter" data-level="2.1.2" data-path="spatialops.html"><a href="spatialops.html#the-same-with-sp"><i class="fa fa-check"></i><b>2.1.2</b> The same with <code>sp</code></a></li>
-</ul></li>
-<li class="chapter" data-level="2.2" data-path="spatialops.html"><a href="spatialops.html#topological-subsetting-select-polygons-by-location"><i class="fa fa-check"></i><b>2.2</b> Topological Subsetting: Select Polygons by Location</a><ul>
-<li class="chapter" data-level="2.2.1" data-path="spatialops.html"><a href="spatialops.html#using-the-sf-package"><i class="fa fa-check"></i><b>2.2.1</b> Using the <code>sf</code> package</a></li>
-<li class="chapter" data-level="2.2.2" data-path="spatialops.html"><a href="spatialops.html#using-the-sp-package"><i class="fa fa-check"></i><b>2.2.2</b> Using the <code>sp</code> package</a></li>
-</ul></li>
-<li class="chapter" data-level="2.3" data-path="spatialops.html"><a href="spatialops.html#reprojecting"><i class="fa fa-check"></i><b>2.3</b> Reprojecting</a><ul>
-<li class="chapter" data-level="2.3.1" data-path="spatialops.html"><a href="spatialops.html#for-sp"><i class="fa fa-check"></i><b>2.3.1</b> For <code>sp</code></a></li>
-<li class="chapter" data-level="2.3.2" data-path="spatialops.html"><a href="spatialops.html#raster-reprojection"><i class="fa fa-check"></i><b>2.3.2</b> Raster reprojection</a></li>
-</ul></li>
-<li class="chapter" data-level="2.4" data-path="spatialops.html"><a href="spatialops.html#spatial-aggregation-points-in-polygons"><i class="fa fa-check"></i><b>2.4</b> Spatial Aggregation: Points in Polygons</a><ul>
-<li class="chapter" data-level="2.4.1" data-path="spatialops.html"><a href="spatialops.html#with-sf-1"><i class="fa fa-check"></i><b>2.4.1</b> With <code>sf</code></a></li>
-<li class="chapter" data-level="2.4.2" data-path="spatialops.html"><a href="spatialops.html#with-sp-1"><i class="fa fa-check"></i><b>2.4.2</b> With <code>sp</code></a></li>
-<li class="chapter" data-level="2.4.3" data-path="spatialops.html"><a href="spatialops.html#sp---sf-comparison"><i class="fa fa-check"></i><b>2.4.3</b> <code>sp</code> - <code>sf</code> comparison</a></li>
-</ul></li>
-<li class="chapter" data-level="2.5" data-path="spatialops.html"><a href="spatialops.html#raster-operations"><i class="fa fa-check"></i><b>2.5</b> <code>raster</code> operations</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="mapping.html"><a href="mapping.html"><i class="fa fa-check"></i><b>3</b> Making Maps in R</a><ul>
-<li class="chapter" data-level="3.1" data-path="mapping.html"><a href="mapping.html#plotting-simple-features-sf-with-plot"><i class="fa fa-check"></i><b>3.1</b> Plotting simple features (<code>sf</code>) with <code>plot</code></a></li>
-<li class="chapter" data-level="3.2" data-path="mapping.html"><a href="mapping.html#choropleth-mapping-with-spplot"><i class="fa fa-check"></i><b>3.2</b> Choropleth mapping with <code>spplot</code></a></li>
-<li class="chapter" data-level="3.3" data-path="mapping.html"><a href="mapping.html#choropleth-mapping-with-ggplot2"><i class="fa fa-check"></i><b>3.3</b> Choropleth mapping with <code>ggplot2</code></a></li>
-<li class="chapter" data-level="3.4" data-path="mapping.html"><a href="mapping.html#adding-basemaps-with-ggmap"><i class="fa fa-check"></i><b>3.4</b> Adding basemaps with <code>ggmap</code></a></li>
-<li class="chapter" data-level="3.5" data-path="mapping.html"><a href="mapping.html#choropleth-with-tmap"><i class="fa fa-check"></i><b>3.5</b> Choropleth with <code>tmap</code></a></li>
-<li class="chapter" data-level="3.6" data-path="mapping.html"><a href="mapping.html#web-mapping-with-leaflet"><i class="fa fa-check"></i><b>3.6</b> Web mapping with <code>leaflet</code></a></li>
+<li class="chapter" data-level="3" data-path="mapping.html"><a href="mapping.html"><i class="fa fa-check"></i><b>3</b> Making Maps in R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="mapping.html"><a href="mapping.html#choropleth-mapping-with-ggplot2"><i class="fa fa-check"></i><b>3.1</b> Choropleth Mapping with <code>ggplot2</code></a></li>
+<li class="chapter" data-level="3.2" data-path="mapping.html"><a href="mapping.html#raster-and-ggplot"><i class="fa fa-check"></i><b>3.2</b> Raster and ggplot</a></li>
+<li class="chapter" data-level="3.3" data-path="mapping.html"><a href="mapping.html#choropleth-with-tmap"><i class="fa fa-check"></i><b>3.3</b> Choropleth with <code>tmap</code></a></li>
+<li class="chapter" data-level="3.4" data-path="mapping.html"><a href="mapping.html#raster-with-tmap"><i class="fa fa-check"></i><b>3.4</b> Raster with <code>tmap</code></a></li>
+<li class="chapter" data-level="3.5" data-path="mapping.html"><a href="mapping.html#web-mapping-with-leaflet"><i class="fa fa-check"></i><b>3.5</b> Web mapping with <code>leaflet</code></a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -182,397 +200,268 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="intro" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction to spatial data in R</h1>
+<div id="intro" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Introduction to spatial data in R<a href="intro.html#intro" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <blockquote>
 <p>Learning Objectives</p>
 <ul>
-<li>Create point, line, and polygon shapefiles as <code>sp</code> and <code>sf</code> objects.</li>
-<li>Read shapefiles into <code>sp</code> and <code>sf</code> objects</li>
-<li>Examine <code>sp</code> and <code>sf</code> objects</li>
-<li>Read GeoTiff single and multiband into a <code>raster</code> object.</li>
-<li>Examine <code>raster</code> objects</li>
+<li>Read table with geo coordinates into <code>sf</code> object</li>
+<li>Read shapefiles into <code>sf</code> object</li>
+<li>Examine <code>sf</code> objects</li>
+<li>Use base plot with <code>sf</code> objects and attribute data</li>
+<li>Read GeoTiff single and multiband into a <code>SpatRaster</code> object</li>
+<li>Examine <code>SpatRaster</code> objects</li>
 </ul>
 </blockquote>
 <hr />
-<div id="conceptualizing-spatial-vector-objects-in-r" class="section level2">
-<h2><span class="header-section-number">1.1</span> Conceptualizing spatial vector objects in R</h2>
-<p>In vector GIS we deal with, points, lines, and polygons, like so:</p>
-<p><img src="R-spatial_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<blockquote>
-<h3>
-Challenge
-</h3>
-<p>Discuss with your neighbor: What information do we need to store in order to define points, lines, polygons in geographic space?</p>
-</blockquote>
-<p>There are currently two main approaches in R to handle geographic vector data:</p>
-<div id="the-sp-package" class="section level3">
-<h3><span class="header-section-number">1.1.1</span> The <code>sp</code> package</h3>
-<p>The first general package to provide classes and methods for spatial data types that was developed for R is called <a href="https://cran.r-project.org/package=sp"><code>sp</code></a><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Development of the <code>sp</code> package began in the early 2000s in an attempt to standardize how spatial data would be treated in R and to allow for better interoperability between different analysis packages that use spatial data. The package (first release on CRAN in 2005) provides classes and methods to create <em>points</em>, <em>lines</em>, <em>polygons</em>, and <em>grids</em> and to operate on them. About 350 of the spatial analysis packages use the spatial data types that are implemented in <code>sp</code> i.e. they “depend” on the <code>sp</code> package and many more are indirectly dependent.</p>
-<p>The foundational structure for any spatial object in <code>sp</code> is the <code>Spatial</code> class. It has two “slots” (<a href="http://stackoverflow.com/a/4714080">new-style S4 class objects in R have pre-defined components called slots</a>):</p>
-<ul>
-<li><p>a <strong>bounding box</strong></p></li>
-<li><p>a <strong>CRS class object</strong> to define the Coordinate Reference System</p></li>
-</ul>
-<p>This basic structure is then extended, depending on the characteristics of the spatial object (point, line, polygon).</p>
-<p>To manually build up a spatial object in <code>sp</code> we could follow these steps:</p>
-<blockquote>
-<p><strong>I. Create geometric objects (topology)</strong></p>
-</blockquote>
-<p><strong>Points</strong> (which may have 2 or 3 dimensions) are the most basic spatial data objects. They are generated out of either a single coordinate or a set of coordinates, like a two-column matrix or a dataframe with a column for latitude and one for longitude.<br />
-<strong>Lines</strong> are generated out of <code>Line</code> objects. A <code>Line</code> object is a spaghetti collection of 2D coordinates<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> and is generated out of a two-column matrix or a dataframe with a column for latitude and one for longitude. A <code>Lines</code> object is a <strong>list</strong> of one or more <code>Line</code> objects, for example all the contours at a single elevation.<br />
-<strong>Polygons</strong> are generated out of <code>Polygon</code> objects. A <code>Polygon</code> object is a spaghetti collection of 2D coordinates with equal first and last coordinates and is generated out of a two-column matrix or a dataframe with a column for latitude and one for longitude. A <code>Polygons</code> object is a <strong>list</strong> of one or more <code>Polygon</code> objects, for example islands belonging to the same country.</p>
-<blockquote>
-<p><strong>II. Create spatial objects <code>Spatial*</code> object (<code>*</code> stands for Points, Lines, or Polygons).</strong></p>
-</blockquote>
-<p>This step adds the bounding box (automatically) and the slot for the Coordinate Reference System or CRS (which needs to be filled with a value manually). <code>SpatialPoints</code> can be directly generated out of the coordinates. <code>SpatialLines</code> and <code>SpatialPolygons</code> objects are generated using lists of <code>Lines</code> or <code>Polygons</code> objects respectively (more below).</p>
-<blockquote>
-<p><strong>III. Add attributes (<em>Optional</em>:)</strong></p>
-</blockquote>
-<p>Add a data frame with attribute data, which will turn your <code>Spatial*</code> object into a <code>Spatial*DataFrame</code> object. The points in a <code>SpatialPoints</code> object may be associated with a row of attributes to create a <code>SpatialPointsDataFrame</code> object. The coordinates and attributes may, but do not have to be keyed to each other using ID values.<br />
-<code>SpatialLinesDataFrame</code> and <code>SpatialPolygonsDataFrame</code> objects are defined using <code>SpatialLines</code> and <code>SpatialPolygons</code> objects and data frames. The ID fields are here required to match the data frame row names.</p>
-<p>If, for example we wanted to build up an <code>sp</code> Object that would contain highways we would do the following.</p>
-<p>First we would create a <code>Line</code> object that holds one highway. We use a matrix with two columns of arbitrary numbers, for x and y coordinates.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ln1 &lt;-<span class="st"> </span><span class="kw">Line</span>(<span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">6</span>), <span class="dt">ncol=</span><span class="dv">2</span>))
-<span class="kw">str</span>(ln1)</code></pre></div>
-<pre><code>#&gt; Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   ..@ coords: num [1:3, 1:2] 0.468 0.341 0.407 0.252 0.971 ...</code></pre>
-<p>Note the <code>@ coords</code> slot which holds the coordinates.</p>
-<p>Ok, let’s create another <code>Line</code> object for another highway:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ln2 &lt;-<span class="st"> </span><span class="kw">Line</span>(<span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">6</span>), <span class="dt">ncol=</span><span class="dv">2</span>))</code></pre></div>
-<p>Now we combine the two highways to a <code>Lines</code> object. Note how we add a unique ID for each highway. This step allows to combine generate multiple line strings, so we could add more lines under the same ID.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lns1 &lt;-<span class="st"> </span><span class="kw">Lines</span>(<span class="kw">list</span>(ln1), <span class="dt">ID =</span> <span class="kw">c</span>(<span class="st">&quot;hwy1&quot;</span>)) 
-lns2 &lt;-<span class="st"> </span><span class="kw">Lines</span>(<span class="kw">list</span>(ln2), <span class="dt">ID =</span> <span class="kw">c</span>(<span class="st">&quot;hwy2&quot;</span>)) 
-<span class="kw">str</span>(lns1)</code></pre></div>
-<pre><code>#&gt; Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
-#&gt;   ..@ Lines:List of 1
-#&gt;   .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. ..@ coords: num [1:3, 1:2] 0.468 0.341 0.407 0.252 0.971 ...
-#&gt;   ..@ ID   : chr &quot;hwy1&quot;</code></pre>
-<p>The <code>Line</code> objects are now in a list and we have an additional <code>ID</code> slot, which uniquely identifies each <code>Line</code> object.</p>
-<p>Now we turn this into a geospatial object by creating a <code>SpatialLines</code> object:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sp_lns &lt;-<span class="st"> </span><span class="kw">SpatialLines</span>(<span class="kw">list</span>(lns1, lns2))
-<span class="kw">str</span>(sp_lns)</code></pre></div>
-<pre><code>#&gt; Formal class &#39;SpatialLines&#39; [package &quot;sp&quot;] with 3 slots
-#&gt;   ..@ lines      :List of 2
-#&gt;   .. ..$ :Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
-#&gt;   .. .. .. ..@ Lines:List of 1
-#&gt;   .. .. .. .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.468 0.341 0.407 0.252 0.971 ...
-#&gt;   .. .. .. ..@ ID   : chr &quot;hwy1&quot;
-#&gt;   .. ..$ :Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
-#&gt;   .. .. .. ..@ Lines:List of 1
-#&gt;   .. .. .. .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.926 0.813 0.584 0.384 0.196 ...
-#&gt;   .. .. .. ..@ ID   : chr &quot;hwy2&quot;
-#&gt;   ..@ bbox       : num [1:2, 1:2] 0.341 0.196 0.926 0.971
-#&gt;   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
-#&gt;   .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
-#&gt;   .. .. ..$ : chr [1:2] &quot;min&quot; &quot;max&quot;
-#&gt;   ..@ proj4string:Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. ..@ projargs: chr NA</code></pre>
-<p>Note how this adds the <code>@ bbox</code> with the bounding box coordinates and <code>@ proj4string</code> to hold the Coordinate Reference System - in our case <code>NA</code> as we have not assigned any projection.</p>
-<p>Finally we create some attributes to each highway and create a <code>SpatialLinesDataframe</code>. The way we do this is that we create a regular <code>data.frame</code> and join it to the spatial object via the unique ID.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfr &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="kw">c</span>(<span class="st">&quot;hwy1&quot;</span>, <span class="st">&quot;hwy2&quot;</span>), <span class="co"># note how we use the same IDs from above!</span>
-                  <span class="dt">cars_per_hour =</span> <span class="kw">c</span>(<span class="dv">78</span>, <span class="dv">22</span>)) 
-sp_lns_dfr &lt;-<span class="st"> </span><span class="kw">SpatialLinesDataFrame</span>(sp_lns, dfr, <span class="dt">match.ID =</span> <span class="st">&quot;id&quot;</span>)
-<span class="kw">str</span>(sp_lns_dfr)</code></pre></div>
-<pre><code>#&gt; Formal class &#39;SpatialLinesDataFrame&#39; [package &quot;sp&quot;] with 4 slots
-#&gt;   ..@ data       :&#39;data.frame&#39;:  2 obs. of  2 variables:
-#&gt;   .. ..$ id           : Factor w/ 2 levels &quot;hwy1&quot;,&quot;hwy2&quot;: 1 2
-#&gt;   .. ..$ cars_per_hour: num [1:2] 78 22
-#&gt;   ..@ lines      :List of 2
-#&gt;   .. ..$ :Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
-#&gt;   .. .. .. ..@ Lines:List of 1
-#&gt;   .. .. .. .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.468 0.341 0.407 0.252 0.971 ...
-#&gt;   .. .. .. ..@ ID   : chr &quot;hwy1&quot;
-#&gt;   .. ..$ :Formal class &#39;Lines&#39; [package &quot;sp&quot;] with 2 slots
-#&gt;   .. .. .. ..@ Lines:List of 1
-#&gt;   .. .. .. .. ..$ :Formal class &#39;Line&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. .. .. .. .. ..@ coords: num [1:3, 1:2] 0.926 0.813 0.584 0.384 0.196 ...
-#&gt;   .. .. .. ..@ ID   : chr &quot;hwy2&quot;
-#&gt;   ..@ bbox       : num [1:2, 1:2] 0.341 0.196 0.926 0.971
-#&gt;   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
-#&gt;   .. .. ..$ : chr [1:2] &quot;x&quot; &quot;y&quot;
-#&gt;   .. .. ..$ : chr [1:2] &quot;min&quot; &quot;max&quot;
-#&gt;   ..@ proj4string:Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot
-#&gt;   .. .. ..@ projargs: chr NA</code></pre>
-<p>Note the additional <code>@ data</code> slot here, where we find the attribute information.</p>
-<p>There are a number of spatial methods are available for the object classes in <code>sp</code>. Among the ones I use more frequently are:</p>
-<table style="width:94%;">
-<colgroup>
-<col width="18%" />
-<col width="76%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>function</th>
-<th>and what it does</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>bbox()</code></td>
-<td>returns the bounding box coordinates</td>
-</tr>
-<tr class="even">
-<td><code>proj4string()</code></td>
-<td>sets or retrieves projection attributes as object of the <code>CRS</code> class.</td>
-</tr>
-<tr class="odd">
-<td><code>CRS()</code></td>
-<td>creates an object of class of coordinate reference system arguments</td>
-</tr>
-<tr class="even">
-<td><code>spplot()</code></td>
-<td>plots a separate map of all the attributes unless specified otherwise</td>
-</tr>
-<tr class="odd">
-<td><code>coordinates()</code></td>
-<td>set or retrieve the spatial coordinates. For spatial polygons it returns the centroids.</td>
-</tr>
-<tr class="even">
-<td><code>over(a, b)</code></td>
-<td>used for example to retrieve the polygon or grid indices on a set of points</td>
-</tr>
-<tr class="odd">
-<td><code>spsample()</code></td>
-<td>sampling of spatial points within the spatial extent of objects</td>
-</tr>
-</tbody>
-</table>
+<div id="the-sf-package" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> The <code>sf</code> package<a href="intro.html#the-sf-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The <a href="https://cran.r-project.org/package=sf"><code>sf</code></a><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> package was first released on CRAN in late October 2016, and has in the mean time superseded the original R Package for storing and manipulating spatial data, <a href="https://CRAN.R-project.org/package=sp"><code>sp</code></a>, which was first released in 2005. <code>sp</code> is still actively maintained, but less often used now, so you should be aware of it, but we will not teach it here.</p>
+<div class="figure"><span style="display:block;" id="fig:spsf-dl"></span>
+<img src="img/spsf_downloads.png" alt="sf vs sp downloads on CRAN" width="100%" />
+<p class="caption">
+Figure 1.1: sf vs sp downloads on CRAN
+</p>
 </div>
-<div id="the-sf-package" class="section level3">
-<h3><span class="header-section-number">1.1.2</span> The <code>sf</code> package</h3>
-<p>The second package, first released on CRAN in late October 2016, is called <a href="https://cran.r-project.org/package=sf"><code>sf</code></a><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>. It implements a formal standard called <a href="https://en.wikipedia.org/wiki/Simple_Features">“Simple Features”</a> that specifies a storage and access model of spatial geometries (point, line, polygon). A feature geometry is called simple when it consists of points connected by straight line pieces, and does not intersect itself. This standard has been adopted widely, not only by spatial databases such as PostGIS, but also more recent standards such as GeoJSON.</p>
+<p><code>sf</code> implements a formal standard called <a href="https://en.wikipedia.org/wiki/Simple_Features">“Simple Features”</a> that specifies a storage and access model of spatial geometries (point, line, polygon). A feature geometry is called simple when it consists of points connected by straight line pieces, and does not intersect itself. This standard has been adopted widely, not only by spatial databases such as PostGIS, but also more recent standards such as GeoJSON.</p>
 <p>If you work with PostGis or GeoJSON you may have come across the <a href="https://en.wikipedia.org/wiki/Well-known_text">WKT (well-known text)</a> format (Fig 1.1 and 1.2)</p>
-<div class="figure"><span id="fig:wkt-primitives"></span>
+<div class="figure"><span style="display:block;" id="fig:wkt-primitives"></span>
 <img src="img/wkt_primitives.png" alt="Well-Known-Text Geometry primitives  (wikipedia)" width="100%" />
 <p class="caption">
-Figure 1.1: Well-Known-Text Geometry primitives (wikipedia)
+Figure 1.2: Well-Known-Text Geometry primitives (wikipedia)
 </p>
 </div>
-<div class="figure"><span id="fig:wkt-multipart"></span>
+<div class="figure"><span style="display:block;" id="fig:wkt-multipart"></span>
 <img src="img/wkt_multipart.png" alt="Well-Known-Text Multipart geometries (wikipedia)" width="100%" />
 <p class="caption">
-Figure 1.2: Well-Known-Text Multipart geometries (wikipedia)
+Figure 1.3: Well-Known-Text Multipart geometries (wikipedia)
 </p>
 </div>
-<p><code>sf</code> implements this standard natively in R. Data are structured and conceptualized very differently from the <code>sp</code> approach.</p>
-<p>In <code>sf</code> spatial objects are stored as a simple data frame with a special column that contains the information for the geometry coordinates. That special column is a list with the same length as the number of rows in the data frame. Each of the individual list elements then can be of any length needed to hold the coordinates that correspond to an individual feature.</p>
-<p>To create a spatial <code>sf</code> object manually the basic steps would be:</p>
+<p><code>sf</code> implements this standard natively in R. In <code>sf</code> spatial objects are stored as a tabular format (data frame) with a special column that contains the information for the geometry coordinates. That special column holds a list with the same length as the number of rows in the data frame. Each of the individual list elements then can be of any length needed to hold the coordinates that correspond to an individual feature.</p>
+<p><code>sf</code> objects are built up using the following structures:</p>
+<ol style="list-style-type: decimal">
+<li><code>sfg</code> - simple feature geometry (one feature)</li>
+<li><code>sfc</code> - simple feature collection (a collection of <code>sfg</code>)</li>
+<li><code>sf</code> - simple feature object (<code>sfc</code> with data attributes)</li>
+</ol>
+<p>So to create a spatial <code>sf</code> object manually the basic steps would be:</p>
 <blockquote>
 <p><strong>I. Create geometric objects (topology)</strong></p>
 </blockquote>
-<p>Geometric objects (simple features) can be created from a numeric vector, matrix or a list with the coordinates. They are called <code>sfg</code> objects for Simple Feature Geometry.b Similarly to <code>sp</code> there are functions that help create simple feature geometries, like <code>st_point()</code>, <code>st_linestring()</code>, <code>st_polygon()</code> and more.</p>
+<p>Geometric objects (simple features) can be created from a numeric vector, matrix or a list with the coordinates. They are called <code>sfg</code> objects for Simple Feature Geometry.b There are functions that help create simple feature geometries, like <code>st_point()</code>, <code>st_linestring()</code>, <code>st_polygon()</code> and more.</p>
 <blockquote>
 <p><strong>II. Combine all individual single feature objects for the special column.</strong></p>
 </blockquote>
 <p>The feature geometries are then combined into a Simple Feature Collection with <code>st_sfc()</code>. which is nothing other than a simple feature geometry list-column. The <code>sfc</code> object also holds the bounding box and the projection information.</p>
 <blockquote>
-<ol start="3" style="list-style-type: upper-roman">
-<li>Add attributes.</li>
-</ol>
+<p><strong>III. Add attributes</strong>.</p>
 </blockquote>
 <p>Lastly, we add the attributes to the the simple feature collection with the <code>st_sf()</code> function. This function extends the well known data frame in R with a column that holds the simple feature collection.</p>
-<p>So if we created the same highway object from above as <code>sf</code> object we would first generate LINESTRINGs as simple feature geometries out of a matrix with coordinates:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lnstr_sfg1 &lt;-<span class="st"> </span><span class="kw">st_linestring</span>(<span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">6</span>), <span class="dt">ncol=</span><span class="dv">2</span>)) 
-lnstr_sfg2 &lt;-<span class="st"> </span><span class="kw">st_linestring</span>(<span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">6</span>), <span class="dt">ncol=</span><span class="dv">2</span>)) 
-<span class="kw">class</span>(lnstr_sfg1)</code></pre></div>
+<p>To create a network of highways we would first generate LINESTRINGs as simple feature geometries out of a matrix with coordinates:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="intro.html#cb2-1" tabindex="-1"></a>lnstr_sfg1 <span class="ot">&lt;-</span> <span class="fu">st_linestring</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">6</span>), <span class="at">ncol=</span><span class="dv">2</span>)) </span>
+<span id="cb2-2"><a href="intro.html#cb2-2" tabindex="-1"></a>lnstr_sfg2 <span class="ot">&lt;-</span> <span class="fu">st_linestring</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">6</span>), <span class="at">ncol=</span><span class="dv">2</span>)) </span>
+<span id="cb2-3"><a href="intro.html#cb2-3" tabindex="-1"></a><span class="fu">class</span>(lnstr_sfg1)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;XY&quot;         &quot;LINESTRING&quot; &quot;sfg&quot;</code></pre>
 <p>We would then combine this into a simple feature collection :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(lnstr_sfc &lt;-<span class="st"> </span><span class="kw">st_sfc</span>(lnstr_sfg1, lnstr_sfg2)) <span class="co"># just one feature here</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="intro.html#cb4-1" tabindex="-1"></a>(lnstr_sfc <span class="ot">&lt;-</span> <span class="fu">st_sfc</span>(lnstr_sfg1, lnstr_sfg2)) </span></code></pre></div>
 <pre><code>#&gt; Geometry set for 2 features 
-#&gt; geometry type:  LINESTRING
-#&gt; dimension:      XY
-#&gt; bbox:           xmin: 0.1160083 ymin: 0.07180527 xmax: 0.8961863 ymax: 0.8873388
-#&gt; epsg (SRID):    NA
-#&gt; proj4string:    NA</code></pre>
-<pre><code>#&gt; LINESTRING (0.266583 0.6571762, 0.2915551 0.887...</code></pre>
-<pre><code>#&gt; LINESTRING (0.8961863 0.5288989, 0.7907187 0.43...</code></pre>
-<p>And lastly use our data frame from above to generate the <code>sf</code> object:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(lnstr_sf &lt;-<span class="st"> </span><span class="kw">st_sf</span>(dfr , lnstr_sfc))</code></pre></div>
+#&gt; Geometry type: LINESTRING
+#&gt; Dimension:     XY
+#&gt; Bounding box:  xmin: 0.1766943 ymin: 0.08299711 xmax: 0.7724545 ymax: 0.7783025
+#&gt; CRS:           NA</code></pre>
+<pre><code>#&gt; LINESTRING (0.1766943 0.2560145, 0.614864 0.725...</code></pre>
+<pre><code>#&gt; LINESTRING (0.7724545 0.7783025, 0.5389782 0.08...</code></pre>
+<p>And lastly create a data frame from above to generate the <code>sf</code> object:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="intro.html#cb8-1" tabindex="-1"></a>dfr <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="fu">c</span>(<span class="st">&quot;hwy1&quot;</span>, <span class="st">&quot;hwy2&quot;</span>), </span>
+<span id="cb8-2"><a href="intro.html#cb8-2" tabindex="-1"></a>                  <span class="at">cars_per_hour =</span> <span class="fu">c</span>(<span class="dv">78</span>, <span class="dv">22</span>))</span>
+<span id="cb8-3"><a href="intro.html#cb8-3" tabindex="-1"></a>(lnstr_sf <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(dfr , lnstr_sfc))</span></code></pre></div>
 <pre><code>#&gt; Simple feature collection with 2 features and 2 fields
-#&gt; geometry type:  LINESTRING
-#&gt; dimension:      XY
-#&gt; bbox:           xmin: 0.1160083 ymin: 0.07180527 xmax: 0.8961863 ymax: 0.8873388
-#&gt; epsg (SRID):    NA
-#&gt; proj4string:    NA
+#&gt; Geometry type: LINESTRING
+#&gt; Dimension:     XY
+#&gt; Bounding box:  xmin: 0.1766943 ymin: 0.08299711 xmax: 0.7724545 ymax: 0.7783025
+#&gt; CRS:           NA
 #&gt;     id cars_per_hour                      lnstr_sfc
-#&gt; 1 hwy1            78 LINESTRING (0.266583 0.6571...
-#&gt; 2 hwy2            22 LINESTRING (0.8961863 0.528...</code></pre>
+#&gt; 1 hwy1            78 LINESTRING (0.1766943 0.256...
+#&gt; 2 hwy2            22 LINESTRING (0.7724545 0.778...</code></pre>
 <p>There are many methods available in the <code>sf</code> package, to find out use</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">methods</span>(<span class="dt">class=</span><span class="st">&quot;sf&quot;</span>)</code></pre></div>
-<pre><code>#&gt;  [1] [                     [[&lt;-                  $&lt;-                  
-#&gt;  [4] aggregate             as.data.frame         cbind                
-#&gt;  [7] coerce                dbDataType            dbWriteTable         
-#&gt; [10] extent                extract               identify             
-#&gt; [13] initialize            mask                  merge                
-#&gt; [16] plot                  print                 raster               
-#&gt; [19] rasterize             rbind                 show                 
-#&gt; [22] slotsFromS3           st_agr                st_agr&lt;-             
-#&gt; [25] st_area               st_as_sf              st_bbox              
-#&gt; [28] st_boundary           st_buffer             st_cast              
-#&gt; [31] st_centroid           st_collection_extract st_convex_hull       
-#&gt; [34] st_coordinates        st_crop               st_crs               
-#&gt; [37] st_crs&lt;-              st_difference         st_geometry          
-#&gt; [40] st_geometry&lt;-         st_intersection       st_is                
-#&gt; [43] st_line_merge         st_nearest_points     st_node              
-#&gt; [46] st_point_on_surface   st_polygonize         st_precision         
-#&gt; [49] st_segmentize         st_set_precision      st_simplify          
-#&gt; [52] st_snap               st_sym_difference     st_transform         
-#&gt; [55] st_triangulate        st_union              st_voronoi           
-#&gt; [58] st_wrap_dateline      st_write              st_zm                
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="intro.html#cb10-1" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class=</span><span class="st">&quot;sf&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt;   [1] [                            [[&lt;-                        
+#&gt;   [3] [&lt;-                          $&lt;-                         
+#&gt;   [5] aggregate                    anti_join                   
+#&gt;   [7] arrange                      as.data.frame               
+#&gt;   [9] cbind                        coerce                      
+#&gt;  [11] crs                          dbDataType                  
+#&gt;  [13] dbWriteTable                 distance                    
+#&gt;  [15] distinct                     dplyr_reconstruct           
+#&gt;  [17] drop_na                      duplicated                  
+#&gt;  [19] ext                          extract                     
+#&gt;  [21] filter                       full_join                   
+#&gt;  [23] gather                       group_by                    
+#&gt;  [25] group_split                  identify                    
+#&gt;  [27] initialize                   inner_join                  
+#&gt;  [29] left_join                    lines                       
+#&gt;  [31] mask                         merge                       
+#&gt;  [33] mutate                       nest                        
+#&gt;  [35] pivot_longer                 pivot_wider                 
+#&gt;  [37] plot                         points                      
+#&gt;  [39] polys                        print                       
+#&gt;  [41] rasterize                    rbind                       
+#&gt;  [43] rename_with                  rename                      
+#&gt;  [45] right_join                   rowwise                     
+#&gt;  [47] sample_frac                  sample_n                    
+#&gt;  [49] select                       semi_join                   
+#&gt;  [51] separate_rows                separate                    
+#&gt;  [53] show                         slice                       
+#&gt;  [55] slotsFromS3                  spread                      
+#&gt;  [57] st_agr                       st_agr&lt;-                    
+#&gt;  [59] st_area                      st_as_s2                    
+#&gt;  [61] st_as_sf                     st_as_sfc                   
+#&gt;  [63] st_bbox                      st_boundary                 
+#&gt;  [65] st_break_antimeridian        st_buffer                   
+#&gt;  [67] st_cast                      st_centroid                 
+#&gt;  [69] st_collection_extract        st_concave_hull             
+#&gt;  [71] st_convex_hull               st_coordinates              
+#&gt;  [73] st_crop                      st_crs                      
+#&gt;  [75] st_crs&lt;-                     st_difference               
+#&gt;  [77] st_drop_geometry             st_filter                   
+#&gt;  [79] st_geometry                  st_geometry&lt;-               
+#&gt;  [81] st_inscribed_circle          st_interpolate_aw           
+#&gt;  [83] st_intersection              st_intersects               
+#&gt;  [85] st_is_valid                  st_is                       
+#&gt;  [87] st_join                      st_line_merge               
+#&gt;  [89] st_m_range                   st_make_valid               
+#&gt;  [91] st_minimum_rotated_rectangle st_nearest_points           
+#&gt;  [93] st_node                      st_normalize                
+#&gt;  [95] st_point_on_surface          st_polygonize               
+#&gt;  [97] st_precision                 st_reverse                  
+#&gt;  [99] st_sample                    st_segmentize               
+#&gt; [101] st_set_precision             st_shift_longitude          
+#&gt; [103] st_simplify                  st_snap                     
+#&gt; [105] st_sym_difference            st_transform                
+#&gt; [107] st_triangulate_constrained   st_triangulate              
+#&gt; [109] st_union                     st_voronoi                  
+#&gt; [111] st_wrap_dateline             st_write                    
+#&gt; [113] st_z_range                   st_zm                       
+#&gt; [115] summarise                    svc                         
+#&gt; [117] transform                    transmute                   
+#&gt; [119] ungroup                      unite                       
+#&gt; [121] unnest                       vect                        
 #&gt; see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>Here are some of the other highlights of <code>sf</code> you might be interested in:</p>
 <ul>
-<li><p>provides <strong>fast</strong> I/O, particularly relevant for large files</p></li>
-<li>spatial fuctions that rely on GEOS and GDAL and PROJ external libraries are directluy linked into the package, so no need to load additional external packages (like in <code>sp</code>)<br />
-</li>
-<li><p><code>sf</code> objects can be plotted directly with <code>ggplot</code></p></li>
-<li><p><code>sf</code> directly reads from and writes to spatial <strong>databases</strong> such as PostGIS</p></li>
-<li><p><code>sf</code> is compatible with the <a href="https://www.tidyverse.org/"><code>tidyvderse</code> approach</a>, (but see some <a href="https://geocompr.github.io/geocompkg/articles/tidyverse-pitfalls.html">pitfalls here</a>)</p></li>
+<li>provides <strong>fast</strong> I/O, particularly relevant for large files</li>
+<li>spatial functions that rely on GEOS and GDAL and PROJ external libraries are directly linked into the package, so no need to load additional external packages (like in <code>sp</code>)</li>
+<li><code>sf</code> objects can be plotted directly with <code>ggplot</code></li>
+<li><code>sf</code> directly reads from and writes to spatial <strong>databases</strong> such as PostGIS</li>
+<li><code>sf</code> is compatible with the <a href="https://www.tidyverse.org/"><code>tidyvderse</code> approach</a>, (but see some <a href="https://geocompr.github.io/geocompkg/articles/tidyverse-pitfalls.html">pitfalls here</a>)</li>
 </ul>
 <p>Note that <code>sp</code> and <code>sf</code> are not the only way spatial objects are conceptualized in R. Other spatial packages may use their own class definitions for spatial data (for example <code>spatstat</code>).</p>
-<p>There are packages specifically for the <a href="https://tools.ietf.org/html/rfc7946">GeoJSON</a> and for that reason are more lightweight, for example:</p>
-<ul>
-<li><a href="https://cran.r-project.org/package=geojson"><code>geojson</code></a> and<br />
-</li>
-<li><a href="https://CRAN.R-project.org/package=geoops"><code>geoops</code></a> - (<a href="https://cran.r-project.org/web/packages/geoops/vignettes/geoops_vignette.html">demo</a>)</li>
-</ul>
-<p>Usuallly you can find functions that convert objects to and from these formats.</p>
+<p>There are packages specifically for the <a href="https://tools.ietf.org/html/rfc7946">GeoJSON</a> and for that reason are more lightweight, for example <a href="https://cran.r-project.org/package=geojson"><code>geojson</code></a></p>
+<p>Usually you can find functions that convert objects to and from these formats.</p>
 <blockquote>
 <h3>
 Challenge
 </h3>
-<p>Similarly to the example above generate a Point object in R. Use both, the <code>sp</code> and the <code>sf</code> “approach”.</p>
+<p>Generate an <code>sf</code> point object.</p>
 <ol style="list-style-type: decimal">
 <li>Create a matrix <code>pts</code> of random numbers with two columns and as many rows as you like. These are your points.</li>
 <li>Create a dataframe <code>attrib_df</code> with the same number of rows as your <code>pts</code> matrix and a column that holds an attribute. You can make up any attribute.</li>
-<li>Use the appropriate commands and <code>pts</code> to create</li>
-</ol>
-<ul>
-<li>a <code>SpatialPointsDataFrame</code> and</li>
-<li>an <code>sf</code> object with a gemoetry column of class <code>sfc_POINT</code>.</li>
-</ul>
-<ol start="4" style="list-style-type: decimal">
+<li>Use the appropriate commands and <code>pts</code> an <code>sf</code> object with a gemoetry column of class <code>sfc_POINT</code>.</li>
 <li>Try to subset your spatial object using the attribute you have added and the way you are used to from regular data frames.</li>
 <li>How do you determine the bounding box of your spatial object?</li>
 </ol>
 </blockquote>
 </div>
-</div>
-<div id="creating-a-spatial-object-from-a-latlon-table" class="section level2">
-<h2><span class="header-section-number">1.2</span> Creating a spatial object from a lat/lon table</h2>
-<p>Often in your research might have a spreadsheet that contains latitude, longitude and perhaps some attribute values. You know how to read the spreadsheet into a data frame with <code>read.table</code> or <code>read.csv</code>. We can then very easily convert the table into a spatial object in R.</p>
-<div id="with-sf" class="section level3">
-<h3><span class="header-section-number">1.2.1</span> With <code>sf</code></h3>
+<div id="creating-a-spatial-object-from-a-latlon-table" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Creating a spatial object from a lat/lon table<a href="intro.html#creating-a-spatial-object-from-a-latlon-table" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Often in your research might have a spreadsheet that contains latitude, longitude and perhaps some attribute values. You know how to read the spreadsheet into a tabular format (tibble) with <code>dplyr::read_table</code> or <code>dplyr::read_csv</code>. We can then very easily convert the table into a spatial object in R.</p>
 <p>An <code>sf</code> object can be created from a data frame in the following way. We take advantage of the <code>st_as_sf()</code> function which converts any foreign object into an <code>sf</code> object. Similarly to above, it requires an argument <code>coords</code>, which in the case of point data needs to be a vector that specifies the data frame’s columns for the longitude and latitude (x,y) coordinates.</p>
 <pre><code>my_sf_object &lt;- st_as_sf(myDataframe, coords)</code></pre>
 <p><code>st_as_sf()</code> creates a new object and leaves the original data frame untouched.</p>
-<p>We use <code>read.csv()</code> to read <code>philly_homicides.csv</code> into a dataframe in R and name it <code>philly_homicides_df</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">philly_homicides_df &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/philly_homicides.csv&quot;</span>)
-<span class="kw">str</span>(philly_homicides_df )</code></pre></div>
-<pre><code>#&gt; &#39;data.frame&#39;:    3883 obs. of  10 variables:
-#&gt;  $ DC_DIST          : int  22 1 1 1 1 1 1 1 1 1 ...
-#&gt;  $ SECTOR           : Factor w/ 30 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 1 6 6 6 9 10 6 14 14 5 ...
-#&gt;  $ DISPATCH_DATE    : Factor w/ 2228 levels &quot;2006-01-01&quot;,&quot;2006-01-02&quot;,..: 2139 10 62 90 125 132 133 139 199 211 ...
-#&gt;  $ DISPATCH_TIME    : Factor w/ 1263 levels &quot;00:00:00&quot;,&quot;00:01:00&quot;,..: 799 1 804 561 633 981 1224 86 1063 1013 ...
-#&gt;  $ LOCATION_BLOCK   : Factor w/ 3305 levels &quot; 100 E CHAMPLOST AVE&quot;,..: 595 745 3135 806 828 588 579 853 883 625 ...
-#&gt;  $ UCR_GENERAL      : int  100 100 100 100 100 100 100 100 100 100 ...
-#&gt;  $ OBJ_ID           : int  1 1 1 1 1 1 1 1 1 1 ...
-#&gt;  $ TEXT_GENERAL_CODE: Factor w/ 4 levels &quot;Homicide - Criminal&quot;,..: 1 1 1 1 1 2 1 1 1 1 ...
-#&gt;  $ POINT_X          : num  -75.2 -75.2 -75.2 -75.2 -75.2 ...
-#&gt;  $ POINT_Y          : num  40 39.9 39.9 39.9 39.9 ...</code></pre>
+<p>We use <code>read_csv()</code> to read <code>philly_homicides.csv</code> into a tibble in R and name it <code>philly_homicides_df</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="intro.html#cb13-1" tabindex="-1"></a>philly_homicides_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/philly_homicides.csv&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Rows: 3883 Columns: 10
+#&gt; ── Column specification ────────────────────────────────────────────────────────
+#&gt; Delimiter: &quot;,&quot;
+#&gt; chr  (3): SECTOR, LOCATION_BLOCK, TEXT_GENERAL_CODE
+#&gt; dbl  (5): DC_DIST, UCR_GENERAL, OBJ_ID, POINT_X, POINT_Y
+#&gt; date (1): DISPATCH_DATE
+#&gt; time (1): DISPATCH_TIME
+#&gt; 
+#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.
+#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <p>We convert the <code>philly_homicides_df</code> data frame into an <code>sf</code> object with <code>st_as_sf()</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">philly_homicides_sf &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(philly_homicides_df, <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;POINT_X&quot;</span>, <span class="st">&quot;POINT_Y&quot;</span>))
-<span class="kw">str</span>(philly_homicides_sf)</code></pre></div>
-<pre><code>#&gt; Classes &#39;sf&#39; and &#39;data.frame&#39;:   3883 obs. of  9 variables:
-#&gt;  $ DC_DIST          : int  22 1 1 1 1 1 1 1 1 1 ...
-#&gt;  $ SECTOR           : Factor w/ 30 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 1 6 6 6 9 10 6 14 14 5 ...
-#&gt;  $ DISPATCH_DATE    : Factor w/ 2228 levels &quot;2006-01-01&quot;,&quot;2006-01-02&quot;,..: 2139 10 62 90 125 132 133 139 199 211 ...
-#&gt;  $ DISPATCH_TIME    : Factor w/ 1263 levels &quot;00:00:00&quot;,&quot;00:01:00&quot;,..: 799 1 804 561 633 981 1224 86 1063 1013 ...
-#&gt;  $ LOCATION_BLOCK   : Factor w/ 3305 levels &quot; 100 E CHAMPLOST AVE&quot;,..: 595 745 3135 806 828 588 579 853 883 625 ...
-#&gt;  $ UCR_GENERAL      : int  100 100 100 100 100 100 100 100 100 100 ...
-#&gt;  $ OBJ_ID           : int  1 1 1 1 1 1 1 1 1 1 ...
-#&gt;  $ TEXT_GENERAL_CODE: Factor w/ 4 levels &quot;Homicide - Criminal&quot;,..: 1 1 1 1 1 2 1 1 1 1 ...
-#&gt;  $ geometry         :sfc_POINT of length 3883; first list element:  &#39;XY&#39; num  -75.2 40
-#&gt;  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
-#&gt;  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA NA NA
-#&gt;   ..- attr(*, &quot;names&quot;)= chr  &quot;DC_DIST&quot; &quot;SECTOR&quot; &quot;DISPATCH_DATE&quot; &quot;DISPATCH_TIME&quot; ...</code></pre>
-<p>Note the additional <strong>geometry</strong> list-column which now holds the simple feature collection with the coordinates of all the points.</p>
-<p>To make it a complete geographical object we assign the WGS84 projection, which has the EPSG code 4326:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(philly_homicides_sf)</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="intro.html#cb15-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb15-2"><a href="intro.html#cb15-2" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="intro.html#cb15-3" tabindex="-1"></a>philly_homicides_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(philly_homicides_df, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;POINT_X&quot;</span>, <span class="st">&quot;POINT_Y&quot;</span>))</span>
+<span id="cb15-4"><a href="intro.html#cb15-4" tabindex="-1"></a><span class="fu">names</span>(philly_homicides_sf)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;DC_DIST&quot;           &quot;SECTOR&quot;            &quot;DISPATCH_DATE&quot;    
+#&gt; [4] &quot;DISPATCH_TIME&quot;     &quot;LOCATION_BLOCK&quot;    &quot;UCR_GENERAL&quot;      
+#&gt; [7] &quot;OBJ_ID&quot;            &quot;TEXT_GENERAL_CODE&quot; &quot;geometry&quot;</code></pre>
+<p>Note the additional <strong>geometry</strong> list-column which now holds the simple feature collection with the coordinates of all the points. We now use <code>st_crs()</code> to check on the projection.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="intro.html#cb17-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)</span></code></pre></div>
 <pre><code>#&gt; Coordinate Reference System: NA</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(philly_homicides_sf) &lt;-<span class="st"> </span><span class="dv">4326</span> <span class="co"># we can use EPSG as numeric here</span>
-<span class="kw">st_crs</span>(philly_homicides_sf)</code></pre></div>
-<pre><code>#&gt; Coordinate Reference System:
-#&gt;   EPSG: 4326 
-#&gt;   proj4string: &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
-<p>We will save this object as a shapefile on our hard drive for later use. (Note that by default <code>st_write</code> checks if the file already exists, and if so it will not overwrite it. If you need to force it to overwrite use the option <code>delete_layer = TRUE</code>.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_write</span>(philly_homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="dt">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)
-<span class="co"># to force the save: </span>
-<span class="kw">st_write</span>(philly_homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="dt">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="dt">delete_layer =</span> <span class="ot">TRUE</span>)</code></pre></div>
-</div>
-<div id="with-sp" class="section level3">
-<h3><span class="header-section-number">1.2.2</span> With <code>sp</code></h3>
-<p>A <code>SpatialPointsDataFrame</code> object can be created directly from a table by specifying which columns contain the coordinates. This can be done in one step by using the <code>coordinates()</code> function. As mentioned above this function can be used not only to retrieve spatial coordinates but also to set them, which is done in R fashion with:</p>
-<pre><code>coordinates(myDataframe) &lt;- value</code></pre>
-<p><code>value</code> can have different forms – in this context needs to be a character vector which specifies the data frame’s columns for the longitude and latitude (x,y) coordinates.</p>
-<p>If we use this on a data frame it automatically converts the data frame object into a <code>SpatialPointsDataFrame</code> object.</p>
-<p>Below, we convert the <code>philly_homicides_df</code> data frame into a spatial object with using the <code>coordinates</code> function and check with <code>class(philly_homicides_df)</code>again to examine which object class the table belongs to now. Note that the <code>coordinates()</code> function if used in this way <strong>replaces the original data frame.</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">coordinates</span>(philly_homicides_df) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;POINT_X&quot;</span>, <span class="st">&quot;POINT_Y&quot;</span>)
-<span class="kw">class</span>(philly_homicides_df) <span class="co"># !! </span></code></pre></div>
-<pre><code>#&gt; [1] &quot;SpatialPointsDataFrame&quot;
-#&gt; attr(,&quot;package&quot;)
-#&gt; [1] &quot;sp&quot;</code></pre>
-<p>Assigning the projection:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.projected</span>(philly_homicides_df) <span class="co"># see if a projection is defined  </span></code></pre></div>
+<p>To make it a complete geographical object we use <code>st_set_crs()</code> to assign the WGS84 projection, which has the EPSG code 4326:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="intro.html#cb19-1" tabindex="-1"></a>philly_homicides_sf <span class="sc">%&gt;%</span> <span class="fu">st_set_crs</span>(<span class="dv">4326</span>)</span></code></pre></div>
+<pre><code>#&gt; Simple feature collection with 3883 features and 8 fields
+#&gt; Geometry type: POINT
+#&gt; Dimension:     XY
+#&gt; Bounding box:  xmin: -75.26809 ymin: 39.87503 xmax: -74.95874 ymax: 40.13086
+#&gt; Geodetic CRS:  WGS 84
+#&gt; # A tibble: 3,883 × 9
+#&gt;    DC_DIST SECTOR DISPATCH_DATE DISPATCH_TIME LOCATION_BLOCK  UCR_GENERAL OBJ_ID
+#&gt;  *   &lt;dbl&gt; &lt;chr&gt;  &lt;date&gt;        &lt;time&gt;        &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt;
+#&gt;  1      22 1      2014-09-14    16:00         1800 BLOCK W M…         100      1
+#&gt;  2       1 B      2006-01-14    00:00         2000 BLOCK MIF…         100      1
+#&gt;  3       1 B      2006-04-01    16:05         S 22ND ST /SNY…         100      1
+#&gt;  4       1 B      2006-05-10    11:13         2100 BLOCK MC …         100      1
+#&gt;  5       1 E      2006-07-01    12:42         2100 BLOCK S H…         100      1
+#&gt;  6       1 F      2006-07-09    19:13         1800 BLOCK SNY…         100      1
+#&gt;  7       1 B      2006-07-10    23:20         1800 BLOCK S 2…         100      1
+#&gt;  8       1 J      2006-07-16    01:26         2200 BLOCK JAC…         100      1
+#&gt;  9       1 J      2006-10-03    20:37         2200 BLOCK S H…         100      1
+#&gt; 10       1 A      2006-10-16    19:46         1900 BLOCK MC …         100      1
+#&gt; # ℹ 3,873 more rows
+#&gt; # ℹ 2 more variables: TEXT_GENERAL_CODE &lt;chr&gt;, geometry &lt;POINT [°]&gt;</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="intro.html#cb21-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)</span></code></pre></div>
+<pre><code>#&gt; Coordinate Reference System: NA</code></pre>
+<p>Wow this is long. It is usually more helpful to just retrieve the proj4string:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="intro.html#cb23-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)<span class="sc">$</span>proj4string</span></code></pre></div>
 <pre><code>#&gt; [1] NA</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">proj4string</span>(philly_homicides_df) &lt;-<span class="st"> </span><span class="kw">CRS</span>(<span class="st">&quot;+init=epsg:4326&quot;</span>) <span class="co"># this is WGS84</span>
-<span class="kw">is.projected</span>(philly_homicides_df) <span class="co"># voila! hm. wait a minute..</span></code></pre></div>
-<pre><code>#&gt; [1] FALSE</code></pre>
-<p>To save the <code>sp</code> object out as a shapefile we need to load another library, called <code>rgdal</code> (more on this below.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># to save out using writeOGR from rgdal</span>
-<span class="kw">library</span>(rgdal)
-
-<span class="co"># note that we need to save the philly_homicides_df, which we converted to sp object!</span>
-<span class="kw">writeOGR</span>(philly_homicides_df, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="st">&quot;PhillyHomcides&quot;</span>, <span class="dt">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)
-<span class="co"># to force save:</span>
-<span class="kw">writeOGR</span>(philly_homicides_df, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="st">&quot;PhillyHomcides&quot;</span>, <span class="dt">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="dt">overwrite_layer =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>We will save this object as a shapefile on our hard drive for later use. (Note that by default <code>st_write</code> checks if the file already exists, and if so it will not overwrite it. If you need to force it to overwrite use the option <code>delete_layer = TRUE</code>.)</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="intro.html#cb25-1" tabindex="-1"></a><span class="fu">st_write</span>(philly_homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)</span>
+<span id="cb25-2"><a href="intro.html#cb25-2" tabindex="-1"></a><span class="co"># to force the save: </span></span>
+<span id="cb25-3"><a href="intro.html#cb25-3" tabindex="-1"></a><span class="fu">st_write</span>(philly_homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
-</div>
-<div id="loading-shape-files-into-r" class="section level2">
-<h2><span class="header-section-number">1.3</span> Loading shape files into R</h2>
-<div id="how-to-do-this-in-sf" class="section level3">
-<h3><span class="header-section-number">1.3.1</span> How to do this in <code>sf</code></h3>
-<p><code>sf</code> relies on the powerful <a href="http://gdal.org">GDAL library</a>, which is automatically linked in when loading <code>sf</code>. We can use <code>st_read()</code>, which simply takes the path of the directory with the shapefile as argument.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># read in</span>
-philly_sf &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/Philly/&quot;</span>)</code></pre></div>
-<pre><code>#&gt; Reading layer `PhillyTotalPopHHinc&#39; from data source `/Users/cengel/Anthro/R_Class/R_Workshops/R-spatial/data/Philly&#39; using driver `ESRI Shapefile&#39;
+<div id="loading-shape-files-into-r" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Loading shape files into R<a href="intro.html#loading-shape-files-into-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>sf</code> relies on the powerful <a href="http://gdal.org">GDAL library</a>, which is automatically linked in when loading <code>sf</code>. The GDAL provides the functionality to read and write spatial files of many formats. For shape files we can use <code>st_read()</code>, which simply takes the path of the directory with the shapefile as argument.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="intro.html#cb26-1" tabindex="-1"></a><span class="co"># read in</span></span>
+<span id="cb26-2"><a href="intro.html#cb26-2" tabindex="-1"></a>philly_sf <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/Philly/&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Reading layer `PhillyTotalPopHHinc&#39; from data source 
+#&gt;   `/Users/cengel/Anthro/R_Class/R_Workshops/R-spatial/data/Philly&#39; 
+#&gt;   using driver `ESRI Shapefile&#39;
 #&gt; Simple feature collection with 384 features and 17 fields
-#&gt; geometry type:  MULTIPOLYGON
-#&gt; dimension:      XY
-#&gt; bbox:           xmin: 1739497 ymin: 457343.7 xmax: 1764030 ymax: 490544.9
-#&gt; epsg (SRID):    NA
-#&gt; proj4string:    +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># take a look at what we&#39;ve got</span>
-<span class="kw">str</span>(philly_sf) <span class="co"># note again the geometry column</span></code></pre></div>
+#&gt; Geometry type: MULTIPOLYGON
+#&gt; Dimension:     XY
+#&gt; Bounding box:  xmin: 1739497 ymin: 457343.7 xmax: 1764030 ymax: 490544.9
+#&gt; Projected CRS: Albers</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="intro.html#cb28-1" tabindex="-1"></a><span class="co"># take a look at what we&#39;ve got</span></span>
+<span id="cb28-2"><a href="intro.html#cb28-2" tabindex="-1"></a><span class="fu">str</span>(philly_sf) <span class="co"># note again the geometry column</span></span></code></pre></div>
 <pre><code>#&gt; Classes &#39;sf&#39; and &#39;data.frame&#39;:   384 obs. of  18 variables:
-#&gt;  $ STATEFP10 : Factor w/ 1 level &quot;42&quot;: 1 1 1 1 1 1 1 1 1 1 ...
-#&gt;  $ COUNTYFP10: Factor w/ 1 level &quot;101&quot;: 1 1 1 1 1 1 1 1 1 1 ...
-#&gt;  $ TRACTCE10 : Factor w/ 384 levels &quot;000100&quot;,&quot;000200&quot;,..: 347 350 353 329 326 345 46 82 173 15 ...
-#&gt;  $ GEOID10   : Factor w/ 384 levels &quot;42101000100&quot;,..: 347 350 353 329 326 345 46 82 173 15 ...
-#&gt;  $ NAME10    : Factor w/ 384 levels &quot;1&quot;,&quot;10.01&quot;,&quot;10.02&quot;,..: 281 284 287 262 259 279 299 354 86 3 ...
-#&gt;  $ NAMELSAD10: Factor w/ 384 levels &quot;Census Tract 1&quot;,..: 281 284 287 262 259 279 299 354 86 3 ...
-#&gt;  $ MTFCC10   : Factor w/ 1 level &quot;G5020&quot;: 1 1 1 1 1 1 1 1 1 1 ...
-#&gt;  $ FUNCSTAT10: Factor w/ 1 level &quot;S&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;  $ STATEFP10 : chr  &quot;42&quot; &quot;42&quot; &quot;42&quot; &quot;42&quot; ...
+#&gt;  $ COUNTYFP10: chr  &quot;101&quot; &quot;101&quot; &quot;101&quot; &quot;101&quot; ...
+#&gt;  $ TRACTCE10 : chr  &quot;036301&quot; &quot;036400&quot; &quot;036600&quot; &quot;034803&quot; ...
+#&gt;  $ GEOID10   : num  4.21e+10 4.21e+10 4.21e+10 4.21e+10 4.21e+10 ...
+#&gt;  $ NAME10    : chr  &quot;363.01&quot; &quot;364&quot; &quot;366&quot; &quot;348.03&quot; ...
+#&gt;  $ NAMELSAD10: chr  &quot;Census Tract 363.01&quot; &quot;Census Tract 364&quot; &quot;Census Tract 366&quot; &quot;Census Tract 348.03&quot; ...
+#&gt;  $ MTFCC10   : chr  &quot;G5020&quot; &quot;G5020&quot; &quot;G5020&quot; &quot;G5020&quot; ...
+#&gt;  $ FUNCSTAT10: chr  &quot;S&quot; &quot;S&quot; &quot;S&quot; &quot;S&quot; ...
 #&gt;  $ ALAND10   : num  2322732 4501110 1004313 1271533 1016206 ...
 #&gt;  $ AWATER10  : num  66075 8014 1426278 8021 0 ...
-#&gt;  $ INTPTLAT10: Factor w/ 384 levels &quot;+39.8798897&quot;,..: 369 380 68 333 325 368 16 93 188 63 ...
-#&gt;  $ INTPTLON10: Factor w/ 384 levels &quot;-074.9667387&quot;,..: 1 5 137 14 27 4 272 367 119 147 ...
-#&gt;  $ GISJOIN   : Factor w/ 384 levels &quot;G4201010000100&quot;,..: 347 350 353 329 326 345 46 82 173 15 ...
+#&gt;  $ INTPTLAT10: chr  &quot;+40.0895349&quot; &quot;+40.1127747&quot; &quot;+39.9470272&quot; &quot;+40.0619427&quot; ...
+#&gt;  $ INTPTLON10: chr  &quot;-074.9667387&quot; &quot;-074.9789137&quot; &quot;-075.1404472&quot; &quot;-075.0023705&quot; ...
+#&gt;  $ GISJOIN   : chr  &quot;G4201010036301&quot; &quot;G4201010036400&quot; &quot;G4201010036600&quot; &quot;G4201010034803&quot; ...
 #&gt;  $ Shape_area: num  2388806 4509124 2430591 1279556 1016207 ...
 #&gt;  $ Shape_len : num  6851 10567 9257 4928 5920 ...
 #&gt;  $ medHHinc  : num  54569 NA 130139 56667 69981 ...
@@ -580,73 +469,30 @@ philly_sf &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span cl
 #&gt;  $ geometry  :sfc_MULTIPOLYGON of length 384; first list element: List of 1
 #&gt;   ..$ :List of 1
 #&gt;   .. ..$ : num [1:55, 1:2] 1763647 1763473 1763366 1763378 1763321 ...
-#&gt;   ..- attr(*, &quot;class&quot;)= chr  &quot;XY&quot; &quot;MULTIPOLYGON&quot; &quot;sfg&quot;
+#&gt;   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;XY&quot; &quot;MULTIPOLYGON&quot; &quot;sfg&quot;
 #&gt;  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
 #&gt;  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA NA NA NA NA ...
-#&gt;   ..- attr(*, &quot;names&quot;)= chr  &quot;STATEFP10&quot; &quot;COUNTYFP10&quot; &quot;TRACTCE10&quot; &quot;GEOID10&quot; ...</code></pre>
-<p>Two more words about the geometry column: You can name this column any way you wish. Secondly, you can remove this column and revert to a regular, non-spatial data frame at any dime wiht <code>st_drop_geometry()</code>.</p>
+#&gt;   ..- attr(*, &quot;names&quot;)= chr [1:17] &quot;STATEFP10&quot; &quot;COUNTYFP10&quot; &quot;TRACTCE10&quot; &quot;GEOID10&quot; ...</code></pre>
+<p>Two more words about the geometry column: Though it is not recommended, you can name this column any way you wish. Secondly, you can remove this column and revert to a regular, non-spatial data frame at any dime with <code>st_drop_geometry()</code>.</p>
 <p>The default <code>plot</code> of an <code>sf</code> object is a multi-plot of the first attributes, with a warning if not all can be plotted:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(philly_sf)</code></pre></div>
-<pre><code>#&gt; Warning: plotting the first 10 out of 17 attributes; use max.plot = 17 to
-#&gt; plot all</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="intro.html#cb30-1" tabindex="-1"></a><span class="fu">plot</span>(philly_sf)</span></code></pre></div>
+<pre><code>#&gt; Warning: plotting the first 10 out of 17 attributes; use max.plot = 17 to plot
+#&gt; all</code></pre>
 <p><img src="R-spatial_files/figure-html/plot-shp-sf-1.png" width="672" /></p>
 <p>In order to only plot the polygon boundaries we need to directly use the geometry column. We use the <code>st_geometry()</code> function to extract it:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(philly_sf))</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="intro.html#cb32-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf))</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/plot-shp-sfg-1.png" width="672" /></p>
-<p>Let’s add a subset of polygons with only the census tracts where the median houshold income is more than $60,000. We can extract elements from an <code>sf</code> object based on attributes using your prefered method of subsetting data frames.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># subset the familar way</span>
-philly_sf_rich &lt;-<span class="st"> </span>philly_sf[philly_sf<span class="op">$</span>medHHinc <span class="op">&gt;</span><span class="st"> </span><span class="dv">60000</span>, ]    
-<span class="co"># or </span>
-philly_sf_rich &lt;-<span class="st"> </span><span class="kw">subset</span>(philly_sf, medHHinc <span class="op">&gt;</span><span class="st"> </span><span class="dv">60000</span>)
-
-<span class="kw">plot</span>(<span class="kw">st_geometry</span>(philly_sf_rich), <span class="dt">add=</span>T, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</code></pre></div>
-<p><img src="R-spatial_files/figure-html/make-subset-plot-shp-sfg-1.png" width="672" /></p>
-<p>Piping works as well!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
-philly_sf <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(medHHinc <span class="op">&gt;</span><span class="st"> </span><span class="dv">60000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">st_geometry</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">plot</span>(<span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">add=</span>T)</code></pre></div>
+<p>Let’s add a subset of polygons with only the census tracts where the median houshold income (<em>medHHinc</em>) is more than $60,000. We can extract elements from an <code>sf</code> object based on attributes using the dplyr filter function (base R subsetting also works) and add the census tracts to the plot in a different color.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="intro.html#cb33-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf))</span>
+<span id="cb33-2"><a href="intro.html#cb33-2" tabindex="-1"></a>philly_sf <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="intro.html#cb33-3" tabindex="-1"></a>  <span class="fu">filter</span>(medHHinc <span class="sc">&gt;</span> <span class="dv">60000</span>) <span class="sc">%&gt;%</span> <span class="co"># filter for high income</span></span>
+<span id="cb33-4"><a href="intro.html#cb33-4" tabindex="-1"></a>  <span class="fu">st_geometry</span>() <span class="sc">%&gt;%</span> <span class="co"># extract the geometry for plotting</span></span>
+<span id="cb33-5"><a href="intro.html#cb33-5" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">add=</span>T) <span class="co"># add to the plot</span></span></code></pre></div>
+<p><img src="R-spatial_files/figure-html/pipe-subset-plot-shp-sfg-1.png" width="672" /></p>
 </div>
-<div id="how-to-work-with-rgdal-and-sp" class="section level3">
-<h3><span class="header-section-number">1.3.2</span> How to work with <code>rgdal</code> and <code>sp</code></h3>
-<p>In order to read spatial data into R and turn them into <code>Spatial*</code> family objects we require the <code>rgdal</code> package, which provides bindings to GDAL<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>.</p>
-<p>We can read in and write out spatial data using:</p>
-<pre><code>readOGR() and writeOGR() (for vector)  
-readGDAL() and writeGDAL() (for raster/grids)</code></pre>
-<p>The parameters provided for each function vary depending on the exact spatial file type you are reading. We will take an ESRI shapefile as an example. A shapefile - as you know - <a href="https://en.wikipedia.org/wiki/Shapefile">consists of various files of the same name, but with different extensions</a>. They should all be in one directory and that is what R expects.</p>
-<p>When reading in a shapefile, <code>readOGR()</code> requires the following two arguments:</p>
-<pre><code>datasource name (dsn)  # the path to the folder that contains the files
-                       # this is a path to the folder, not a filename!
-layer name (layer)     # the shapefile name WITHOUT extension
-                       # this is not a path but just the name of the file!</code></pre>
-<p>Setting these arguments correctly can be cause of much headache for beginners, so let me spell it out:</p>
-<ul>
-<li><p>Firstly, you obviously need to know the name of shapefile.</p></li>
-<li><p>Secondly, you need to know the name and location of the folder that contains all the shapefile parts.</p></li>
-<li><p>Lastly, <code>readOGR</code> only reads the file and dumps it on your screen. But similarly when reading csv tables you want to actually work with the file, so you need to assign it to an R object.</p></li>
-</ul>
-<p>Now let’s do this.</p>
-<p>We load the <code>rgdal</code> package and read <code>PhillyTotalPopHHinc</code> into an object called <code>philly</code> by using the <code>readOGR</code> function<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a>. We can also examine the object and confirm what it is with <code>class()</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgdal)
-philly_sp &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="st">&quot;data/Philly/&quot;</span>, <span class="st">&quot;PhillyTotalPopHHinc&quot;</span>) </code></pre></div>
-<pre><code>#&gt; OGR data source with driver: ESRI Shapefile 
-#&gt; Source: &quot;/Users/cengel/Anthro/R_Class/R_Workshops/R-spatial/data/Philly&quot;, layer: &quot;PhillyTotalPopHHinc&quot;
-#&gt; with 384 features
-#&gt; It has 17 fields</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(philly_sp)</code></pre></div>
-<pre><code>#&gt; [1] &quot;SpatialPolygonsDataFrame&quot;
-#&gt; attr(,&quot;package&quot;)
-#&gt; [1] &quot;sp&quot;</code></pre>
-<p>Very similarly to the above we can create a simple plot of the polygons with the <code>plot</code> command, which directly understands the <code>SpatialPolygonsDatafame</code> object and then plot a subset of polygons with a median household income (<code>medHHinc</code>) of over $60,000 on top of the plot of the entire city.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(philly_sp)
-philly_sp_rich &lt;-<span class="st"> </span><span class="kw">subset</span>(philly_sp, medHHinc <span class="op">&gt;</span><span class="st"> </span><span class="dv">60000</span>)
-<span class="kw">plot</span>(philly_sp_rich, <span class="dt">add=</span>T, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</code></pre></div>
-</div>
-</div>
-<div id="raster-data-in-r" class="section level2">
-<h2><span class="header-section-number">1.4</span> Raster data in R</h2>
-<p>Raster files, as you might know, have a much more compact data structure than vectors. Because of their regular structure the coordinates do not need to be recorded for each pixel or cell in the rectangular extent. A raster is defined by:</p>
+<div id="raster-data-in-r" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Raster data in R<a href="intro.html#raster-data-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Raster files, as you might know, have a more compact data structure than vectors. Because of their regular structure the coordinates do not need to be recorded for each pixel or cell in the rectangular extent. A raster is defined by:</p>
 <ul>
 <li>a CRS</li>
 <li>coordinates of its origin</li>
@@ -655,207 +501,324 @@ philly_sp_rich &lt;-<span class="st"> </span><span class="kw">subset</span>(phil
 <li>an array of cell values</li>
 </ul>
 <p>Given this structure, coordinates for any cell can be computed and don’t need to be stored.</p>
-<p>The <code>raster</code> package<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a> is a major extension of spatial data classes to access large rasters and in particular to process very large files. It includes object classes for <code>RasterLayer</code>, <code>RasterStacks</code>, and <code>RasterBricks</code>, functions for converting among these classes, and operators for computations on the raster data. Conversion from <code>sp</code> type objects into <code>raster</code> type objects is possible.</p>
-<p>If we wanted to do create a raster object from scratch we would do the following:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># specify the RasterLayer with the following parameters:</span>
-<span class="co"># - minimum x coordinate (left border)</span>
-<span class="co"># - minimum y coordinate (bottom border)</span>
-<span class="co"># - maximum x coordinate (right border)</span>
-<span class="co"># - maximum y coordinate (top border)</span>
-<span class="co"># - resolution (cell size) in each dimension</span>
-r &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="dt">xmn=</span><span class="op">-</span><span class="fl">0.5</span>, <span class="dt">ymn=</span><span class="op">-</span><span class="fl">0.5</span>, <span class="dt">xmx=</span><span class="fl">4.5</span>, <span class="dt">ymx=</span><span class="fl">4.5</span>, <span class="dt">resolution=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))
-r</code></pre></div>
-<pre><code>#&gt; class       : RasterLayer 
-#&gt; dimensions  : 5, 5, 25  (nrow, ncol, ncell)
-#&gt; resolution  : 1, 1  (x, y)
-#&gt; extent      : -0.5, 4.5, -0.5, 4.5  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0</code></pre>
-<p>Note that this raster object <strong>has a CRS defined!</strong> If the crs argument is missing when creating the Raster object, the x coordinates are within -360 and 360 and the y coordinates are within -90 and 90, the WGS84 projection is used by default!</p>
+<p><code>terra</code> was first released in 2020 and now replaces the <code>raster</code> package which was first released in 2010. <code>terra</code> has greater functionality, is faster and easier to use.</p>
+<div class="figure"><span style="display:block;" id="fig:raster-terraDownloads"></span>
+<img src="img/raster_terraDownloads.png" alt="raster vs terra downloads on CRAN" width="100%" />
+<p class="caption">
+Figure 1.4: raster vs terra downloads on CRAN
+</p>
+</div>
+<p>The <code>terra</code> package has functions for creating, reading, manipulating, and writing raster data. The package also implements raster algebra and many other functions for raster data manipulation.</p>
+<p>The package works with <code>SpatRaster</code> objects. The <code>rast()</code> function is used to create these objects. For example, to create a raster object from scratch we would do the following:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="intro.html#cb34-1" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb34-2"><a href="intro.html#cb34-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="at">nrows=</span><span class="dv">20</span>, <span class="at">ncols=</span><span class="dv">20</span>, <span class="co"># number of cells in x and y dimension</span></span>
+<span id="cb34-3"><a href="intro.html#cb34-3" tabindex="-1"></a>          <span class="at">xmin=</span><span class="dv">0</span>, <span class="at">xmax=</span><span class="dv">360</span>) <span class="co"># min and max x coordinates (left-right borders)</span></span>
+<span id="cb34-4"><a href="intro.html#cb34-4" tabindex="-1"></a>r</span></code></pre></div>
+<pre><code>#&gt; class       : SpatRaster 
+#&gt; dimensions  : 20, 20, 1  (nrow, ncol, nlyr)
+#&gt; resolution  : 18, 9  (x, y)
+#&gt; extent      : 0, 360, -90, 90  (xmin, xmax, ymin, ymax)
+#&gt; coord. ref. : lon/lat WGS 84</code></pre>
+<p>From the output above we know that:
+- the object is of class <code>SpatRaster</code>
+- its dimensions are 20x20 cells
+- it has one layer (band)
+- the extent of the raster
+- it <strong>has a CRS defined!</strong> If the crs argument is missing when creating the SpatRaster object, if the x coordinates are within -360 and 360 and the y coordinates are within -90 and 90, the WGS84 projection is used by default.</p>
 <p>Good to know.</p>
-<p>To add some values to the cells we could the following.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(r)</code></pre></div>
-<pre><code>#&gt; [1] &quot;RasterLayer&quot;
-#&gt; attr(,&quot;package&quot;)
-#&gt; [1] &quot;raster&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r &lt;-<span class="st"> </span><span class="kw">setValues</span>(r, <span class="kw">runif</span>(<span class="dv">25</span>))
-<span class="kw">class</span>(r)</code></pre></div>
-<pre><code>#&gt; [1] &quot;RasterLayer&quot;
-#&gt; attr(,&quot;package&quot;)
-#&gt; [1] &quot;raster&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(r); <span class="kw">points</span>(<span class="kw">coordinates</span>(r), <span class="dt">pch=</span><span class="dv">3</span>)</code></pre></div>
-<p><img src="R-spatial_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>(See the <a href="https://cran.r-project.org/web/packages/rasterVis/index.html"><code>rasterVis</code> package</a> for more advanced plotting of <code>Raster*</code> objects.)</p>
-<p>RasterLayer objects can also be created from a matrix.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(volcano)</code></pre></div>
-<pre><code>#&gt; [1] &quot;matrix&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">volcano.r &lt;-<span class="st"> </span><span class="kw">raster</span>(volcano)
-<span class="kw">class</span>(volcano.r)</code></pre></div>
-<pre><code>#&gt; [1] &quot;RasterLayer&quot;
-#&gt; attr(,&quot;package&quot;)
-#&gt; [1] &quot;raster&quot;</code></pre>
-<p>And to read in a raster file we can use the <code>raster()</code> function. This raster is generated as part of the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV">NEON Harvard Forest field site</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(raster)
-HARV &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)</code></pre></div>
-<p>Typing the name of the object will give us what’s in there:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HARV</code></pre></div>
-<pre><code>#&gt; class       : RasterLayer 
-#&gt; band        : 1  (of  3  bands)
-#&gt; dimensions  : 2317, 3073, 7120141  (nrow, ncol, ncell)
-#&gt; resolution  : 0.25, 0.25  (x, y)
-#&gt; extent      : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-#&gt; data source : /Users/cengel/Anthro/R_Class/R_Workshops/R-spatial/data/HARV_RGB_Ortho.tif 
-#&gt; names       : HARV_RGB_Ortho 
-#&gt; values      : 0, 255  (min, max)</code></pre>
-<p>We can plot it like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(HARV)</code></pre></div>
-<p><img src="R-spatial_files/figure-html/plot-raster-1.png" width="672" /></p>
-<p>We can find out about the Coordinate Reference System with this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">crs</span>(HARV)</code></pre></div>
-<pre><code>#&gt; CRS arguments:
-#&gt;  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84
-#&gt; +towgs84=0,0,0</code></pre>
-<p>See what you can do with such an object:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">methods</span>(<span class="dt">class=</span><span class="kw">class</span>(HARV))</code></pre></div>
-<pre><code>#&gt;   [1] !                !=               [                [[              
-#&gt;   [5] [&lt;-              %in%             ==               $               
-#&gt;   [9] $&lt;-              addLayer         adjacent         aggregate       
-#&gt;  [13] all.equal        area             Arith            as.array        
-#&gt;  [17] as.character     as.data.frame    as.factor        as.integer      
-#&gt;  [21] as.list          as.logical       as.matrix        as.raster       
-#&gt;  [25] as.vector        asFactor         atan2            bandnr          
-#&gt;  [29] barplot          bbox             boundaries       boxplot         
-#&gt;  [33] brick            buffer           calc             cellFromRowCol  
-#&gt;  [37] cellFromXY       cellStats        clamp            click           
-#&gt;  [41] clump            coerce           colFromCell      colFromX        
-#&gt;  [45] colSums          Compare          contour          coordinates     
-#&gt;  [49] corLocal         cover            crop             crosstab        
-#&gt;  [53] crs&lt;-            cut              cv               density         
-#&gt;  [57] dim              dim&lt;-            direction        disaggregate    
-#&gt;  [61] distance         extend           extent           extract         
-#&gt;  [65] flip             focal            freq             getValues       
-#&gt;  [69] getValuesBlock   getValuesFocal   gridDistance     head            
-#&gt;  [73] hist             image            interpolate      intersect       
-#&gt;  [77] is.factor        is.finite        is.infinite      is.na           
-#&gt;  [81] is.nan           isLonLat         KML              labels          
-#&gt;  [85] layerize         length           levels           levels&lt;-        
-#&gt;  [89] lines            localFun         log              Logic           
-#&gt;  [93] mask             match            Math             Math2           
-#&gt;  [97] maxValue         mean             merge            minValue        
-#&gt; [101] modal            mosaic           names            names&lt;-         
-#&gt; [105] ncell            ncol             ncol&lt;-           nlayers         
-#&gt; [109] nrow             nrow&lt;-           origin           origin&lt;-        
-#&gt; [113] overlay          persp            plot             predict         
-#&gt; [117] print            proj4string      proj4string&lt;-    quantile        
-#&gt; [121] raster           rasterize        readAll          readStart       
-#&gt; [125] readStop         reclassify       res              resample        
-#&gt; [129] RGB              rotate           rowColFromCell   rowFromCell     
-#&gt; [133] rowFromY         rowSums          sampleRandom     sampleRegular   
-#&gt; [137] sampleStratified scale            select           setMinMax       
-#&gt; [141] setValues        shift            show             spplot          
-#&gt; [145] stack            stackSelect      subs             subset          
-#&gt; [149] Summary          summary          t                tail            
-#&gt; [153] text             trim             unique           update          
-#&gt; [157] values           values&lt;-         Which            which.max       
-#&gt; [161] which.min        writeRaster      writeStart       writeStop       
-#&gt; [165] writeValues      xFromCell        xFromCol         xmax            
-#&gt; [169] xmin             xres             xyFromCell       yFromCell       
-#&gt; [173] yFromRow         ymax             ymin             yres            
-#&gt; [177] zonal            zoom            
-#&gt; see &#39;?methods&#39; for accessing help and source code</code></pre>
-<p>We can explore the distribution of values contained within our raster using the hist() function which produces a histogram. Histograms are often useful in identifying outliers and bad data values in our raster data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(HARV)</code></pre></div>
-<pre><code>#&gt; Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...):
-#&gt; 1% of the raster cells were used. 100000 values used.</code></pre>
-<p><img src="R-spatial_files/figure-html/n-hist-1.png" width="672" /></p>
-<p>Notice that a warning message is produced when R creates the histogram.</p>
-<p>This warning is caused by the default maximum pixels value of 100,000 associated with the hist function. This maximum value is to ensure processing efficiency as our data become larger! We can force the <code>hist</code> function to use all cell values.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ncell</span>(HARV)</code></pre></div>
-<pre><code>#&gt; [1] 7120141</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(HARV, <span class="dt">maxpixels =</span> <span class="kw">ncell</span>(HARV))</code></pre></div>
-<p><img src="R-spatial_files/figure-html/n-hist-allvals-1.png" width="672" /></p>
-<p>At times it may be useful to explore raster metadata before loading them into R. This can be done with:</p>
-<pre><code>GDALinfo(&quot;path-to-raster-here&quot;) </code></pre>
-<p>A raster dataset can contain one or more bands. We can view the number of bands in a raster using the <code>nlayers()</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nlayers</span>(HARV)</code></pre></div>
+<p>There are functions to look at individual properties of the raster object. For examle for the number of cells:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="intro.html#cb36-1" tabindex="-1"></a><span class="fu">ncell</span>(r)</span></code></pre></div>
+<pre><code>#&gt; [1] 400</code></pre>
+<p>Or we can retrieve just the number of bands using the <code>nlyr()</code> function.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="intro.html#cb38-1" tabindex="-1"></a><span class="fu">nlyr</span>(r)</span></code></pre></div>
 <pre><code>#&gt; [1] 1</code></pre>
-<p>We can use the <code>raster()</code> function to import one single band from a <em>single</em> <strong>OR</strong> from a <em>multi-band</em> raster. For multi-band raster, we can specify which band we want to read in.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HARV_Band2 &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>, <span class="dt">band =</span> <span class="dv">2</span>)
-<span class="kw">plot</span>(HARV_Band2)</code></pre></div>
-<p><img src="R-spatial_files/figure-html/one-multiband-1.png" width="672" /></p>
-<p>To bring in all bands of a multi-band raster, we use the <code>stack()</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HARV_stack &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)
-
-<span class="co"># how many layers?</span>
-<span class="kw">nlayers</span>(HARV_stack)</code></pre></div>
-<pre><code>#&gt; [1] 3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># view attributes of stack object</span>
-HARV_stack</code></pre></div>
-<pre><code>#&gt; class       : RasterStack 
-#&gt; dimensions  : 2317, 3073, 7120141, 3  (nrow, ncol, ncell, nlayers)
+<p>We can also find out about the Coordinate Reference System (CRS) with the <code>crs</code> function. The default output looks a little messy:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="intro.html#cb40-1" tabindex="-1"></a><span class="fu">crs</span>(r)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;GEOGCRS[\&quot;WGS 84\&quot;,\n    DATUM[\&quot;World Geodetic System 1984\&quot;,\n        ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,\n            LENGTHUNIT[\&quot;metre\&quot;,1]],\n        ID[\&quot;EPSG\&quot;,6326]],\n    PRIMEM[\&quot;Greenwich\&quot;,0,\n        ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],\n        ID[\&quot;EPSG\&quot;,8901]],\n    CS[ellipsoidal,2],\n        AXIS[\&quot;longitude\&quot;,east,\n            ORDER[1],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]],\n        AXIS[\&quot;latitude\&quot;,north,\n            ORDER[2],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]]]&quot;</code></pre>
+<p>We can make this easier to read by setting the proj argument:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="intro.html#cb42-1" tabindex="-1"></a><span class="fu">crs</span>(r, <span class="at">proj =</span> <span class="cn">TRUE</span>) <span class="co"># return the PROJ-string notation</span></span></code></pre></div>
+<pre><code>#&gt; [1] &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
+<p>Let’s try and plot this.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="intro.html#cb44-1" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
+<p>The canvas is empty! This is because even though we have a layer, the cells do not have any values.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="intro.html#cb45-1" tabindex="-1"></a><span class="fu">values</span>(r)</span></code></pre></div>
+<p>To add some random values to the cells we can take advantage of the <code>ncells()</code> function and do this:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="intro.html#cb46-1" tabindex="-1"></a><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fu">ncell</span>(r))</span>
+<span id="cb46-2"><a href="intro.html#cb46-2" tabindex="-1"></a>r </span></code></pre></div>
+<pre><code>#&gt; class       : SpatRaster 
+#&gt; dimensions  : 20, 20, 1  (nrow, ncol, nlyr)
+#&gt; resolution  : 18, 9  (x, y)
+#&gt; extent      : 0, 360, -90, 90  (xmin, xmax, ymin, ymax)
+#&gt; coord. ref. : lon/lat WGS 84 
+#&gt; source(s)   : memory
+#&gt; name        :       lyr.1 
+#&gt; min value   : 0.001531723 
+#&gt; max value   : 0.999906505</code></pre>
+<p>In addition to the output above, we now see:
+- the source, which indicates where the cell values are stored (here they are in memory)
+- the range of the cell values (min value adn max value) now added.
+- the name, of the layer which is by default lyr.1.</p>
+<p>This now plots successfully:</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="intro.html#cb48-1" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
+<p><img src="R-spatial_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>(The <a href="https://cran.r-project.org/web/packages/rasterVis/index.html"><code>rasterVis</code> package</a> provides a set of methods for enhanced visualization and interaction for more advanced plotting of raster objects.)</p>
+<p><code>SpatRaster</code> objects can also be created from a matrix.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="intro.html#cb49-1" tabindex="-1"></a><span class="fu">class</span>(volcano)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="intro.html#cb51-1" tabindex="-1"></a>volcano.r <span class="ot">&lt;-</span> <span class="fu">rast</span>(volcano)</span>
+<span id="cb51-2"><a href="intro.html#cb51-2" tabindex="-1"></a><span class="fu">class</span>(volcano.r)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;SpatRaster&quot;
+#&gt; attr(,&quot;package&quot;)
+#&gt; [1] &quot;terra&quot;</code></pre>
+<p>We also use the <code>rast()</code> function to read in a raster file. This raster is generated as part of the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV">NEON Harvard Forest field site</a>.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="intro.html#cb53-1" tabindex="-1"></a>HARV <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)</span></code></pre></div>
+<p>Typing the name of the object will give us what’s in there:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="intro.html#cb54-1" tabindex="-1"></a>HARV</span></code></pre></div>
+<pre><code>#&gt; class       : SpatRaster 
+#&gt; dimensions  : 2317, 3073, 3  (nrow, ncol, nlyr)
 #&gt; resolution  : 0.25, 0.25  (x, y)
 #&gt; extent      : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-#&gt; names       : HARV_RGB_Ortho.1, HARV_RGB_Ortho.2, HARV_RGB_Ortho.3 
+#&gt; coord. ref. : WGS 84 / UTM zone 18N (EPSG:32618) 
+#&gt; source      : HARV_RGB_Ortho.tif 
+#&gt; names       : HARV_RGB_Ortho_1, HARV_RGB_Ortho_2, HARV_RGB_Ortho_3 
 #&gt; min values  :                0,                0,                0 
 #&gt; max values  :              255,              255,              255</code></pre>
-<p>What happens when we plot?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(HARV_stack)</code></pre></div>
-<p><img src="R-spatial_files/figure-html/stack-plot-1.png" width="672" /></p>
-<p>If we know that it is an RGB multiband raster we can plot them all in one</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotRGB</span>(HARV_stack)</code></pre></div>
-<p><img src="R-spatial_files/figure-html/stack-rgb-plot-1.png" width="672" /></p>
-<div id="rasterstack-vs-rasterbrick" class="section level3">
-<h3><span class="header-section-number">1.4.1</span> RasterStack vs RasterBrick</h3>
-<p>The R <code>RasterStack</code> and <code>RasterBrick</code> object types can both store multiple bands. However, how they store each band is different. The bands in a <code>RasterStack</code> are stored as links to raster data that is located somewhere on our computer. A <code>RasterBrick</code> contains all of the objects stored within the actual R object. Since in the <code>RasterBrick</code>, all of the bands are stored within the actual object its object size is much larger than the <code>RasterStack</code> object.</p>
-<p>In most cases, we can work with a <code>RasterBrick</code> in the same way we might work with a <code>RasterStack</code>. However, a <code>RasterBrick</code> is often more efficient and faster to process - which is important when working with larger files.</p>
-<p>We can turn a <code>RasterStack</code> into a <code>RasterBrick</code> in R by using <code>brick(StackName)</code>. Use the <code>object.size()</code> function to compare stack and brick R objects.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">object.size</span>(HARV_stack)</code></pre></div>
-<pre><code>#&gt; 44248 bytes</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HARV_brick &lt;-<span class="st"> </span><span class="kw">brick</span>(HARV_stack)
-<span class="kw">object.size</span>(HARV_brick)</code></pre></div>
-<pre><code>#&gt; 170897168 bytes</code></pre>
-<p>Going back to the <code>sp</code> package, a simple grid can be built like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># specify the grid topology with the following parameters:</span>
-<span class="co"># - the smallest coordinates for each dimension, here: 0,0</span>
-<span class="co"># - cell size in each dimension, here: 1,1 </span>
-<span class="co"># - number of cells in each dimension, here: 5,5</span>
-gtopo &lt;-<span class="st"> </span><span class="kw">GridTopology</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="co"># create the grid</span>
-datafr &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">runif</span>(<span class="dv">25</span>)) <span class="co"># make up some data</span>
-SpGdf &lt;-<span class="st"> </span><span class="kw">SpatialGridDataFrame</span>(gtopo, datafr) <span class="co"># create the grid data frame</span>
-<span class="kw">summary</span>(SpGdf)</code></pre></div>
-<pre><code>#&gt; Object of class SpatialGridDataFrame
-#&gt; Coordinates:
-#&gt;       min max
-#&gt; [1,] -0.5 4.5
-#&gt; [2,] -0.5 4.5
-#&gt; Is projected: NA 
-#&gt; proj4string : [NA]
-#&gt; Grid attributes:
-#&gt;   cellcentre.offset cellsize cells.dim
-#&gt; 1                 0        1         5
-#&gt; 2                 0        1         5
-#&gt; Data attributes:
-#&gt;    runif.25.      
-#&gt;  Min.   :0.01797  
-#&gt;  1st Qu.:0.30836  
-#&gt;  Median :0.55850  
-#&gt;  Mean   :0.52374  
-#&gt;  3rd Qu.:0.73536  
-#&gt;  Max.   :0.96848</code></pre>
+<blockquote>
+<h3>
+Challenge
+</h3>
+<p>Based on the output above answer the following questions:</p>
+<ol style="list-style-type: decimal">
+<li>How many bands?</li>
+<li>What are the names of the bands)?</li>
+<li>Where are the cell values stored?</li>
+<li>What is the CRS?</li>
+</ol>
+</blockquote>
+<p>We can plot the object like this:</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="intro.html#cb56-1" tabindex="-1"></a><span class="fu">plot</span>(HARV)</span></code></pre></div>
+<p><img src="R-spatial_files/figure-html/plot-raster-1.png" width="672" /></p>
+<p>Or to plot a single band:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="intro.html#cb57-1" tabindex="-1"></a><span class="fu">plot</span>(HARV, <span class="dv">3</span>)</span></code></pre></div>
+<p><img src="R-spatial_files/figure-html/plot-raster-single-1.png" width="672" /></p>
+<p>We can also use the <code>rast()</code> function to import one single band:</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="intro.html#cb58-1" tabindex="-1"></a>HARV_Band2 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>, <span class="at">lyrs =</span> <span class="dv">2</span>)</span>
+<span id="cb58-2"><a href="intro.html#cb58-2" tabindex="-1"></a><span class="fu">plot</span>(HARV_Band2)</span></code></pre></div>
+<p><img src="R-spatial_files/figure-html/one-multiband-1.png" width="672" /></p>
+<p>Let’s now explore the distribution of values contained within our raster using the <code>hist()</code> function which produces a histogram. Histograms are often useful in identifying outliers and bad data values in our raster data.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="intro.html#cb59-1" tabindex="-1"></a><span class="fu">hist</span>(HARV)</span></code></pre></div>
+<pre><code>#&gt; Warning: [hist] a sample of 14% of the cells was used
 
-</div>
+#&gt; Warning: [hist] a sample of 14% of the cells was used
+
+#&gt; Warning: [hist] a sample of 14% of the cells was used</code></pre>
+<p><img src="R-spatial_files/figure-html/n-hist-1.png" width="672" /></p>
+<p>Notice that a warning message is produced when R creates the histogram. By default the maximum cells processed per band is 1,000,000. This maximum value is to ensure processing efficiency as our data become larger. We can force the <code>hist</code> function to use all cell values.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="intro.html#cb61-1" tabindex="-1"></a><span class="fu">ncell</span>(HARV)</span></code></pre></div>
+<pre><code>#&gt; [1] 7120141</code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="intro.html#cb63-1" tabindex="-1"></a><span class="fu">hist</span>(HARV, <span class="at">maxcell =</span> <span class="fu">ncell</span>(HARV))</span></code></pre></div>
+<p><img src="R-spatial_files/figure-html/n-hist-allvals-1.png" width="672" /></p>
+<p>At times it may be useful to explore raster metadata before loading them into R. This can be done with the function <code>describe()</code></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="intro.html#cb64-1" tabindex="-1"></a><span class="fu">describe</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt;  [1] &quot;Driver: GTiff/GeoTIFF&quot;                                                                                                                                                                                                                                                          
+#&gt;  [2] &quot;Files: data/HARV_RGB_Ortho.tif&quot;                                                                                                                                                                                                                                                 
+#&gt;  [3] &quot;Size is 3073, 2317&quot;                                                                                                                                                                                                                                                             
+#&gt;  [4] &quot;Coordinate System is:&quot;                                                                                                                                                                                                                                                          
+#&gt;  [5] &quot;PROJCRS[\&quot;WGS 84 / UTM zone 18N\&quot;,&quot;                                                                                                                                                                                                                                             
+#&gt;  [6] &quot;    BASEGEOGCRS[\&quot;WGS 84\&quot;,&quot;                                                                                                                                                                                                                                                    
+#&gt;  [7] &quot;        DATUM[\&quot;World Geodetic System 1984\&quot;,&quot;                                                                                                                                                                                                                                  
+#&gt;  [8] &quot;            ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,&quot;                                                                                                                                                                                                                        
+#&gt;  [9] &quot;                LENGTHUNIT[\&quot;metre\&quot;,1]]],&quot;                                                                                                                                                                                                                                     
+#&gt; [10] &quot;        PRIMEM[\&quot;Greenwich\&quot;,0,&quot;                                                                                                                                                                                                                                                
+#&gt; [11] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],&quot;                                                                                                                                                                                                                         
+#&gt; [12] &quot;        ID[\&quot;EPSG\&quot;,4326]],&quot;                                                                                                                                                                                                                                                    
+#&gt; [13] &quot;    CONVERSION[\&quot;UTM zone 18N\&quot;,&quot;                                                                                                                                                                                                                                               
+#&gt; [14] &quot;        METHOD[\&quot;Transverse Mercator\&quot;,&quot;                                                                                                                                                                                                                                        
+#&gt; [15] &quot;            ID[\&quot;EPSG\&quot;,9807]],&quot;                                                                                                                                                                                                                                                
+#&gt; [16] &quot;        PARAMETER[\&quot;Latitude of natural origin\&quot;,0,&quot;                                                                                                                                                                                                                            
+#&gt; [17] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],&quot;                                                                                                                                                                                                                          
+#&gt; [18] &quot;            ID[\&quot;EPSG\&quot;,8801]],&quot;                                                                                                                                                                                                                                                
+#&gt; [19] &quot;        PARAMETER[\&quot;Longitude of natural origin\&quot;,-75,&quot;                                                                                                                                                                                                                         
+#&gt; [20] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],&quot;                                                                                                                                                                                                                          
+#&gt; [21] &quot;            ID[\&quot;EPSG\&quot;,8802]],&quot;                                                                                                                                                                                                                                                
+#&gt; [22] &quot;        PARAMETER[\&quot;Scale factor at natural origin\&quot;,0.9996,&quot;                                                                                                                                                                                                                   
+#&gt; [23] &quot;            SCALEUNIT[\&quot;unity\&quot;,1],&quot;                                                                                                                                                                                                                                            
+#&gt; [24] &quot;            ID[\&quot;EPSG\&quot;,8805]],&quot;                                                                                                                                                                                                                                                
+#&gt; [25] &quot;        PARAMETER[\&quot;False easting\&quot;,500000,&quot;                                                                                                                                                                                                                                    
+#&gt; [26] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1],&quot;                                                                                                                                                                                                                                           
+#&gt; [27] &quot;            ID[\&quot;EPSG\&quot;,8806]],&quot;                                                                                                                                                                                                                                                
+#&gt; [28] &quot;        PARAMETER[\&quot;False northing\&quot;,0,&quot;                                                                                                                                                                                                                                        
+#&gt; [29] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1],&quot;                                                                                                                                                                                                                                           
+#&gt; [30] &quot;            ID[\&quot;EPSG\&quot;,8807]]],&quot;                                                                                                                                                                                                                                               
+#&gt; [31] &quot;    CS[Cartesian,2],&quot;                                                                                                                                                                                                                                                           
+#&gt; [32] &quot;        AXIS[\&quot;(E)\&quot;,east,&quot;                                                                                                                                                                                                                                                     
+#&gt; [33] &quot;            ORDER[1],&quot;                                                                                                                                                                                                                                                          
+#&gt; [34] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1]],&quot;                                                                                                                                                                                                                                          
+#&gt; [35] &quot;        AXIS[\&quot;(N)\&quot;,north,&quot;                                                                                                                                                                                                                                                    
+#&gt; [36] &quot;            ORDER[2],&quot;                                                                                                                                                                                                                                                          
+#&gt; [37] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1]],&quot;                                                                                                                                                                                                                                          
+#&gt; [38] &quot;    USAGE[&quot;                                                                                                                                                                                                                                                                     
+#&gt; [39] &quot;        SCOPE[\&quot;Engineering survey, topographic mapping.\&quot;],&quot;                                                                                                                                                                                                                   
+#&gt; [40] &quot;        AREA[\&quot;Between 78°W and 72°W, northern hemisphere between equator and 84°N, onshore and offshore. Bahamas. Canada - Nunavut; Ontario; Quebec. Colombia. Cuba. Ecuador. Greenland. Haiti. Jamaica. Panama. Turks and Caicos Islands. United States (USA). Venezuela.\&quot;],&quot;
+#&gt; [41] &quot;        BBOX[0,-78,84,-72]],&quot;                                                                                                                                                                                                                                                   
+#&gt; [42] &quot;    ID[\&quot;EPSG\&quot;,32618]]&quot;                                                                                                                                                                                                                                                        
+#&gt; [43] &quot;Data axis to CRS axis mapping: 1,2&quot;                                                                                                                                                                                                                                             
+#&gt; [44] &quot;Origin = (731998.500000000000000,4713535.500000000000000)&quot;                                                                                                                                                                                                                      
+#&gt; [45] &quot;Pixel Size = (0.250000000000000,-0.250000000000000)&quot;                                                                                                                                                                                                                            
+#&gt; [46] &quot;Metadata:&quot;                                                                                                                                                                                                                                                                      
+#&gt; [47] &quot;  AREA_OR_POINT=Area&quot;                                                                                                                                                                                                                                                           
+#&gt; [48] &quot;Image Structure Metadata:&quot;                                                                                                                                                                                                                                                      
+#&gt; [49] &quot;  COMPRESSION=LZW&quot;                                                                                                                                                                                                                                                              
+#&gt; [50] &quot;  INTERLEAVE=PIXEL&quot;                                                                                                                                                                                                                                                             
+#&gt; [51] &quot;Corner Coordinates:&quot;                                                                                                                                                                                                                                                            
+#&gt; [52] &quot;Upper Left  (  731998.500, 4713535.500) ( 72d10&#39;29.27\&quot;W, 42d32&#39;21.80\&quot;N)&quot;                                                                                                                                                                                                      
+#&gt; [53] &quot;Lower Left  (  731998.500, 4712956.250) ( 72d10&#39;30.11\&quot;W, 42d32&#39; 3.04\&quot;N)&quot;                                                                                                                                                                                                      
+#&gt; [54] &quot;Upper Right (  732766.750, 4713535.500) ( 72d 9&#39;55.63\&quot;W, 42d32&#39;20.97\&quot;N)&quot;                                                                                                                                                                                                      
+#&gt; [55] &quot;Lower Right (  732766.750, 4712956.250) ( 72d 9&#39;56.48\&quot;W, 42d32&#39; 2.21\&quot;N)&quot;                                                                                                                                                                                                      
+#&gt; [56] &quot;Center      (  732382.625, 4713245.875) ( 72d10&#39;12.87\&quot;W, 42d32&#39;12.00\&quot;N)&quot;                                                                                                                                                                                                      
+#&gt; [57] &quot;Band 1 Block=3073x1 Type=Float64, ColorInterp=Gray&quot;                                                                                                                                                                                                                             
+#&gt; [58] &quot;  Min=0.000 Max=255.000 &quot;                                                                                                                                                                                                                                                       
+#&gt; [59] &quot;  Minimum=0.000, Maximum=255.000, Mean=nan, StdDev=nan&quot;                                                                                                                                                                                                                         
+#&gt; [60] &quot;  NoData Value=-1.7e+308&quot;                                                                                                                                                                                                                                                       
+#&gt; [61] &quot;  Metadata:&quot;                                                                                                                                                                                                                                                                    
+#&gt; [62] &quot;    STATISTICS_MAXIMUM=255&quot;                                                                                                                                                                                                                                                     
+#&gt; [63] &quot;    STATISTICS_MEAN=nan&quot;                                                                                                                                                                                                                                                        
+#&gt; [64] &quot;    STATISTICS_MINIMUM=0&quot;                                                                                                                                                                                                                                                       
+#&gt; [65] &quot;    STATISTICS_STDDEV=nan&quot;                                                                                                                                                                                                                                                      
+#&gt; [66] &quot;Band 2 Block=3073x1 Type=Float64, ColorInterp=Undefined&quot;                                                                                                                                                                                                                        
+#&gt; [67] &quot;  Min=0.000 Max=255.000 &quot;                                                                                                                                                                                                                                                       
+#&gt; [68] &quot;  Minimum=0.000, Maximum=255.000, Mean=nan, StdDev=nan&quot;                                                                                                                                                                                                                         
+#&gt; [69] &quot;  NoData Value=-1.7e+308&quot;                                                                                                                                                                                                                                                       
+#&gt; [70] &quot;  Metadata:&quot;                                                                                                                                                                                                                                                                    
+#&gt; [71] &quot;    STATISTICS_MAXIMUM=255&quot;                                                                                                                                                                                                                                                     
+#&gt; [72] &quot;    STATISTICS_MEAN=nan&quot;                                                                                                                                                                                                                                                        
+#&gt; [73] &quot;    STATISTICS_MINIMUM=0&quot;                                                                                                                                                                                                                                                       
+#&gt; [74] &quot;    STATISTICS_STDDEV=nan&quot;                                                                                                                                                                                                                                                      
+#&gt; [75] &quot;Band 3 Block=3073x1 Type=Float64, ColorInterp=Undefined&quot;                                                                                                                                                                                                                        
+#&gt; [76] &quot;  Min=0.000 Max=255.000 &quot;                                                                                                                                                                                                                                                       
+#&gt; [77] &quot;  Minimum=0.000, Maximum=255.000, Mean=nan, StdDev=nan&quot;                                                                                                                                                                                                                         
+#&gt; [78] &quot;  NoData Value=-1.7e+308&quot;                                                                                                                                                                                                                                                       
+#&gt; [79] &quot;  Metadata:&quot;                                                                                                                                                                                                                                                                    
+#&gt; [80] &quot;    STATISTICS_MAXIMUM=255&quot;                                                                                                                                                                                                                                                     
+#&gt; [81] &quot;    STATISTICS_MEAN=nan&quot;                                                                                                                                                                                                                                                        
+#&gt; [82] &quot;    STATISTICS_MINIMUM=0&quot;                                                                                                                                                                                                                                                       
+#&gt; [83] &quot;    STATISTICS_STDDEV=nan&quot;</code></pre>
+<p>For the many functions available for working with such an object see:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="intro.html#cb66-1" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class=</span><span class="fu">class</span>(HARV))</span></code></pre></div>
+<pre><code>#&gt;   [1] !                     [                     [[                   
+#&gt;   [4] [[&lt;-                  [&lt;-                   %in%                 
+#&gt;   [7] $                     $&lt;-                   activeCat            
+#&gt;  [10] activeCat&lt;-           add&lt;-                 addCats              
+#&gt;  [13] adjacent              aggregate             align                
+#&gt;  [16] all.equal             allNA                 animate              
+#&gt;  [19] anyNA                 app                   approximate          
+#&gt;  [22] area                  Arith                 as.array             
+#&gt;  [25] as.bool               as.character          as.contour           
+#&gt;  [28] as.data.frame         as.factor             as.int               
+#&gt;  [31] as.integer            as.lines              as.list              
+#&gt;  [34] as.logical            as.matrix             as.numeric           
+#&gt;  [37] as.points             as.polygons           as.raster            
+#&gt;  [40] atan_2                atan2                 autocor              
+#&gt;  [43] barplot               blocks                boundaries           
+#&gt;  [46] boxplot               buffer                c                    
+#&gt;  [49] catalyze              categories            cats                 
+#&gt;  [52] cellFromRowCol        cellFromRowColCombine cellFromXY           
+#&gt;  [55] cells                 cellSize              clamp_ts             
+#&gt;  [58] clamp                 classify              click                
+#&gt;  [61] coerce                colFromCell           colFromX             
+#&gt;  [64] colorize              coltab                coltab&lt;-             
+#&gt;  [67] Compare               compare               compareGeom          
+#&gt;  [70] concats               contour               costDist             
+#&gt;  [73] countNA               cover                 crds                 
+#&gt;  [76] crop                  crosstab              crs                  
+#&gt;  [79] crs&lt;-                 datatype              deepcopy             
+#&gt;  [82] density               depth                 depth&lt;-              
+#&gt;  [85] diff                  dim                   dim&lt;-                
+#&gt;  [88] direction             disagg                distance             
+#&gt;  [91] droplevels            expanse               ext                  
+#&gt;  [94] ext&lt;-                 extend                extract              
+#&gt;  [97] extractRange          fillTime              flip                 
+#&gt; [100] focal                 focal3D               focalCor             
+#&gt; [103] focalCpp              focalPairs            focalReg             
+#&gt; [106] focalValues           freq                  getTileExtents       
+#&gt; [109] global                gridDist              gridDistance         
+#&gt; [112] has.colors            has.RGB               has.time             
+#&gt; [115] hasMinMax             hasValues             head                 
+#&gt; [118] hist                  identical             ifel                 
+#&gt; [121] image                 init                  inMemory             
+#&gt; [124] inset                 interpIDW             interpNear           
+#&gt; [127] interpolate           intersect             is.bool              
+#&gt; [130] is.factor             is.finite             is.infinite          
+#&gt; [133] is.int                is.lonlat             is.na                
+#&gt; [136] is.nan                is.related            is.rotated           
+#&gt; [139] isFALSE               isTRUE                k_means              
+#&gt; [142] lapp                  layerCor              levels               
+#&gt; [145] levels&lt;-              linearUnits           lines                
+#&gt; [148] log                   Logic                 logic                
+#&gt; [151] longnames             longnames&lt;-           makeTiles            
+#&gt; [154] mask                  match                 math                 
+#&gt; [157] Math                  Math2                 mean                 
+#&gt; [160] median                merge                 meta                 
+#&gt; [163] metags                metags&lt;-              minmax               
+#&gt; [166] modal                 mosaic                NAflag               
+#&gt; [169] NAflag&lt;-              names                 names&lt;-              
+#&gt; [172] ncell                 ncol                  ncol&lt;-               
+#&gt; [175] nlyr                  nlyr&lt;-                noNA                 
+#&gt; [178] not.na                nrow                  nrow&lt;-               
+#&gt; [181] nsrc                  origin                origin&lt;-             
+#&gt; [184] pairs                 panel                 patches              
+#&gt; [187] persp                 plet                  plot                 
+#&gt; [190] plotRGB               points                polys                
+#&gt; [193] prcomp                predict               princomp             
+#&gt; [196] project               quantile              rangeFill            
+#&gt; [199] rapp                  rast                  rasterize            
+#&gt; [202] rasterizeGeom         rasterizeWin          rcl                  
+#&gt; [205] readStart             readStop              readValues           
+#&gt; [208] rectify               regress               relate               
+#&gt; [211] rep                   res                   res&lt;-                
+#&gt; [214] resample              rescale               rev                  
+#&gt; [217] RGB                   RGB&lt;-                 roll                 
+#&gt; [220] rotate                rowColCombine         rowColFromCell       
+#&gt; [223] rowFromCell           rowFromY              sapp                 
+#&gt; [226] saveRDS               scale                 scoff                
+#&gt; [229] scoff&lt;-               sds                   segregate            
+#&gt; [232] sel                   selectHighest         selectRange          
+#&gt; [235] serialize             set.cats              set.crs              
+#&gt; [238] set.ext               set.names             set.RGB              
+#&gt; [241] set.values            setMinMax             setValues            
+#&gt; [244] shift                 show                  sieve                
+#&gt; [247] size                  sort                  sources              
+#&gt; [250] spatSample            split                 sprc                 
+#&gt; [253] st_bbox               st_crs                stdev                
+#&gt; [256] str                   stretch               subset               
+#&gt; [259] subst                 summary               Summary              
+#&gt; [262] t                     tail                  tapp                 
+#&gt; [265] terrain               text                  tighten              
+#&gt; [268] time                  time&lt;-                timeInfo             
+#&gt; [271] trans                 trim                  unique               
+#&gt; [274] units                 units&lt;-               update               
+#&gt; [277] values                values&lt;-              varnames             
+#&gt; [280] varnames&lt;-            viewshed              weighted.mean        
+#&gt; [283] where.max             where.min             which.lyr            
+#&gt; [286] which.max             which.min             window               
+#&gt; [289] window&lt;-              wrap                  wrapCache            
+#&gt; [292] writeCDF              writeRaster           writeStart           
+#&gt; [295] writeStop             writeValues           xapp                 
+#&gt; [298] xFromCell             xFromCol              xmax                 
+#&gt; [301] xmax&lt;-                xmin                  xmin&lt;-               
+#&gt; [304] xres                  xyFromCell            yFromCell            
+#&gt; [307] yFromRow              ymax                  ymax&lt;-               
+#&gt; [310] ymin                  ymin&lt;-                yres                 
+#&gt; [313] zonal                 zoom                 
+#&gt; see &#39;?methods&#39; for accessing help and source code</code></pre>
+
 </div>
 </div>
 <div class="footnotes">
 <hr />
 <ol start="1">
-<li id="fn1"><p>R Bivand (2011) <a href="http://geostat-course.org/system/files/monday_slides.pdf">Introduction to representing spatial objects in R</a><a href="intro.html#fnref1">↩</a></p></li>
-<li id="fn2"><p>Coordinates should be of type double and will be promoted if not.<a href="intro.html#fnref2">↩</a></p></li>
-<li id="fn3"><p>E. Pebesma &amp; R. Bivand (2016)<a href="http://pebesma.staff.ifgi.de/pebesma_sfr.pdf">Spatial data in R: simple features and future perspectives</a><a href="intro.html#fnref3">↩</a></p></li>
-<li id="fn4"><p>GDAL supports over 200 <a href="http://www.gdal.org/formats_list.html">raster formats</a> and <a href="http://www.gdal.org/ogr_formats.html">vector formats</a>. Use <code>ogrDrivers()</code> and <code>gdalDrivers()</code> (without arguments) to find out which formats your <code>rgdal</code> install can handle.<a href="intro.html#fnref4">↩</a></p></li>
-<li id="fn5"><p>Unlike read.csv readOGR does not understand the <code>~</code> as valid element of a path. This (on Mac) will not work: <code>philly_sp &lt;- readOGR(&quot;~/Desktop/data/Philly/&quot;, &quot;PhillyTotalPopHHinc&quot;)</code><a href="intro.html#fnref5">↩</a></p></li>
-<li id="fn6"><p>Note that <code>sp</code> also allows to work with raster structures. The <code>GridTopology</code> class is the key element of raster representations. It contains: (a) the center coordinate pair of the south-west raster cell, (b) the two cell sizes in the metric of the coordinates, giving the step to successive centres, and (c) the numbers of cells for each dimension. There is also a <code>SpatialPixels</code> object which stores grid topology and coordinates of the actual points.<a href="intro.html#fnref6">↩</a></p></li>
+<li id="fn1"><p>E. Pebesma &amp; R. Bivand (2016)<a href="http://pebesma.staff.ifgi.de/pebesma_sfr.pdf">Spatial data in R: simple features and
+future perspectives</a><a href="intro.html#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
@@ -868,12 +831,13 @@ SpGdf &lt;-<span class="st"> </span><span class="kw">SpatialGridDataFrame</span>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -881,12 +845,12 @@ gitbook.start({
 "github": true,
 "facebook": false,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -901,7 +865,15 @@ gitbook.start({
 "link": null,
 "text": null
 },
+"view": {
+"link": null,
+"text": null
+},
 "download": ["R-spatial.pdf", "R-spatial.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }
@@ -914,10 +886,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

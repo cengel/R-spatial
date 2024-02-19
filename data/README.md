@@ -49,6 +49,11 @@ Imagery collected using the [NEON Airborne Observation Platform](http://www.neon
 
 Source: datacarpentry.org.
 
+## HARV_dtmCrop.tif and HARV_dsmCrop.tif
+
+LiDAR data collected by the NEON Airborne Observation Platform (AOP) and processed at NEON for NEON’s Harvard Forest field site.
+
+Source: datacarpentry.org.
 
 
 
