@@ -21,6 +21,9 @@ philly_crimes_sf <- st_read("data/PhillyCrimerate") # DONT NOT NEED THIS IF CREA
 > * Join attribute data to a polygon vector file
 > * Reproject a vector file
 > * Select polygons of a vector by location
+> * Reproject a raster
+> * Perform a raster calculation
+
 
 ------------
 
@@ -206,7 +209,7 @@ Here is what it would look like to reproject the HARV raster used earlier to a W
 #HARV <- raster("data/HARV_RGB_Ortho.tif")
 crs(HARV, proj = TRUE)
 HARV_WGS84 <- project(HARV, "+init=epsg:4326")
-crs(HARV, proj = TRUE)
+crs(HARV_WGS84, proj = TRUE)
 ```
 
 Let's look at the coordinates to see the effect:

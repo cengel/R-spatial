@@ -127,7 +127,7 @@
 
 \title{Using Spatial Data with R}
 \author{Claudia A Engel}
-\date{Last updated: February 19, 2024}
+\date{Last updated: February 20, 2024}
 
 \begin{document}
 \maketitle
@@ -197,8 +197,6 @@ You can also download the data manually here \href{https://github.com/cengel/R-s
     \href{https://cran.r-project.org/package=RColorBrewer}{\texttt{RColorBrewer}}
   \item
     \href{https://cran.r-project.org/package=ggplot2}{\texttt{ggplot2}}
-  \item
-    \href{https://cran.r-project.org/package=ggmap}{\texttt{ggmap}}
   \item
     \href{https://cran.r-project.org/package=tmap}{\texttt{tmap}}
   \item
@@ -334,16 +332,16 @@ We would then combine this into a simple feature collection :
 #> Geometry set for 2 features 
 #> Geometry type: LINESTRING
 #> Dimension:     XY
-#> Bounding box:  xmin: 0.5013012 ymin: 0.05609553 xmax: 0.9854111 ymax: 0.9618092
+#> Bounding box:  xmin: 0.235151 ymin: 0.00839848 xmax: 0.9894396 ymax: 0.6266413
 #> CRS:           NA
 \end{verbatim}
 
 \begin{verbatim}
-#> LINESTRING (0.7224347 0.2877498, 0.6911553 0.86...
+#> LINESTRING (0.8592813 0.00839848, 0.9273943 0.3...
 \end{verbatim}
 
 \begin{verbatim}
-#> LINESTRING (0.5013012 0.9618092, 0.5777892 0.95...
+#> LINESTRING (0.235151 0.2268521, 0.9894396 0.350...
 \end{verbatim}
 
 And lastly create a data frame from above to generate the \texttt{sf} object:
@@ -360,11 +358,11 @@ And lastly create a data frame from above to generate the \texttt{sf} object:
 #> Simple feature collection with 2 features and 2 fields
 #> Geometry type: LINESTRING
 #> Dimension:     XY
-#> Bounding box:  xmin: 0.5013012 ymin: 0.05609553 xmax: 0.9854111 ymax: 0.9618092
+#> Bounding box:  xmin: 0.235151 ymin: 0.00839848 xmax: 0.9894396 ymax: 0.6266413
 #> CRS:           NA
 #>     id cars_per_hour                      lnstr_sfc
-#> 1 hwy1            78 LINESTRING (0.7224347 0.287...
-#> 2 hwy2            22 LINESTRING (0.5013012 0.961...
+#> 1 hwy1            78 LINESTRING (0.8592813 0.008...
+#> 2 hwy2            22 LINESTRING (0.235151 0.2268...
 \end{verbatim}
 
 There are many methods available in the \texttt{sf} package, to find out use
@@ -546,45 +544,45 @@ Note the additional \textbf{geometry} list-column which now holds the simple fea
 #> Coordinate Reference System: NA
 \end{verbatim}
 
-To make it a complete geographical object we use \texttt{st\_set\_crs()} to assign the WGS84 projection, which has the EPSG code 4326:
+To make it a complete geographical object we use \texttt{st\_crs()} to assign the WGS84 projection, which has the EPSG code 4326:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{philly\_homicides\_sf }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{st\_set\_crs}\NormalTok{(}\DecValTok{4326}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-#> Simple feature collection with 3883 features and 8 fields
-#> Geometry type: POINT
-#> Dimension:     XY
-#> Bounding box:  xmin: -75.26809 ymin: 39.87503 xmax: -74.95874 ymax: 40.13086
-#> Geodetic CRS:  WGS 84
-#> # A tibble: 3,883 x 9
-#>    DC_DIST SECTOR DISPATCH_DATE DISPATCH_TIME LOCATION_BLOCK  UCR_GENERAL OBJ_ID
-#>  *   <dbl> <chr>  <date>        <time>        <chr>                 <dbl>  <dbl>
-#>  1      22 1      2014-09-14    16:00         1800 BLOCK W M~         100      1
-#>  2       1 B      2006-01-14    00:00         2000 BLOCK MIF~         100      1
-#>  3       1 B      2006-04-01    16:05         S 22ND ST /SNY~         100      1
-#>  4       1 B      2006-05-10    11:13         2100 BLOCK MC ~         100      1
-#>  5       1 E      2006-07-01    12:42         2100 BLOCK S H~         100      1
-#>  6       1 F      2006-07-09    19:13         1800 BLOCK SNY~         100      1
-#>  7       1 B      2006-07-10    23:20         1800 BLOCK S 2~         100      1
-#>  8       1 J      2006-07-16    01:26         2200 BLOCK JAC~         100      1
-#>  9       1 J      2006-10-03    20:37         2200 BLOCK S H~         100      1
-#> 10       1 A      2006-10-16    19:46         1900 BLOCK MC ~         100      1
-#> # i 3,873 more rows
-#> # i 2 more variables: TEXT_GENERAL_CODE <chr>, geometry <POINT [°]>
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
+\FunctionTok{st\_crs}\NormalTok{(philly\_homicides\_sf) }\OtherTok{\textless{}{-}} \DecValTok{4326}
 \FunctionTok{st\_crs}\NormalTok{(philly\_homicides\_sf)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-#> Coordinate Reference System: NA
+#> Coordinate Reference System:
+#>   User input: EPSG:4326 
+#>   wkt:
+#> GEOGCRS["WGS 84",
+#>     ENSEMBLE["World Geodetic System 1984 ensemble",
+#>         MEMBER["World Geodetic System 1984 (Transit)"],
+#>         MEMBER["World Geodetic System 1984 (G730)"],
+#>         MEMBER["World Geodetic System 1984 (G873)"],
+#>         MEMBER["World Geodetic System 1984 (G1150)"],
+#>         MEMBER["World Geodetic System 1984 (G1674)"],
+#>         MEMBER["World Geodetic System 1984 (G1762)"],
+#>         MEMBER["World Geodetic System 1984 (G2139)"],
+#>         ELLIPSOID["WGS 84",6378137,298.257223563,
+#>             LENGTHUNIT["metre",1]],
+#>         ENSEMBLEACCURACY[2.0]],
+#>     PRIMEM["Greenwich",0,
+#>         ANGLEUNIT["degree",0.0174532925199433]],
+#>     CS[ellipsoidal,2],
+#>         AXIS["geodetic latitude (Lat)",north,
+#>             ORDER[1],
+#>             ANGLEUNIT["degree",0.0174532925199433]],
+#>         AXIS["geodetic longitude (Lon)",east,
+#>             ORDER[2],
+#>             ANGLEUNIT["degree",0.0174532925199433]],
+#>     USAGE[
+#>         SCOPE["Horizontal component of 3D system."],
+#>         AREA["World."],
+#>         BBOX[-90,-180,90,180]],
+#>     ID["EPSG",4326]]
 \end{verbatim}
 
 Wow this is long. It is usually more helpful to just retrieve the proj4string:
@@ -596,7 +594,7 @@ Wow this is long. It is usually more helpful to just retrieve the proj4string:
 \end{Shaded}
 
 \begin{verbatim}
-#> [1] NA
+#> [1] "+proj=longlat +datum=WGS84 +no_defs"
 \end{verbatim}
 
 We will save this object as a shapefile on our hard drive for later use. (Note that by default \texttt{st\_write} checks if the file already exists, and if so it will not overwrite it. If you need to force it to overwrite use the option \texttt{delete\_layer\ =\ TRUE}.)
@@ -684,7 +682,7 @@ The default \texttt{plot} of an \texttt{sf} object is a multi-plot of the first 
 
 \includegraphics{R-spatial_files/figure-latex/plot-shp-sf-1.pdf}
 
-In order to only plot the polygon boundaries we need to directly use the geometry column. We use the \texttt{st\_geometry()} function to extract it:
+In order to only plot the polygon boundaries we need to directly use the geometry column. We use the \texttt{st\_geometry()} function. It extracts the \texttt{sfc} object (the simple feature geometry list column):
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -757,11 +755,20 @@ The package works with \texttt{SpatRaster} objects. The \texttt{rast()} function
 \end{verbatim}
 
 From the output above we know that:
-- the object is of class \texttt{SpatRaster}
-- its dimensions are 20x20 cells
-- it has one layer (band)
-- the extent of the raster
-- it \textbf{has a CRS defined!} If the crs argument is missing when creating the SpatRaster object, if the x coordinates are within -360 and 360 and the y coordinates are within -90 and 90, the WGS84 projection is used by default.
+
+\begin{itemize}
+\tightlist
+\item
+  the object is of class \texttt{SpatRaster}
+\item
+  its dimensions are 20x20 cells
+\item
+  it has one layer (band)
+\item
+  the extent of the raster
+\item
+  it \textbf{has a CRS defined!} If the crs argument is missing when creating the SpatRaster object, if the x coordinates are within -360 and 360 and the y coordinates are within -90 and 90, the WGS84 projection is used by default.
+\end{itemize}
 
 Good to know.
 
@@ -845,15 +852,22 @@ To add some random values to the cells we can take advantage of the \texttt{ncel
 #> extent      : 0, 360, -90, 90  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 
 #> source(s)   : memory
-#> name        :      lyr.1 
-#> min value   : 0.00656112 
-#> max value   : 0.99938529
+#> name        :        lyr.1 
+#> min value   : 0.0003101979 
+#> max value   : 0.9925648135
 \end{verbatim}
 
 In addition to the output above, we now see:
-- the source, which indicates where the cell values are stored (here they are in memory)
-- the range of the cell values (min value adn max value) now added.
-- the name, of the layer which is by default lyr.1.
+
+\begin{itemize}
+\tightlist
+\item
+  the source, which indicates where the cell values are stored (here they are in memory)
+\item
+  the range of the cell values (min value adn max value) now added.
+\item
+  the name, of the layer which is by default lyr.1.
+\end{itemize}
 
 This now plots successfully:
 
@@ -1106,7 +1120,7 @@ For the many functions available for working with such an object see:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{methods}\NormalTok{(}\AttributeTok{class=}\FunctionTok{class}\NormalTok{(HARV))}
+\FunctionTok{methods}\NormalTok{(}\AttributeTok{class=}\StringTok{"SpatRaster"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1233,6 +1247,10 @@ Learning Objectives
   Reproject a vector file
 \item
   Select polygons of a vector by location
+\item
+  Reproject a raster
+\item
+  Perform a raster calculation
 \end{itemize}
 \end{quote}
 
@@ -1570,12 +1588,12 @@ Here is what it would look like to reproject the HARV raster used earlier to a W
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{HARV\_WGS84 }\OtherTok{\textless{}{-}} \FunctionTok{project}\NormalTok{(HARV, }\StringTok{"+init=epsg:4326"}\NormalTok{)}
-\FunctionTok{crs}\NormalTok{(HARV, }\AttributeTok{proj =} \ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{crs}\NormalTok{(HARV\_WGS84, }\AttributeTok{proj =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-#> [1] "+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs"
+#> [1] "+proj=longlat +datum=WGS84 +no_defs"
 \end{verbatim}
 
 Let's look at the coordinates to see the effect:
@@ -1771,13 +1789,15 @@ Learning Objectives
 \item
   create a choropleth map with \texttt{ggplot}
 \item
-  add a basemap with \texttt{ggmap}
+  plot a raster map with \texttt{ggplot}
 \item
   use \texttt{RColorBrewer} to improve legend colors
 \item
   use \texttt{classInt}to improve legend breaks
 \item
   create a choropleth map with \texttt{tmap}
+\item
+  plot a raster map with \texttt{tmap}
 \item
   create an interactive map with \texttt{leaflet}
 \item
@@ -1810,7 +1830,7 @@ For an introduction to \texttt{ggplot} check out \href{http://ggplot2.tidyverse.
 
 \includegraphics{R-spatial_files/figure-latex/ggplot-sf-1.pdf}
 
-Homicide rate is a continuous variable and is plotted by \texttt{ggplot} as such. If we wanted to plot our map as a `true' choropleth map we need to convert our continouse variable into a categoriacal one, according to whichever brackets we want to use.
+Homicide rate is a continuous variable and is plotted by \texttt{ggplot} as such. If we wanted to plot our map as a `true' choropleth map we need to convert our continous variable into a categoriacal one, according to whichever brackets we want to use.
 
 This requires two steps:
 

@@ -267,10 +267,10 @@ Figure 1.3: Well-Known-Text Multipart geometries (wikipedia)
 <pre><code>#&gt; Geometry set for 2 features 
 #&gt; Geometry type: LINESTRING
 #&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 0.1766943 ymin: 0.08299711 xmax: 0.7724545 ymax: 0.7783025
+#&gt; Bounding box:  xmin: 0.03767902 ymin: 0.06882521 xmax: 0.7520699 ymax: 0.8736205
 #&gt; CRS:           NA</code></pre>
-<pre><code>#&gt; LINESTRING (0.1766943 0.2560145, 0.614864 0.725...</code></pre>
-<pre><code>#&gt; LINESTRING (0.7724545 0.7783025, 0.5389782 0.08...</code></pre>
+<pre><code>#&gt; LINESTRING (0.7414508 0.1533662, 0.7520699 0.06...</code></pre>
+<pre><code>#&gt; LINESTRING (0.4529374 0.3260348, 0.6833665 0.87...</code></pre>
 <p>And lastly create a data frame from above to generate the <code>sf</code> object:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="intro.html#cb8-1" tabindex="-1"></a>dfr <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="fu">c</span>(<span class="st">&quot;hwy1&quot;</span>, <span class="st">&quot;hwy2&quot;</span>), </span>
 <span id="cb8-2"><a href="intro.html#cb8-2" tabindex="-1"></a>                  <span class="at">cars_per_hour =</span> <span class="fu">c</span>(<span class="dv">78</span>, <span class="dv">22</span>))</span>
@@ -278,11 +278,11 @@ Figure 1.3: Well-Known-Text Multipart geometries (wikipedia)
 <pre><code>#&gt; Simple feature collection with 2 features and 2 fields
 #&gt; Geometry type: LINESTRING
 #&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 0.1766943 ymin: 0.08299711 xmax: 0.7724545 ymax: 0.7783025
+#&gt; Bounding box:  xmin: 0.03767902 ymin: 0.06882521 xmax: 0.7520699 ymax: 0.8736205
 #&gt; CRS:           NA
 #&gt;     id cars_per_hour                      lnstr_sfc
-#&gt; 1 hwy1            78 LINESTRING (0.1766943 0.256...
-#&gt; 2 hwy2            22 LINESTRING (0.7724545 0.778...</code></pre>
+#&gt; 1 hwy1            78 LINESTRING (0.7414508 0.153...
+#&gt; 2 hwy2            22 LINESTRING (0.4529374 0.326...</code></pre>
 <p>There are many methods available in the <code>sf</code> package, to find out use</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="intro.html#cb10-1" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class=</span><span class="st">&quot;sf&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;   [1] [                            [[&lt;-                        
@@ -401,43 +401,51 @@ Challenge
 <p>Note the additional <strong>geometry</strong> list-column which now holds the simple feature collection with the coordinates of all the points. We now use <code>st_crs()</code> to check on the projection.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="intro.html#cb17-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)</span></code></pre></div>
 <pre><code>#&gt; Coordinate Reference System: NA</code></pre>
-<p>To make it a complete geographical object we use <code>st_set_crs()</code> to assign the WGS84 projection, which has the EPSG code 4326:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="intro.html#cb19-1" tabindex="-1"></a>philly_homicides_sf <span class="sc">%&gt;%</span> <span class="fu">st_set_crs</span>(<span class="dv">4326</span>)</span></code></pre></div>
-<pre><code>#&gt; Simple feature collection with 3883 features and 8 fields
-#&gt; Geometry type: POINT
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: -75.26809 ymin: 39.87503 xmax: -74.95874 ymax: 40.13086
-#&gt; Geodetic CRS:  WGS 84
-#&gt; # A tibble: 3,883 × 9
-#&gt;    DC_DIST SECTOR DISPATCH_DATE DISPATCH_TIME LOCATION_BLOCK  UCR_GENERAL OBJ_ID
-#&gt;  *   &lt;dbl&gt; &lt;chr&gt;  &lt;date&gt;        &lt;time&gt;        &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt;
-#&gt;  1      22 1      2014-09-14    16:00         1800 BLOCK W M…         100      1
-#&gt;  2       1 B      2006-01-14    00:00         2000 BLOCK MIF…         100      1
-#&gt;  3       1 B      2006-04-01    16:05         S 22ND ST /SNY…         100      1
-#&gt;  4       1 B      2006-05-10    11:13         2100 BLOCK MC …         100      1
-#&gt;  5       1 E      2006-07-01    12:42         2100 BLOCK S H…         100      1
-#&gt;  6       1 F      2006-07-09    19:13         1800 BLOCK SNY…         100      1
-#&gt;  7       1 B      2006-07-10    23:20         1800 BLOCK S 2…         100      1
-#&gt;  8       1 J      2006-07-16    01:26         2200 BLOCK JAC…         100      1
-#&gt;  9       1 J      2006-10-03    20:37         2200 BLOCK S H…         100      1
-#&gt; 10       1 A      2006-10-16    19:46         1900 BLOCK MC …         100      1
-#&gt; # ℹ 3,873 more rows
-#&gt; # ℹ 2 more variables: TEXT_GENERAL_CODE &lt;chr&gt;, geometry &lt;POINT [°]&gt;</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="intro.html#cb21-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)</span></code></pre></div>
-<pre><code>#&gt; Coordinate Reference System: NA</code></pre>
+<p>To make it a complete geographical object we use <code>st_crs()</code> to assign the WGS84 projection, which has the EPSG code 4326:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="intro.html#cb19-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf) <span class="ot">&lt;-</span> <span class="dv">4326</span></span>
+<span id="cb19-2"><a href="intro.html#cb19-2" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)</span></code></pre></div>
+<pre><code>#&gt; Coordinate Reference System:
+#&gt;   User input: EPSG:4326 
+#&gt;   wkt:
+#&gt; GEOGCRS[&quot;WGS 84&quot;,
+#&gt;     ENSEMBLE[&quot;World Geodetic System 1984 ensemble&quot;,
+#&gt;         MEMBER[&quot;World Geodetic System 1984 (Transit)&quot;],
+#&gt;         MEMBER[&quot;World Geodetic System 1984 (G730)&quot;],
+#&gt;         MEMBER[&quot;World Geodetic System 1984 (G873)&quot;],
+#&gt;         MEMBER[&quot;World Geodetic System 1984 (G1150)&quot;],
+#&gt;         MEMBER[&quot;World Geodetic System 1984 (G1674)&quot;],
+#&gt;         MEMBER[&quot;World Geodetic System 1984 (G1762)&quot;],
+#&gt;         MEMBER[&quot;World Geodetic System 1984 (G2139)&quot;],
+#&gt;         ELLIPSOID[&quot;WGS 84&quot;,6378137,298.257223563,
+#&gt;             LENGTHUNIT[&quot;metre&quot;,1]],
+#&gt;         ENSEMBLEACCURACY[2.0]],
+#&gt;     PRIMEM[&quot;Greenwich&quot;,0,
+#&gt;         ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+#&gt;     CS[ellipsoidal,2],
+#&gt;         AXIS[&quot;geodetic latitude (Lat)&quot;,north,
+#&gt;             ORDER[1],
+#&gt;             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+#&gt;         AXIS[&quot;geodetic longitude (Lon)&quot;,east,
+#&gt;             ORDER[2],
+#&gt;             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+#&gt;     USAGE[
+#&gt;         SCOPE[&quot;Horizontal component of 3D system.&quot;],
+#&gt;         AREA[&quot;World.&quot;],
+#&gt;         BBOX[-90,-180,90,180]],
+#&gt;     ID[&quot;EPSG&quot;,4326]]</code></pre>
 <p>Wow this is long. It is usually more helpful to just retrieve the proj4string:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="intro.html#cb23-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)<span class="sc">$</span>proj4string</span></code></pre></div>
-<pre><code>#&gt; [1] NA</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="intro.html#cb21-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)<span class="sc">$</span>proj4string</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
 <p>We will save this object as a shapefile on our hard drive for later use. (Note that by default <code>st_write</code> checks if the file already exists, and if so it will not overwrite it. If you need to force it to overwrite use the option <code>delete_layer = TRUE</code>.)</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="intro.html#cb25-1" tabindex="-1"></a><span class="fu">st_write</span>(philly_homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)</span>
-<span id="cb25-2"><a href="intro.html#cb25-2" tabindex="-1"></a><span class="co"># to force the save: </span></span>
-<span id="cb25-3"><a href="intro.html#cb25-3" tabindex="-1"></a><span class="fu">st_write</span>(philly_homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="intro.html#cb23-1" tabindex="-1"></a><span class="fu">st_write</span>(philly_homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)</span>
+<span id="cb23-2"><a href="intro.html#cb23-2" tabindex="-1"></a><span class="co"># to force the save: </span></span>
+<span id="cb23-3"><a href="intro.html#cb23-3" tabindex="-1"></a><span class="fu">st_write</span>(philly_homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="loading-shape-files-into-r" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> Loading shape files into R<a href="intro.html#loading-shape-files-into-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><code>sf</code> relies on the powerful <a href="http://gdal.org">GDAL library</a>, which is automatically linked in when loading <code>sf</code>. The GDAL provides the functionality to read and write spatial files of many formats. For shape files we can use <code>st_read()</code>, which simply takes the path of the directory with the shapefile as argument.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="intro.html#cb26-1" tabindex="-1"></a><span class="co"># read in</span></span>
-<span id="cb26-2"><a href="intro.html#cb26-2" tabindex="-1"></a>philly_sf <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/Philly/&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="intro.html#cb24-1" tabindex="-1"></a><span class="co"># read in</span></span>
+<span id="cb24-2"><a href="intro.html#cb24-2" tabindex="-1"></a>philly_sf <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/Philly/&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; Reading layer `PhillyTotalPopHHinc&#39; from data source 
 #&gt;   `/Users/cengel/Anthro/R_Class/R_Workshops/R-spatial/data/Philly&#39; 
 #&gt;   using driver `ESRI Shapefile&#39;
@@ -446,8 +454,8 @@ Challenge
 #&gt; Dimension:     XY
 #&gt; Bounding box:  xmin: 1739497 ymin: 457343.7 xmax: 1764030 ymax: 490544.9
 #&gt; Projected CRS: Albers</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="intro.html#cb28-1" tabindex="-1"></a><span class="co"># take a look at what we&#39;ve got</span></span>
-<span id="cb28-2"><a href="intro.html#cb28-2" tabindex="-1"></a><span class="fu">str</span>(philly_sf) <span class="co"># note again the geometry column</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="intro.html#cb26-1" tabindex="-1"></a><span class="co"># take a look at what we&#39;ve got</span></span>
+<span id="cb26-2"><a href="intro.html#cb26-2" tabindex="-1"></a><span class="fu">str</span>(philly_sf) <span class="co"># note again the geometry column</span></span></code></pre></div>
 <pre><code>#&gt; Classes &#39;sf&#39; and &#39;data.frame&#39;:   384 obs. of  18 variables:
 #&gt;  $ STATEFP10 : chr  &quot;42&quot; &quot;42&quot; &quot;42&quot; &quot;42&quot; ...
 #&gt;  $ COUNTYFP10: chr  &quot;101&quot; &quot;101&quot; &quot;101&quot; &quot;101&quot; ...
@@ -475,19 +483,19 @@ Challenge
 #&gt;   ..- attr(*, &quot;names&quot;)= chr [1:17] &quot;STATEFP10&quot; &quot;COUNTYFP10&quot; &quot;TRACTCE10&quot; &quot;GEOID10&quot; ...</code></pre>
 <p>Two more words about the geometry column: Though it is not recommended, you can name this column any way you wish. Secondly, you can remove this column and revert to a regular, non-spatial data frame at any dime with <code>st_drop_geometry()</code>.</p>
 <p>The default <code>plot</code> of an <code>sf</code> object is a multi-plot of the first attributes, with a warning if not all can be plotted:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="intro.html#cb30-1" tabindex="-1"></a><span class="fu">plot</span>(philly_sf)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="intro.html#cb28-1" tabindex="-1"></a><span class="fu">plot</span>(philly_sf)</span></code></pre></div>
 <pre><code>#&gt; Warning: plotting the first 10 out of 17 attributes; use max.plot = 17 to plot
 #&gt; all</code></pre>
 <p><img src="R-spatial_files/figure-html/plot-shp-sf-1.png" width="672" /></p>
-<p>In order to only plot the polygon boundaries we need to directly use the geometry column. We use the <code>st_geometry()</code> function to extract it:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="intro.html#cb32-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf))</span></code></pre></div>
+<p>In order to only plot the polygon boundaries we need to directly use the geometry column. We use the <code>st_geometry()</code> function. It extracts the <code>sfc</code> object (the simple feature geometry list column):</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="intro.html#cb30-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf))</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/plot-shp-sfg-1.png" width="672" /></p>
 <p>Let’s add a subset of polygons with only the census tracts where the median houshold income (<em>medHHinc</em>) is more than $60,000. We can extract elements from an <code>sf</code> object based on attributes using the dplyr filter function (base R subsetting also works) and add the census tracts to the plot in a different color.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="intro.html#cb33-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf))</span>
-<span id="cb33-2"><a href="intro.html#cb33-2" tabindex="-1"></a>philly_sf <span class="sc">%&gt;%</span> </span>
-<span id="cb33-3"><a href="intro.html#cb33-3" tabindex="-1"></a>  <span class="fu">filter</span>(medHHinc <span class="sc">&gt;</span> <span class="dv">60000</span>) <span class="sc">%&gt;%</span> <span class="co"># filter for high income</span></span>
-<span id="cb33-4"><a href="intro.html#cb33-4" tabindex="-1"></a>  <span class="fu">st_geometry</span>() <span class="sc">%&gt;%</span> <span class="co"># extract the geometry for plotting</span></span>
-<span id="cb33-5"><a href="intro.html#cb33-5" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">add=</span>T) <span class="co"># add to the plot</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="intro.html#cb31-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf))</span>
+<span id="cb31-2"><a href="intro.html#cb31-2" tabindex="-1"></a>philly_sf <span class="sc">%&gt;%</span> </span>
+<span id="cb31-3"><a href="intro.html#cb31-3" tabindex="-1"></a>  <span class="fu">filter</span>(medHHinc <span class="sc">&gt;</span> <span class="dv">60000</span>) <span class="sc">%&gt;%</span> <span class="co"># filter for high income</span></span>
+<span id="cb31-4"><a href="intro.html#cb31-4" tabindex="-1"></a>  <span class="fu">st_geometry</span>() <span class="sc">%&gt;%</span> <span class="co"># extract the geometry for plotting</span></span>
+<span id="cb31-5"><a href="intro.html#cb31-5" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">add=</span>T) <span class="co"># add to the plot</span></span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/pipe-subset-plot-shp-sfg-1.png" width="672" /></p>
 </div>
 <div id="raster-data-in-r" class="section level2 hasAnchor" number="1.4">
@@ -510,70 +518,74 @@ Figure 1.4: raster vs terra downloads on CRAN
 </div>
 <p>The <code>terra</code> package has functions for creating, reading, manipulating, and writing raster data. The package also implements raster algebra and many other functions for raster data manipulation.</p>
 <p>The package works with <code>SpatRaster</code> objects. The <code>rast()</code> function is used to create these objects. For example, to create a raster object from scratch we would do the following:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="intro.html#cb34-1" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb34-2"><a href="intro.html#cb34-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="at">nrows=</span><span class="dv">20</span>, <span class="at">ncols=</span><span class="dv">20</span>, <span class="co"># number of cells in x and y dimension</span></span>
-<span id="cb34-3"><a href="intro.html#cb34-3" tabindex="-1"></a>          <span class="at">xmin=</span><span class="dv">0</span>, <span class="at">xmax=</span><span class="dv">360</span>) <span class="co"># min and max x coordinates (left-right borders)</span></span>
-<span id="cb34-4"><a href="intro.html#cb34-4" tabindex="-1"></a>r</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="intro.html#cb32-1" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb32-2"><a href="intro.html#cb32-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="at">nrows=</span><span class="dv">20</span>, <span class="at">ncols=</span><span class="dv">20</span>, <span class="co"># number of cells in x and y dimension</span></span>
+<span id="cb32-3"><a href="intro.html#cb32-3" tabindex="-1"></a>          <span class="at">xmin=</span><span class="dv">0</span>, <span class="at">xmax=</span><span class="dv">360</span>) <span class="co"># min and max x coordinates (left-right borders)</span></span>
+<span id="cb32-4"><a href="intro.html#cb32-4" tabindex="-1"></a>r</span></code></pre></div>
 <pre><code>#&gt; class       : SpatRaster 
 #&gt; dimensions  : 20, 20, 1  (nrow, ncol, nlyr)
 #&gt; resolution  : 18, 9  (x, y)
 #&gt; extent      : 0, 360, -90, 90  (xmin, xmax, ymin, ymax)
 #&gt; coord. ref. : lon/lat WGS 84</code></pre>
-<p>From the output above we know that:
-- the object is of class <code>SpatRaster</code>
-- its dimensions are 20x20 cells
-- it has one layer (band)
-- the extent of the raster
-- it <strong>has a CRS defined!</strong> If the crs argument is missing when creating the SpatRaster object, if the x coordinates are within -360 and 360 and the y coordinates are within -90 and 90, the WGS84 projection is used by default.</p>
+<p>From the output above we know that:</p>
+<ul>
+<li>the object is of class <code>SpatRaster</code></li>
+<li>its dimensions are 20x20 cells</li>
+<li>it has one layer (band)</li>
+<li>the extent of the raster</li>
+<li>it <strong>has a CRS defined!</strong> If the crs argument is missing when creating the SpatRaster object, if the x coordinates are within -360 and 360 and the y coordinates are within -90 and 90, the WGS84 projection is used by default.</li>
+</ul>
 <p>Good to know.</p>
 <p>There are functions to look at individual properties of the raster object. For examle for the number of cells:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="intro.html#cb36-1" tabindex="-1"></a><span class="fu">ncell</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="intro.html#cb34-1" tabindex="-1"></a><span class="fu">ncell</span>(r)</span></code></pre></div>
 <pre><code>#&gt; [1] 400</code></pre>
 <p>Or we can retrieve just the number of bands using the <code>nlyr()</code> function.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="intro.html#cb38-1" tabindex="-1"></a><span class="fu">nlyr</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="intro.html#cb36-1" tabindex="-1"></a><span class="fu">nlyr</span>(r)</span></code></pre></div>
 <pre><code>#&gt; [1] 1</code></pre>
 <p>We can also find out about the Coordinate Reference System (CRS) with the <code>crs</code> function. The default output looks a little messy:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="intro.html#cb40-1" tabindex="-1"></a><span class="fu">crs</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="intro.html#cb38-1" tabindex="-1"></a><span class="fu">crs</span>(r)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;GEOGCRS[\&quot;WGS 84\&quot;,\n    DATUM[\&quot;World Geodetic System 1984\&quot;,\n        ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,\n            LENGTHUNIT[\&quot;metre\&quot;,1]],\n        ID[\&quot;EPSG\&quot;,6326]],\n    PRIMEM[\&quot;Greenwich\&quot;,0,\n        ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],\n        ID[\&quot;EPSG\&quot;,8901]],\n    CS[ellipsoidal,2],\n        AXIS[\&quot;longitude\&quot;,east,\n            ORDER[1],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]],\n        AXIS[\&quot;latitude\&quot;,north,\n            ORDER[2],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]]]&quot;</code></pre>
 <p>We can make this easier to read by setting the proj argument:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="intro.html#cb42-1" tabindex="-1"></a><span class="fu">crs</span>(r, <span class="at">proj =</span> <span class="cn">TRUE</span>) <span class="co"># return the PROJ-string notation</span></span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="intro.html#cb40-1" tabindex="-1"></a><span class="fu">crs</span>(r, <span class="at">proj =</span> <span class="cn">TRUE</span>) <span class="co"># return the PROJ-string notation</span></span></code></pre></div>
 <pre><code>#&gt; [1] &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
 <p>Let’s try and plot this.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="intro.html#cb44-1" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="intro.html#cb42-1" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
 <p>The canvas is empty! This is because even though we have a layer, the cells do not have any values.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="intro.html#cb45-1" tabindex="-1"></a><span class="fu">values</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="intro.html#cb43-1" tabindex="-1"></a><span class="fu">values</span>(r)</span></code></pre></div>
 <p>To add some random values to the cells we can take advantage of the <code>ncells()</code> function and do this:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="intro.html#cb46-1" tabindex="-1"></a><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fu">ncell</span>(r))</span>
-<span id="cb46-2"><a href="intro.html#cb46-2" tabindex="-1"></a>r </span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="intro.html#cb44-1" tabindex="-1"></a><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fu">ncell</span>(r))</span>
+<span id="cb44-2"><a href="intro.html#cb44-2" tabindex="-1"></a>r </span></code></pre></div>
 <pre><code>#&gt; class       : SpatRaster 
 #&gt; dimensions  : 20, 20, 1  (nrow, ncol, nlyr)
 #&gt; resolution  : 18, 9  (x, y)
 #&gt; extent      : 0, 360, -90, 90  (xmin, xmax, ymin, ymax)
 #&gt; coord. ref. : lon/lat WGS 84 
 #&gt; source(s)   : memory
-#&gt; name        :       lyr.1 
-#&gt; min value   : 0.001531723 
-#&gt; max value   : 0.999906505</code></pre>
-<p>In addition to the output above, we now see:
-- the source, which indicates where the cell values are stored (here they are in memory)
-- the range of the cell values (min value adn max value) now added.
-- the name, of the layer which is by default lyr.1.</p>
+#&gt; name        :      lyr.1 
+#&gt; min value   : 0.00210249 
+#&gt; max value   : 0.99981405</code></pre>
+<p>In addition to the output above, we now see:</p>
+<ul>
+<li>the source, which indicates where the cell values are stored (here they are in memory)</li>
+<li>the range of the cell values (min value adn max value) now added.</li>
+<li>the name, of the layer which is by default lyr.1.</li>
+</ul>
 <p>This now plots successfully:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="intro.html#cb48-1" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="intro.html#cb46-1" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>(The <a href="https://cran.r-project.org/web/packages/rasterVis/index.html"><code>rasterVis</code> package</a> provides a set of methods for enhanced visualization and interaction for more advanced plotting of raster objects.)</p>
 <p><code>SpatRaster</code> objects can also be created from a matrix.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="intro.html#cb49-1" tabindex="-1"></a><span class="fu">class</span>(volcano)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="intro.html#cb47-1" tabindex="-1"></a><span class="fu">class</span>(volcano)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="intro.html#cb51-1" tabindex="-1"></a>volcano.r <span class="ot">&lt;-</span> <span class="fu">rast</span>(volcano)</span>
-<span id="cb51-2"><a href="intro.html#cb51-2" tabindex="-1"></a><span class="fu">class</span>(volcano.r)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="intro.html#cb49-1" tabindex="-1"></a>volcano.r <span class="ot">&lt;-</span> <span class="fu">rast</span>(volcano)</span>
+<span id="cb49-2"><a href="intro.html#cb49-2" tabindex="-1"></a><span class="fu">class</span>(volcano.r)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;SpatRaster&quot;
 #&gt; attr(,&quot;package&quot;)
 #&gt; [1] &quot;terra&quot;</code></pre>
 <p>We also use the <code>rast()</code> function to read in a raster file. This raster is generated as part of the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV">NEON Harvard Forest field site</a>.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="intro.html#cb53-1" tabindex="-1"></a>HARV <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="intro.html#cb51-1" tabindex="-1"></a>HARV <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)</span></code></pre></div>
 <p>Typing the name of the object will give us what’s in there:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="intro.html#cb54-1" tabindex="-1"></a>HARV</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="intro.html#cb52-1" tabindex="-1"></a>HARV</span></code></pre></div>
 <pre><code>#&gt; class       : SpatRaster 
 #&gt; dimensions  : 2317, 3073, 3  (nrow, ncol, nlyr)
 #&gt; resolution  : 0.25, 0.25  (x, y)
@@ -596,17 +608,17 @@ Challenge
 </ol>
 </blockquote>
 <p>We can plot the object like this:</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="intro.html#cb56-1" tabindex="-1"></a><span class="fu">plot</span>(HARV)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="intro.html#cb54-1" tabindex="-1"></a><span class="fu">plot</span>(HARV)</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/plot-raster-1.png" width="672" /></p>
 <p>Or to plot a single band:</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="intro.html#cb57-1" tabindex="-1"></a><span class="fu">plot</span>(HARV, <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="intro.html#cb55-1" tabindex="-1"></a><span class="fu">plot</span>(HARV, <span class="dv">3</span>)</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/plot-raster-single-1.png" width="672" /></p>
 <p>We can also use the <code>rast()</code> function to import one single band:</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="intro.html#cb58-1" tabindex="-1"></a>HARV_Band2 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>, <span class="at">lyrs =</span> <span class="dv">2</span>)</span>
-<span id="cb58-2"><a href="intro.html#cb58-2" tabindex="-1"></a><span class="fu">plot</span>(HARV_Band2)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="intro.html#cb56-1" tabindex="-1"></a>HARV_Band2 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>, <span class="at">lyrs =</span> <span class="dv">2</span>)</span>
+<span id="cb56-2"><a href="intro.html#cb56-2" tabindex="-1"></a><span class="fu">plot</span>(HARV_Band2)</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/one-multiband-1.png" width="672" /></p>
 <p>Let’s now explore the distribution of values contained within our raster using the <code>hist()</code> function which produces a histogram. Histograms are often useful in identifying outliers and bad data values in our raster data.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="intro.html#cb59-1" tabindex="-1"></a><span class="fu">hist</span>(HARV)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="intro.html#cb57-1" tabindex="-1"></a><span class="fu">hist</span>(HARV)</span></code></pre></div>
 <pre><code>#&gt; Warning: [hist] a sample of 14% of the cells was used
 
 #&gt; Warning: [hist] a sample of 14% of the cells was used
@@ -614,12 +626,12 @@ Challenge
 #&gt; Warning: [hist] a sample of 14% of the cells was used</code></pre>
 <p><img src="R-spatial_files/figure-html/n-hist-1.png" width="672" /></p>
 <p>Notice that a warning message is produced when R creates the histogram. By default the maximum cells processed per band is 1,000,000. This maximum value is to ensure processing efficiency as our data become larger. We can force the <code>hist</code> function to use all cell values.</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="intro.html#cb61-1" tabindex="-1"></a><span class="fu">ncell</span>(HARV)</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="intro.html#cb59-1" tabindex="-1"></a><span class="fu">ncell</span>(HARV)</span></code></pre></div>
 <pre><code>#&gt; [1] 7120141</code></pre>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="intro.html#cb63-1" tabindex="-1"></a><span class="fu">hist</span>(HARV, <span class="at">maxcell =</span> <span class="fu">ncell</span>(HARV))</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="intro.html#cb61-1" tabindex="-1"></a><span class="fu">hist</span>(HARV, <span class="at">maxcell =</span> <span class="fu">ncell</span>(HARV))</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/n-hist-allvals-1.png" width="672" /></p>
 <p>At times it may be useful to explore raster metadata before loading them into R. This can be done with the function <code>describe()</code></p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="intro.html#cb64-1" tabindex="-1"></a><span class="fu">describe</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="intro.html#cb62-1" tabindex="-1"></a><span class="fu">describe</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;  [1] &quot;Driver: GTiff/GeoTIFF&quot;                                                                                                                                                                                                                                                          
 #&gt;  [2] &quot;Files: data/HARV_RGB_Ortho.tif&quot;                                                                                                                                                                                                                                                 
 #&gt;  [3] &quot;Size is 3073, 2317&quot;                                                                                                                                                                                                                                                             
@@ -704,7 +716,7 @@ Challenge
 #&gt; [82] &quot;    STATISTICS_MINIMUM=0&quot;                                                                                                                                                                                                                                                       
 #&gt; [83] &quot;    STATISTICS_STDDEV=nan&quot;</code></pre>
 <p>For the many functions available for working with such an object see:</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="intro.html#cb66-1" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class=</span><span class="fu">class</span>(HARV))</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="intro.html#cb64-1" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class=</span><span class="st">&quot;SpatRaster&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;   [1] !                     [                     [[                   
 #&gt;   [4] [[&lt;-                  [&lt;-                   %in%                 
 #&gt;   [7] $                     $&lt;-                   activeCat            

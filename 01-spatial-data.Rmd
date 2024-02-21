@@ -171,10 +171,10 @@ Note the additional **geometry** list-column which now holds the simple feature 
 st_crs(philly_homicides_sf)
 ```
 
-To make it a complete geographical object we use `st_set_crs()` to assign the WGS84 projection, which has the EPSG code 4326: 
+To make it a complete geographical object we use `st_crs()` to assign the WGS84 projection, which has the EPSG code 4326: 
 
 ```{r sf-crs, results='show'}
-philly_homicides_sf %>% st_set_crs(4326)
+st_crs(philly_homicides_sf) <- 4326
 st_crs(philly_homicides_sf)
 ```
 
@@ -214,7 +214,7 @@ The default `plot` of an `sf` object is a multi-plot of the first attributes, wi
 plot(philly_sf)
 ```
 
-In order to only plot the polygon boundaries we need to directly use the geometry column. We use the `st_geometry()` function to extract it:
+In order to only plot the polygon boundaries we need to directly use the geometry column. We use the `st_geometry()` function. It extracts the `sfc` object (the simple feature geometry list column):
 
 ```{r plot-shp-sfg, eval=TRUE, results='show'}
 plot(st_geometry(philly_sf))
@@ -262,6 +262,7 @@ r
 ```
 
 From the output above we know that:
+
 - the object is of class `SpatRaster`
 - its dimensions are 20x20 cells
 - it has one layer (band)
@@ -317,6 +318,7 @@ r
 ```
 
 In addition  to the output above, we now see:
+
 - the source, which indicates where the cell values are stored (here they are in memory)
 - the range of the cell values (min value adn max value) now added. 
 - the name, of the layer which is by default lyr.1.
@@ -403,6 +405,6 @@ describe("data/HARV_RGB_Ortho.tif")
 For the many functions available for working with such an object see:
 
 ```{r raster-methods, results='show'}
-methods(class=class(HARV))
+methods(class="SpatRaster")
 ```
 

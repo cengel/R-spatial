@@ -19,10 +19,11 @@ library(dplyr)
 >
 > * plot an `sf` object
 > * create a choropleth map with `ggplot`
-> * add a basemap with `ggmap`
+> * plot a raster map with `ggplot`
 > * use `RColorBrewer` to improve legend colors 
 > * use `classInt`to improve legend breaks 
 > * create a choropleth map with `tmap`
+> * plot a raster map with `tmap`
 > * create an interactive map with `leaflet`
 > * customize a `leaflet` map with popups and layer controls
 
@@ -49,7 +50,7 @@ ggplot(philly_crimes_sf) +
   geom_sf(aes(fill=homic_rate))
 ```
 
-Homicide rate is a continuous variable and is plotted by `ggplot` as such. If we wanted to plot our map as a 'true' choropleth map we need to convert our continouse variable into a categoriacal one, according to whichever brackets we want to use. 
+Homicide rate is a continuous variable and is plotted by `ggplot` as such. If we wanted to plot our map as a 'true' choropleth map we need to convert our continous variable into a categoriacal one, according to whichever brackets we want to use. 
 
 This requires two steps: 
 
