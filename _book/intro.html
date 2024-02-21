@@ -267,10 +267,10 @@ Figure 1.3: Well-Known-Text Multipart geometries (wikipedia)
 <pre><code>#&gt; Geometry set for 2 features 
 #&gt; Geometry type: LINESTRING
 #&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 0.03767902 ymin: 0.06882521 xmax: 0.7520699 ymax: 0.8736205
+#&gt; Bounding box:  xmin: 0.05845885 ymin: 0.07983237 xmax: 0.9347772 ymax: 0.9139652
 #&gt; CRS:           NA</code></pre>
-<pre><code>#&gt; LINESTRING (0.7414508 0.1533662, 0.7520699 0.06...</code></pre>
-<pre><code>#&gt; LINESTRING (0.4529374 0.3260348, 0.6833665 0.87...</code></pre>
+<pre><code>#&gt; LINESTRING (0.1177288 0.3211188, 0.254328 0.862...</code></pre>
+<pre><code>#&gt; LINESTRING (0.9347772 0.4617314, 0.5862836 0.07...</code></pre>
 <p>And lastly create a data frame from above to generate the <code>sf</code> object:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="intro.html#cb8-1" tabindex="-1"></a>dfr <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="fu">c</span>(<span class="st">&quot;hwy1&quot;</span>, <span class="st">&quot;hwy2&quot;</span>), </span>
 <span id="cb8-2"><a href="intro.html#cb8-2" tabindex="-1"></a>                  <span class="at">cars_per_hour =</span> <span class="fu">c</span>(<span class="dv">78</span>, <span class="dv">22</span>))</span>
@@ -278,11 +278,11 @@ Figure 1.3: Well-Known-Text Multipart geometries (wikipedia)
 <pre><code>#&gt; Simple feature collection with 2 features and 2 fields
 #&gt; Geometry type: LINESTRING
 #&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 0.03767902 ymin: 0.06882521 xmax: 0.7520699 ymax: 0.8736205
+#&gt; Bounding box:  xmin: 0.05845885 ymin: 0.07983237 xmax: 0.9347772 ymax: 0.9139652
 #&gt; CRS:           NA
 #&gt;     id cars_per_hour                      lnstr_sfc
-#&gt; 1 hwy1            78 LINESTRING (0.7414508 0.153...
-#&gt; 2 hwy2            22 LINESTRING (0.4529374 0.326...</code></pre>
+#&gt; 1 hwy1            78 LINESTRING (0.1177288 0.321...
+#&gt; 2 hwy2            22 LINESTRING (0.9347772 0.461...</code></pre>
 <p>There are many methods available in the <code>sf</code> package, to find out use</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="intro.html#cb10-1" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class=</span><span class="st">&quot;sf&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;   [1] [                            [[&lt;-                        
@@ -561,9 +561,9 @@ Figure 1.4: raster vs terra downloads on CRAN
 #&gt; extent      : 0, 360, -90, 90  (xmin, xmax, ymin, ymax)
 #&gt; coord. ref. : lon/lat WGS 84 
 #&gt; source(s)   : memory
-#&gt; name        :      lyr.1 
-#&gt; min value   : 0.00210249 
-#&gt; max value   : 0.99981405</code></pre>
+#&gt; name        :       lyr.1 
+#&gt; min value   : 0.005382989 
+#&gt; max value   : 0.999929903</code></pre>
 <p>In addition to the output above, we now see:</p>
 <ul>
 <li>the source, which indicates where the cell values are stored (here they are in memory)</li>

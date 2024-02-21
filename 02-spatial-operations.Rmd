@@ -10,7 +10,7 @@ philly_sf <- st_read("data/Philly/")
 #philly_sp <- readOGR("data/Philly/", "PhillyTotalPopHHinc")
 HARV <- rast("data/HARV_RGB_Ortho.tif")
 philly_homicides_sf <- st_read("data/PhillyHomicides/")
-philly_crimes_sf <- st_read("data/PhillyCrimerate") # DONT NOT NEED THIS IF CREATION BELOW IS FIXED
+#philly_crimes_sf <- st_read("data/PhillyCrimerate") # DONT NOT NEED THIS IF CREATION BELOW IS FIXED
 
 ```
 
@@ -66,7 +66,7 @@ We see the new attribute columns added, as well as the geometry column.
 
 ## Topological Subsetting: Select Polygons by Location
 
-For the next example our goal is to select all Philadelphia census tracts within a range of 2 kilometers from the city center.
+For the next example our goal is to select all Philadelphia census tracts that are approximately within a range of 2 kilometers from the city center.
 
 > Think about this for a moment -- what might be the steps you'd follow?
 
@@ -89,14 +89,17 @@ $$y = 467499.9$$
 
 These coordinates are also in the _USA Contiguous Albers Equal Area Conic_ projected CRS, which is the same as CRS as `philly_sf`.
 
-With this information, we create a object that holds the coordinates of the city center. Since we don't have attributes we will just create it as a simple feature collection, `scf`.
+With this information, we create a object that holds the coordinates of the city center. Since we don’t have attributes we will just create it as a simple feature collection, `scf`.
 
 ```{r sf-intersect-point, results='show'}
 # if you need to read in again:
 # philly_sf <- st_read("data/Philly/", quiet = T)
 
 # make a simple feature point with CRS
-philly_ctr_sfc <- st_sfc(st_point(c(1750160, 467499.9)), crs = st_crs(philly_sf))
+philly_ctr <- 
+  st_point(c(1750160, 467499.9)) %>% # point coordinates
+  st_sfc(crs = st_crs(philly_sf))  # create feature collection
+
 ```
 
 
@@ -105,34 +108,31 @@ For the spatial operations we can recur to the suite of geometric operations tha
 We create a 2km buffer around the city center point:
 
 ```{r sf-buffer-point, results='show'}
-philly_buf <- st_buffer(philly_ctr_sfc, 2000)
+philly_buf <- st_buffer(philly_ctr, 2000)
 ```
 
-Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer. In order to determine the polygons we use `st_intersects`, a geometric binary which returns a vector of indices of the polygons that intersect with the buffer. 
-
-```{r sf-intersects, results='show'}
-philly_intersects <- st_intersects(philly_buf, philly_sf)
-philly_intersects
-```
-
-We have created a `sgbp` object, which is a "Sparse Geometry Binary Predicate". It is a so called sparse matrix, which is a list with integer vectors only holding the indices for each polygon that intersects. In our case we only have one vector, because we only intersect with one buffer polygon, so we can extract this first vector with `philly_buf_intersects[[1]]` and use it for subsetting:
+Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer. The `sf` package has its own `st_filter` function that we can use here. 
 
 ```{r sf-intersects-subset, results='show'}
-philly_sel<- philly_sf[philly_intersects[[1]],]
+philly_sel <- st_filter(philly_sf, philly_buf)
+```
 
-# plot
-plot(st_geometry(philly_sf), border="#aaaaaa", main="Census tracts that overlap with 2km buffer around city center")
+Then we can plot what we created like this:
+
+```{r sf-intersects-plot, results='show'}
+
+plot(st_geometry(philly_sf), border="#aaaaaa", main="Census tracts that overlap with 2km buffer\naround city center")
 plot(st_geometry(philly_sel), add=T, col="red")
 plot(st_geometry(philly_buf), add=T, lwd = 2)
 ```
 
-
-Note the difference to `st_intersection`, which performs a geometric operation and creates a new sf object which cuts out the area of the buffer from the polygons like cookie a cutter:
+Note the difference to `st_intersection`, which performs an actual clippin operation and creates an `sfc` object that cuts out the area of the buffer from the census polygons:
 
 ```{r sf-intersection, results='show'}
 philly_intersection <- st_intersection(philly_buf, philly_sf)
 philly_intersection
-plot(st_geometry(philly_sf), border="#aaaaaa", main="Census tracts around city center, clipped by 2km buffer ")
+
+plot(st_geometry(philly_sf), border="#aaaaaa", main="Census tracts around city center,\nclipped by 2km buffer ")
 plot(philly_intersection, add=T, lwd = 2, border = "red")
 ```
 
@@ -146,8 +146,8 @@ Occasionally you may have to change the coordinates of your spatial object into 
 
 You can reproject
 
-  - a `sf` object with `st_transform()`  
-  - a `SpatRaster` object with `project()`  
+  * a `sf` object with `st_transform()`  
+  * a `SpatRaster` object with `project()`  
 
 The perhaps trickiest part here is to determine the definition of the projection, which needs to be a character string in [proj4](http://trac.osgeo.org/proj/) format. You can [look it up online](http://www.spatialreference.org). For example for [UTM zone 33N (EPSG:32633)](http://spatialreference.org/ref/epsg/wgs-84-utm-zone-33n/) the string would be:
 

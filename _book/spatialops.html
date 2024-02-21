@@ -249,7 +249,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="topological-subsetting-select-polygons-by-location" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Topological Subsetting: Select Polygons by Location<a href="spatialops.html#topological-subsetting-select-polygons-by-location" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>For the next example our goal is to select all Philadelphia census tracts within a range of 2 kilometers from the city center.</p>
+<p>For the next example our goal is to select all Philadelphia census tracts that are approximately within a range of 2 kilometers from the city center.</p>
 <blockquote>
 <p>Think about this for a moment – what might be the steps you’d follow?</p>
 </blockquote>
@@ -269,27 +269,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb73-2"><a href="spatialops.html#cb73-2" tabindex="-1"></a><span class="co"># philly_sf &lt;- st_read(&quot;data/Philly/&quot;, quiet = T)</span></span>
 <span id="cb73-3"><a href="spatialops.html#cb73-3" tabindex="-1"></a></span>
 <span id="cb73-4"><a href="spatialops.html#cb73-4" tabindex="-1"></a><span class="co"># make a simple feature point with CRS</span></span>
-<span id="cb73-5"><a href="spatialops.html#cb73-5" tabindex="-1"></a>philly_ctr_sfc <span class="ot">&lt;-</span> <span class="fu">st_sfc</span>(<span class="fu">st_point</span>(<span class="fu">c</span>(<span class="dv">1750160</span>, <span class="fl">467499.9</span>)), <span class="at">crs =</span> <span class="fu">st_crs</span>(philly_sf))</span></code></pre></div>
+<span id="cb73-5"><a href="spatialops.html#cb73-5" tabindex="-1"></a>philly_ctr <span class="ot">&lt;-</span> </span>
+<span id="cb73-6"><a href="spatialops.html#cb73-6" tabindex="-1"></a>  <span class="fu">st_point</span>(<span class="fu">c</span>(<span class="dv">1750160</span>, <span class="fl">467499.9</span>)) <span class="sc">%&gt;%</span> <span class="co"># point coordinates</span></span>
+<span id="cb73-7"><a href="spatialops.html#cb73-7" tabindex="-1"></a>  <span class="fu">st_sfc</span>(<span class="at">crs =</span> <span class="fu">st_crs</span>(philly_sf))  <span class="co"># create feature collection</span></span></code></pre></div>
 <p>For the spatial operations we can recur to the suite of geometric operations that come with the <code>sf</code> package.</p>
 <p>We create a 2km buffer around the city center point:</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="spatialops.html#cb74-1" tabindex="-1"></a>philly_buf <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(philly_ctr_sfc, <span class="dv">2000</span>)</span></code></pre></div>
-<p>Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer. In order to determine the polygons we use <code>st_intersects</code>, a geometric binary which returns a vector of indices of the polygons that intersect with the buffer.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="spatialops.html#cb75-1" tabindex="-1"></a>philly_intersects <span class="ot">&lt;-</span> <span class="fu">st_intersects</span>(philly_buf, philly_sf)</span>
-<span id="cb75-2"><a href="spatialops.html#cb75-2" tabindex="-1"></a>philly_intersects</span></code></pre></div>
-<pre><code>#&gt; Sparse geometry binary predicate list of length 1, where the predicate
-#&gt; was `intersects&#39;
-#&gt;  1: 3, 10, 11, 12, 13, 19, 20, 21, 50, 51, ...</code></pre>
-<p>We have created a <code>sgbp</code> object, which is a “Sparse Geometry Binary Predicate”. It is a so called sparse matrix, which is a list with integer vectors only holding the indices for each polygon that intersects. In our case we only have one vector, because we only intersect with one buffer polygon, so we can extract this first vector with <code>philly_buf_intersects[[1]]</code> and use it for subsetting:</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="spatialops.html#cb77-1" tabindex="-1"></a>philly_sel<span class="ot">&lt;-</span> philly_sf[philly_intersects[[<span class="dv">1</span>]],]</span>
-<span id="cb77-2"><a href="spatialops.html#cb77-2" tabindex="-1"></a></span>
-<span id="cb77-3"><a href="spatialops.html#cb77-3" tabindex="-1"></a><span class="co"># plot</span></span>
-<span id="cb77-4"><a href="spatialops.html#cb77-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf), <span class="at">border=</span><span class="st">&quot;#aaaaaa&quot;</span>, <span class="at">main=</span><span class="st">&quot;Census tracts that overlap with 2km buffer around city center&quot;</span>)</span>
-<span id="cb77-5"><a href="spatialops.html#cb77-5" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sel), <span class="at">add=</span>T, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
-<span id="cb77-6"><a href="spatialops.html#cb77-6" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_buf), <span class="at">add=</span>T, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="R-spatial_files/figure-html/sf-intersects-subset-1.png" width="672" /></p>
-<p>Note the difference to <code>st_intersection</code>, which performs a geometric operation and creates a new sf object which cuts out the area of the buffer from the polygons like cookie a cutter:</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="spatialops.html#cb78-1" tabindex="-1"></a>philly_intersection <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(philly_buf, philly_sf)</span>
-<span id="cb78-2"><a href="spatialops.html#cb78-2" tabindex="-1"></a>philly_intersection</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="spatialops.html#cb74-1" tabindex="-1"></a>philly_buf <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(philly_ctr, <span class="dv">2000</span>)</span></code></pre></div>
+<p>Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer. The <code>sf</code> package has its own <code>sf_filter</code> function that we can use here.</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="spatialops.html#cb75-1" tabindex="-1"></a>philly_sel <span class="ot">&lt;-</span> <span class="fu">st_filter</span>(philly_sf, philly_buf)</span></code></pre></div>
+<p>Then we can plot what we created like this:</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="spatialops.html#cb76-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf), <span class="at">border=</span><span class="st">&quot;#aaaaaa&quot;</span>, <span class="at">main=</span><span class="st">&quot;Census tracts that overlap with 2km buffer</span><span class="sc">\n</span><span class="st">around city center&quot;</span>)</span>
+<span id="cb76-2"><a href="spatialops.html#cb76-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sel), <span class="at">add=</span>T, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb76-3"><a href="spatialops.html#cb76-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_buf), <span class="at">add=</span>T, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R-spatial_files/figure-html/sf-intersects-plot-1.png" width="672" /></p>
+<p>Note the difference to <code>st_intersection</code>, which performs an actual clippin operation and creates an <code>sfc</code> object that cuts out the area of the buffer from the census polygons:</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="spatialops.html#cb77-1" tabindex="-1"></a>philly_intersection <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(philly_buf, philly_sf)</span>
+<span id="cb77-2"><a href="spatialops.html#cb77-2" tabindex="-1"></a>philly_intersection</span></code></pre></div>
 <pre><code>#&gt; Geometry set for 46 features 
 #&gt; Geometry type: GEOMETRY
 #&gt; Dimension:     XY
@@ -301,8 +296,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>#&gt; POLYGON ((1751347 466573.5, 1751321 467037.6, 1...</code></pre>
 <pre><code>#&gt; POLYGON ((1750298 467616.7, 1750148 467615.2, 1...</code></pre>
 <pre><code>#&gt; POLYGON ((1748853 467255, 1748874 467605.3, 174...</code></pre>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="spatialops.html#cb85-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf), <span class="at">border=</span><span class="st">&quot;#aaaaaa&quot;</span>, <span class="at">main=</span><span class="st">&quot;Census tracts around city center, clipped by 2km buffer &quot;</span>)</span>
-<span id="cb85-2"><a href="spatialops.html#cb85-2" tabindex="-1"></a><span class="fu">plot</span>(philly_intersection, <span class="at">add=</span>T, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">border =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="spatialops.html#cb84-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf), <span class="at">border=</span><span class="st">&quot;#aaaaaa&quot;</span>, <span class="at">main=</span><span class="st">&quot;Census tracts around city center,</span><span class="sc">\n</span><span class="st">clipped by 2km buffer &quot;</span>)</span>
+<span id="cb84-2"><a href="spatialops.html#cb84-2" tabindex="-1"></a><span class="fu">plot</span>(philly_intersection, <span class="at">add=</span>T, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">border =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/sf-intersection-1.png" width="672" /></p>
 </div>
 <div id="reprojecting" class="section level2 hasAnchor" number="2.3">
@@ -327,52 +322,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Let us go back to the <code>"PhillyHomicides"</code> shapefile we exported earlier. Let’s read it back in and reproject it so it matches the projection of the Philadelphia Census tracts.</p>
 <p>Now let us check the CRS for both files.</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="spatialops.html#cb86-1" tabindex="-1"></a><span class="co">#If you need to read the file back in:</span></span>
-<span id="cb86-2"><a href="spatialops.html#cb86-2" tabindex="-1"></a><span class="co">#philly_homicides_sf &lt;- st_read(&quot;data/PhillyHomicides/&quot;)</span></span>
-<span id="cb86-3"><a href="spatialops.html#cb86-3" tabindex="-1"></a></span>
-<span id="cb86-4"><a href="spatialops.html#cb86-4" tabindex="-1"></a><span class="fu">st_crs</span>(philly_sf)<span class="sc">$</span>proj4string</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="spatialops.html#cb85-1" tabindex="-1"></a><span class="co">#If you need to read the file back in:</span></span>
+<span id="cb85-2"><a href="spatialops.html#cb85-2" tabindex="-1"></a><span class="co">#philly_homicides_sf &lt;- st_read(&quot;data/PhillyHomicides/&quot;)</span></span>
+<span id="cb85-3"><a href="spatialops.html#cb85-3" tabindex="-1"></a></span>
+<span id="cb85-4"><a href="spatialops.html#cb85-4" tabindex="-1"></a><span class="fu">st_crs</span>(philly_sf)<span class="sc">$</span>proj4string</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;+proj=aea +lat_0=37.5 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs&quot;</code></pre>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="spatialops.html#cb88-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)<span class="sc">$</span>proj4string</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="spatialops.html#cb87-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)<span class="sc">$</span>proj4string</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
 <p>We see that the CRS are different: we have <code>+proj=aea...</code> and <code>+proj=longlat...</code>. AEA refers to <em>USA Contiguous Albers Equal Area Conic</em> which is a projected coordinate system with numeric units. We will need this below for our spatial operations, so we will make sure both files are in that same CRS.</p>
 <p>We use <code>st_transform</code> and assign the result to a new object. Note how we also use <code>str_crs</code> to extract the projection definition from <code>philly_sf</code>, so we don’t have to type it out.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="spatialops.html#cb90-1" tabindex="-1"></a>philly_homicides_sf_aea <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(philly_homicides_sf, <span class="fu">st_crs</span>(philly_sf))</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="spatialops.html#cb89-1" tabindex="-1"></a>philly_homicides_sf_aea <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(philly_homicides_sf, <span class="fu">st_crs</span>(philly_sf))</span></code></pre></div>
 <p>We can use the <code>range()</code> command from the R base package to compare the coordinates before and after reprojection and confirm that we actually have transformed them. <code>range()</code> returns the <em>min</em> and <em>max</em> value of a vector of numbers.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="spatialops.html#cb91-1" tabindex="-1"></a><span class="fu">range</span>(<span class="fu">st_coordinates</span>(philly_homicides_sf))</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="spatialops.html#cb90-1" tabindex="-1"></a><span class="fu">range</span>(<span class="fu">st_coordinates</span>(philly_homicides_sf))</span></code></pre></div>
 <pre><code>#&gt; [1] -75.26809  40.13086</code></pre>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="spatialops.html#cb93-1" tabindex="-1"></a><span class="fu">range</span>(<span class="fu">st_coordinates</span>(philly_homicides_sf_aea))</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="spatialops.html#cb92-1" tabindex="-1"></a><span class="fu">range</span>(<span class="fu">st_coordinates</span>(philly_homicides_sf_aea))</span></code></pre></div>
 <pre><code>#&gt; [1]  457489.7 1763671.8</code></pre>
 <p>We can also compare them visually with:</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="spatialops.html#cb95-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)) </span>
-<span id="cb95-2"><a href="spatialops.html#cb95-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_homicides_sf), <span class="at">axes=</span><span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;before transform - latlon&quot;</span>)</span>
-<span id="cb95-3"><a href="spatialops.html#cb95-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_homicides_sf_aea), <span class="at">axes=</span><span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;after transform - aea&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="spatialops.html#cb94-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)) </span>
+<span id="cb94-2"><a href="spatialops.html#cb94-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_homicides_sf), <span class="at">axes=</span><span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;before transform - latlon&quot;</span>)</span>
+<span id="cb94-3"><a href="spatialops.html#cb94-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_homicides_sf_aea), <span class="at">axes=</span><span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">&quot;after transform - aea&quot;</span>)</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/compare-reproj-plots-sf-1.png" width="672" /></p>
 <p>Lastly, let us save the reprojected file as <code>PhillyHomicides_aea</code> shapefile, as we will use it later on.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="spatialops.html#cb96-1" tabindex="-1"></a><span class="fu">st_write</span>(philly_homicides_sf_aea, <span class="st">&quot;data/PhillyHomicides_aea&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="spatialops.html#cb95-1" tabindex="-1"></a><span class="fu">st_write</span>(philly_homicides_sf_aea, <span class="st">&quot;data/PhillyHomicides_aea&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)</span></code></pre></div>
 <div id="raster-reprojection" class="section level3 hasAnchor" number="2.3.1">
 <h3><span class="header-section-number">2.3.1</span> Raster reprojection<a href="spatialops.html#raster-reprojection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here is what it would look like to reproject the HARV raster used earlier to a WGS84 projection. We see that see that the original projection is in UTM.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="spatialops.html#cb97-1" tabindex="-1"></a><span class="co"># if you need to load again:</span></span>
-<span id="cb97-2"><a href="spatialops.html#cb97-2" tabindex="-1"></a><span class="co">#HARV &lt;- raster(&quot;data/HARV_RGB_Ortho.tif&quot;)</span></span>
-<span id="cb97-3"><a href="spatialops.html#cb97-3" tabindex="-1"></a><span class="fu">crs</span>(HARV, <span class="at">proj =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="spatialops.html#cb96-1" tabindex="-1"></a><span class="co"># if you need to load again:</span></span>
+<span id="cb96-2"><a href="spatialops.html#cb96-2" tabindex="-1"></a><span class="co">#HARV &lt;- raster(&quot;data/HARV_RGB_Ortho.tif&quot;)</span></span>
+<span id="cb96-3"><a href="spatialops.html#cb96-3" tabindex="-1"></a><span class="fu">crs</span>(HARV, <span class="at">proj =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs&quot;</code></pre>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="spatialops.html#cb99-1" tabindex="-1"></a>HARV_WGS84 <span class="ot">&lt;-</span> <span class="fu">project</span>(HARV, <span class="st">&quot;+init=epsg:4326&quot;</span>)</span>
-<span id="cb99-2"><a href="spatialops.html#cb99-2" tabindex="-1"></a><span class="fu">crs</span>(HARV_WGS84, <span class="at">proj =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="spatialops.html#cb98-1" tabindex="-1"></a>HARV_WGS84 <span class="ot">&lt;-</span> <span class="fu">project</span>(HARV, <span class="st">&quot;+init=epsg:4326&quot;</span>)</span>
+<span id="cb98-2"><a href="spatialops.html#cb98-2" tabindex="-1"></a><span class="fu">crs</span>(HARV_WGS84, <span class="at">proj =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
 <p>Let’s look at the coordinates to see the effect:</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="spatialops.html#cb101-1" tabindex="-1"></a><span class="fu">ext</span>(HARV)</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="spatialops.html#cb100-1" tabindex="-1"></a><span class="fu">ext</span>(HARV)</span></code></pre></div>
 <pre><code>#&gt; SpatExtent : 731998.5, 732766.75, 4712956.25, 4713535.5 (xmin, xmax, ymin, ymax)</code></pre>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="spatialops.html#cb103-1" tabindex="-1"></a><span class="fu">ext</span>(HARV_WGS84)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="spatialops.html#cb102-1" tabindex="-1"></a><span class="fu">ext</span>(HARV_WGS84)</span></code></pre></div>
 <pre><code>#&gt; SpatExtent : -72.1750316832584, -72.1654516638594, 42.5339461813323, 42.5393881837189 (xmin, xmax, ymin, ymax)</code></pre>
 <p>Due to the reprojection the number of cells has also changed:</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="spatialops.html#cb105-1" tabindex="-1"></a><span class="fu">ncell</span>(HARV)</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="spatialops.html#cb104-1" tabindex="-1"></a><span class="fu">ncell</span>(HARV)</span></code></pre></div>
 <pre><code>#&gt; [1] 7120141</code></pre>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="spatialops.html#cb107-1" tabindex="-1"></a><span class="fu">ncell</span>(HARV_WGS84)</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="spatialops.html#cb106-1" tabindex="-1"></a><span class="fu">ncell</span>(HARV_WGS84)</span></code></pre></div>
 <pre><code>#&gt; [1] 6859650</code></pre>
 <p>And here is the visual proof:</p>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="spatialops.html#cb109-1" tabindex="-1"></a><span class="fu">plot</span>(HARV, <span class="at">main =</span> <span class="st">&quot;before transform - UTM&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="spatialops.html#cb108-1" tabindex="-1"></a><span class="fu">plot</span>(HARV, <span class="at">main =</span> <span class="st">&quot;before transform - UTM&quot;</span>)</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/raster-reproject-plot1-1.png" width="672" /></p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="spatialops.html#cb110-1" tabindex="-1"></a><span class="fu">plot</span>(HARV_WGS84, <span class="at">main =</span> <span class="st">&quot;after transform - WGS84&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="spatialops.html#cb109-1" tabindex="-1"></a><span class="fu">plot</span>(HARV_WGS84, <span class="at">main =</span> <span class="st">&quot;after transform - WGS84&quot;</span>)</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/raster-reproject-plot2-1.png" width="672" /></p>
 </div>
 </div>
@@ -381,51 +376,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Now that we have both homicides and census tracts in the same projection we will forge ahead and ask for the density of homicides for <strong>each census tract</strong> in Philadelphia: <span class="math inline">\(\frac{{homicides}}{area}\)</span></p>
 <p>To achieve this this we join the points of homicide incidence to the census tract polygon and count them up for each polygon. You might be familiar with this operation from other GIS packages.</p>
 <p>We will use piping and build up our object in the following way. First we calculate the area for each tract. We use the <code>st_area</code> function on the geometry column and add the result.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="spatialops.html#cb110-1" tabindex="-1"></a>philly_sf <span class="sc">%&gt;%</span> </span>
+<span id="cb110-2"><a href="spatialops.html#cb110-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tract_area =</span> <span class="fu">st_area</span>(geometry)) <span class="sc">%&gt;%</span> </span>
+<span id="cb110-3"><a href="spatialops.html#cb110-3" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
+<p>Next, we use st_join to perform a spatial join with the points:</p>
 <div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="spatialops.html#cb111-1" tabindex="-1"></a>philly_sf <span class="sc">%&gt;%</span> </span>
 <span id="cb111-2"><a href="spatialops.html#cb111-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tract_area =</span> <span class="fu">st_area</span>(geometry)) <span class="sc">%&gt;%</span> </span>
-<span id="cb111-3"><a href="spatialops.html#cb111-3" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
-<p>Next, we use st_join to perform a spatial join with the points:</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="spatialops.html#cb112-1" tabindex="-1"></a>philly_sf <span class="sc">%&gt;%</span> </span>
-<span id="cb112-2"><a href="spatialops.html#cb112-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tract_area =</span> <span class="fu">st_area</span>(geometry)) <span class="sc">%&gt;%</span> </span>
-<span id="cb112-3"><a href="spatialops.html#cb112-3" tabindex="-1"></a>  <span class="fu">st_join</span>(philly_homicides_sf_aea) <span class="sc">%&gt;%</span></span>
-<span id="cb112-4"><a href="spatialops.html#cb112-4" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
+<span id="cb111-3"><a href="spatialops.html#cb111-3" tabindex="-1"></a>  <span class="fu">st_join</span>(philly_homicides_sf_aea) <span class="sc">%&gt;%</span></span>
+<span id="cb111-4"><a href="spatialops.html#cb111-4" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <p>Now we can group by a variable that uiquely identifies the census tracts, (we choose <em>GEOID10</em>) and use <code>summarize</code> to count the points for each tract and calculate the homicide rate. Since our units are in sq meter we multiply by by 1000000 to get sq km. We also need to carry over the area, which I do using <code>unique</code>.</p>
 <p>We also assign the output to a new object <code>philly_crimes_sf</code>.</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="spatialops.html#cb113-1" tabindex="-1"></a>philly_crimes_sf <span class="ot">&lt;-</span> philly_sf <span class="sc">%&gt;%</span></span>
-<span id="cb113-2"><a href="spatialops.html#cb113-2" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">tract_area =</span> <span class="fu">st_area</span>(geometry)) <span class="sc">%&gt;%</span></span>
-<span id="cb113-3"><a href="spatialops.html#cb113-3" tabindex="-1"></a>      <span class="fu">st_join</span>(philly_homicides_sf_aea) <span class="sc">%&gt;%</span></span>
-<span id="cb113-4"><a href="spatialops.html#cb113-4" tabindex="-1"></a>      <span class="fu">group_by</span>(GEOID10) <span class="sc">%&gt;%</span></span>
-<span id="cb113-5"><a href="spatialops.html#cb113-5" tabindex="-1"></a>      <span class="fu">summarize</span>(<span class="at">n_homic =</span> <span class="fu">n</span>(),</span>
-<span id="cb113-6"><a href="spatialops.html#cb113-6" tabindex="-1"></a>                <span class="at">tract_area =</span> <span class="fu">unique</span>(tract_area),</span>
-<span id="cb113-7"><a href="spatialops.html#cb113-7" tabindex="-1"></a>                <span class="at">homic_rate =</span> <span class="fu">as.numeric</span>(<span class="fl">1e6</span> <span class="sc">*</span> (n_homic<span class="sc">/</span>tract_area))) </span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="spatialops.html#cb112-1" tabindex="-1"></a>philly_crimes_sf <span class="ot">&lt;-</span> philly_sf <span class="sc">%&gt;%</span></span>
+<span id="cb112-2"><a href="spatialops.html#cb112-2" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">tract_area =</span> <span class="fu">st_area</span>(geometry)) <span class="sc">%&gt;%</span></span>
+<span id="cb112-3"><a href="spatialops.html#cb112-3" tabindex="-1"></a>      <span class="fu">st_join</span>(philly_homicides_sf_aea) <span class="sc">%&gt;%</span></span>
+<span id="cb112-4"><a href="spatialops.html#cb112-4" tabindex="-1"></a>      <span class="fu">group_by</span>(GEOID10) <span class="sc">%&gt;%</span></span>
+<span id="cb112-5"><a href="spatialops.html#cb112-5" tabindex="-1"></a>      <span class="fu">summarize</span>(<span class="at">n_homic =</span> <span class="fu">n</span>(),</span>
+<span id="cb112-6"><a href="spatialops.html#cb112-6" tabindex="-1"></a>                <span class="at">tract_area =</span> <span class="fu">unique</span>(tract_area),</span>
+<span id="cb112-7"><a href="spatialops.html#cb112-7" tabindex="-1"></a>                <span class="at">homic_rate =</span> <span class="fu">as.numeric</span>(<span class="fl">1e6</span> <span class="sc">*</span> (n_homic<span class="sc">/</span>tract_area))) </span></code></pre></div>
 <p>Finally, we write this out for later:</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="spatialops.html#cb114-1" tabindex="-1"></a><span class="fu">st_write</span>(philly_crimes_sf, <span class="st">&quot;data/PhillyCrimerate&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="spatialops.html#cb113-1" tabindex="-1"></a><span class="fu">st_write</span>(philly_crimes_sf, <span class="st">&quot;data/PhillyCrimerate&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)</span></code></pre></div>
 </div>
 <div id="raster-calculations-with-terra" class="section level2 hasAnchor" number="2.5">
 <h2><span class="header-section-number">2.5</span> Raster calculations with <code>terra</code><a href="spatialops.html#raster-calculations-with-terra" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We often want to perform calculations on two or more rasters to create a new output raster. For example, if we are interested in mapping the heights of trees across an entire field site, we might want to calculate the difference between the Digital Surface Model (DSM, tops of trees) and the Digital Terrain Model (DTM, ground level). The resulting dataset is referred to as a Canopy Height Model (CHM) and represents the actual height of trees, buildings, etc. with the influence of ground elevation removed.</p>
 <p>First let’s read in the two datasets.</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="spatialops.html#cb115-1" tabindex="-1"></a>HARV_DTM <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_dtmCrop.tif&quot;</span>)</span>
-<span id="cb115-2"><a href="spatialops.html#cb115-2" tabindex="-1"></a>HARV_DSM <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_dsmCrop.tif&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="spatialops.html#cb114-1" tabindex="-1"></a>HARV_DTM <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_dtmCrop.tif&quot;</span>)</span>
+<span id="cb114-2"><a href="spatialops.html#cb114-2" tabindex="-1"></a>HARV_DSM <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_dsmCrop.tif&quot;</span>)</span></code></pre></div>
 <p>Now we can subtract the DTM from the DSM to create a Canopy Height Model. It will for each CHM pixel calculate the difference of the respective DTM and DSM pixels.</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="spatialops.html#cb116-1" tabindex="-1"></a>HARV_CHM <span class="ot">&lt;-</span> HARV_DSM <span class="sc">-</span> HARV_DTM</span>
-<span id="cb116-2"><a href="spatialops.html#cb116-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
-<span id="cb116-3"><a href="spatialops.html#cb116-3" tabindex="-1"></a><span class="fu">plot</span>(HARV_CHM)</span>
-<span id="cb116-4"><a href="spatialops.html#cb116-4" tabindex="-1"></a><span class="fu">hist</span>(HARV_CHM)</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="spatialops.html#cb115-1" tabindex="-1"></a>HARV_CHM <span class="ot">&lt;-</span> HARV_DSM <span class="sc">-</span> HARV_DTM</span>
+<span id="cb115-2"><a href="spatialops.html#cb115-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb115-3"><a href="spatialops.html#cb115-3" tabindex="-1"></a><span class="fu">plot</span>(HARV_CHM)</span>
+<span id="cb115-4"><a href="spatialops.html#cb115-4" tabindex="-1"></a><span class="fu">hist</span>(HARV_CHM)</span></code></pre></div>
 <pre><code>#&gt; Warning: [hist] a sample of 43% of the cells was used (of which 0% was NA)</code></pre>
 <p><img src="R-spatial_files/figure-html/chm-1.png" width="672" /></p>
 <p>This works fine for the small rasters in this tutorial. However, the calculation above becomes less efficient when computations are more complex or file sizes become large.</p>
 <p>Thet <code>terra</code> package contains a function called <code>lapp()</code>function to make processing more efficient. It takes two or more rasters and applies a function to them. The generic syntax is:</p>
 <pre><code>outputRaster &lt;- lapp(x, fun)</code></pre>
 <p>where x is a <code>SpatRasterDataset</code> and fun is a custom function for the operation you want to perform.</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="spatialops.html#cb119-1" tabindex="-1"></a>CHM_ov_HARV <span class="ot">&lt;-</span> <span class="fu">lapp</span>(<span class="fu">sds</span>(<span class="fu">list</span>(HARV_DSM, HARV_DTM)), </span>
-<span id="cb119-2"><a href="spatialops.html#cb119-2" tabindex="-1"></a>                    <span class="at">fun =</span> <span class="cf">function</span>(r1, r2) { </span>
-<span id="cb119-3"><a href="spatialops.html#cb119-3" tabindex="-1"></a>                      <span class="fu">return</span>( r1 <span class="sc">-</span> r2) </span>
-<span id="cb119-4"><a href="spatialops.html#cb119-4" tabindex="-1"></a>                      })</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="spatialops.html#cb118-1" tabindex="-1"></a>CHM_ov_HARV <span class="ot">&lt;-</span> <span class="fu">lapp</span>(<span class="fu">sds</span>(<span class="fu">list</span>(HARV_DSM, HARV_DTM)), </span>
+<span id="cb118-2"><a href="spatialops.html#cb118-2" tabindex="-1"></a>                    <span class="at">fun =</span> <span class="cf">function</span>(r1, r2) { </span>
+<span id="cb118-3"><a href="spatialops.html#cb118-3" tabindex="-1"></a>                      <span class="fu">return</span>( r1 <span class="sc">-</span> r2) </span>
+<span id="cb118-4"><a href="spatialops.html#cb118-4" tabindex="-1"></a>                      })</span></code></pre></div>
 <p>As arguments for our <code>lapp</code> operation we use the <code>sds()</code> function and provide it with the list of rasters that we want to operate on. As custom function we provide the function with two arguments (<code>r1</code> and <code>r1</code>) that subtracts the second (<code>r2</code>) from the first (<code>r1</code>) and returns the difference. The output of <code>lapp</code> is a <code>SpatRaster</code> and we assign it to a new variable <code>CHM_ov_HARV.</code></p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="spatialops.html#cb120-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
-<span id="cb120-2"><a href="spatialops.html#cb120-2" tabindex="-1"></a><span class="fu">plot</span>(CHM_ov_HARV)</span>
-<span id="cb120-3"><a href="spatialops.html#cb120-3" tabindex="-1"></a><span class="fu">hist</span>(CHM_ov_HARV)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="spatialops.html#cb119-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb119-2"><a href="spatialops.html#cb119-2" tabindex="-1"></a><span class="fu">plot</span>(CHM_ov_HARV)</span>
+<span id="cb119-3"><a href="spatialops.html#cb119-3" tabindex="-1"></a><span class="fu">hist</span>(CHM_ov_HARV)</span></code></pre></div>
 <pre><code>#&gt; Warning: [hist] a sample of 43% of the cells was used (of which 0% was NA)</code></pre>
 <p><img src="R-spatial_files/figure-html/plot-lapp-1.png" width="672" /></p>
 
