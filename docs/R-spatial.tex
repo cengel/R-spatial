@@ -127,7 +127,7 @@
 
 \title{Using Spatial Data with R}
 \author{Claudia A Engel}
-\date{Last updated: February 20, 2024}
+\date{Last updated: February 21, 2024}
 
 \begin{document}
 \maketitle
@@ -332,16 +332,16 @@ We would then combine this into a simple feature collection :
 #> Geometry set for 2 features 
 #> Geometry type: LINESTRING
 #> Dimension:     XY
-#> Bounding box:  xmin: 0.235151 ymin: 0.00839848 xmax: 0.9894396 ymax: 0.6266413
+#> Bounding box:  xmin: 0.06688615 ymin: 0.1567866 xmax: 0.9410966 ymax: 0.9058131
 #> CRS:           NA
 \end{verbatim}
 
 \begin{verbatim}
-#> LINESTRING (0.8592813 0.00839848, 0.9273943 0.3...
+#> LINESTRING (0.06688615 0.1567866, 0.6752471 0.5...
 \end{verbatim}
 
 \begin{verbatim}
-#> LINESTRING (0.235151 0.2268521, 0.9894396 0.350...
+#> LINESTRING (0.533915 0.4474753, 0.9410966 0.717...
 \end{verbatim}
 
 And lastly create a data frame from above to generate the \texttt{sf} object:
@@ -358,11 +358,11 @@ And lastly create a data frame from above to generate the \texttt{sf} object:
 #> Simple feature collection with 2 features and 2 fields
 #> Geometry type: LINESTRING
 #> Dimension:     XY
-#> Bounding box:  xmin: 0.235151 ymin: 0.00839848 xmax: 0.9894396 ymax: 0.6266413
+#> Bounding box:  xmin: 0.06688615 ymin: 0.1567866 xmax: 0.9410966 ymax: 0.9058131
 #> CRS:           NA
 #>     id cars_per_hour                      lnstr_sfc
-#> 1 hwy1            78 LINESTRING (0.8592813 0.008...
-#> 2 hwy2            22 LINESTRING (0.235151 0.2268...
+#> 1 hwy1            78 LINESTRING (0.06688615 0.15...
+#> 2 hwy2            22 LINESTRING (0.533915 0.4474...
 \end{verbatim}
 
 There are many methods available in the \texttt{sf} package, to find out use
@@ -852,9 +852,9 @@ To add some random values to the cells we can take advantage of the \texttt{ncel
 #> extent      : 0, 360, -90, 90  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 
 #> source(s)   : memory
-#> name        :        lyr.1 
-#> min value   : 0.0003101979 
-#> max value   : 0.9925648135
+#> name        :       lyr.1 
+#> min value   : 0.003116596 
+#> max value   : 0.998842893
 \end{verbatim}
 
 In addition to the output above, we now see:
@@ -1327,7 +1327,7 @@ We see the new attribute columns added, as well as the geometry column.
 \hypertarget{topological-subsetting-select-polygons-by-location}{%
 \section{Topological Subsetting: Select Polygons by Location}\label{topological-subsetting-select-polygons-by-location}}
 
-For the next example our goal is to select all Philadelphia census tracts within a range of 2 kilometers from the city center.
+For the next example our goal is to select all Philadelphia census tracts that are approximately within a range of 2 kilometers from the city center.
 
 \begin{quote}
 Think about this for a moment -- what might be the steps you'd follow?
@@ -1361,7 +1361,9 @@ With this information, we create a object that holds the coordinates of the city
 \CommentTok{\# philly\_sf \textless{}{-} st\_read("data/Philly/", quiet = T)}
 
 \CommentTok{\# make a simple feature point with CRS}
-\NormalTok{philly\_ctr\_sfc }\OtherTok{\textless{}{-}} \FunctionTok{st\_sfc}\NormalTok{(}\FunctionTok{st\_point}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1750160}\NormalTok{, }\FloatTok{467499.9}\NormalTok{)), }\AttributeTok{crs =} \FunctionTok{st\_crs}\NormalTok{(philly\_sf))}
+\NormalTok{philly\_ctr }\OtherTok{\textless{}{-}} 
+  \FunctionTok{st\_point}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1750160}\NormalTok{, }\FloatTok{467499.9}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# point coordinates}
+  \FunctionTok{st\_sfc}\NormalTok{(}\AttributeTok{crs =} \FunctionTok{st\_crs}\NormalTok{(philly\_sf))  }\CommentTok{\# create feature collection}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1371,41 +1373,31 @@ We create a 2km buffer around the city center point:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{philly\_buf }\OtherTok{\textless{}{-}} \FunctionTok{st\_buffer}\NormalTok{(philly\_ctr\_sfc, }\DecValTok{2000}\NormalTok{)}
+\NormalTok{philly\_buf }\OtherTok{\textless{}{-}} \FunctionTok{st\_buffer}\NormalTok{(philly\_ctr, }\DecValTok{2000}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer. In order to determine the polygons we use \texttt{st\_intersects}, a geometric binary which returns a vector of indices of the polygons that intersect with the buffer.
+Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer. The \texttt{sf} package has its own \texttt{st\_filter} function that we can use here.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{philly\_intersects }\OtherTok{\textless{}{-}} \FunctionTok{st\_intersects}\NormalTok{(philly\_buf, philly\_sf)}
-\NormalTok{philly\_intersects}
+\NormalTok{philly\_sel }\OtherTok{\textless{}{-}} \FunctionTok{st\_filter}\NormalTok{(philly\_sf, philly\_buf)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-#> Sparse geometry binary predicate list of length 1, where the predicate
-#> was `intersects'
-#>  1: 3, 10, 11, 12, 13, 19, 20, 21, 50, 51, ...
-\end{verbatim}
-
-We have created a \texttt{sgbp} object, which is a ``Sparse Geometry Binary Predicate''. It is a so called sparse matrix, which is a list with integer vectors only holding the indices for each polygon that intersects. In our case we only have one vector, because we only intersect with one buffer polygon, so we can extract this first vector with \texttt{philly\_buf\_intersects{[}{[}1{]}{]}} and use it for subsetting:
+Then we can plot what we created like this:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{philly\_sel}\OtherTok{\textless{}{-}}\NormalTok{ philly\_sf[philly\_intersects[[}\DecValTok{1}\NormalTok{]],]}
-
-\CommentTok{\# plot}
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(philly\_sf), }\AttributeTok{border=}\StringTok{"\#aaaaaa"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Census tracts that overlap with 2km buffer around city center"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(philly\_sf), }\AttributeTok{border=}\StringTok{"\#aaaaaa"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Census tracts that overlap with 2km buffer}\SpecialCharTok{\textbackslash{}n}\StringTok{around city center"}\NormalTok{)}
 \FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(philly\_sel), }\AttributeTok{add=}\NormalTok{T, }\AttributeTok{col=}\StringTok{"red"}\NormalTok{)}
 \FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(philly\_buf), }\AttributeTok{add=}\NormalTok{T, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/sf-intersects-subset-1.pdf}
+\includegraphics{R-spatial_files/figure-latex/sf-intersects-plot-1.pdf}
 
-Note the difference to \texttt{st\_intersection}, which performs a geometric operation and creates a new sf object which cuts out the area of the buffer from the polygons like cookie a cutter:
+Note the difference to \texttt{st\_intersection}, which performs an actual clippin operation and creates an \texttt{sfc} object that cuts out the area of the buffer from the census polygons:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1445,7 +1437,7 @@ Note the difference to \texttt{st\_intersection}, which performs a geometric ope
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(philly\_sf), }\AttributeTok{border=}\StringTok{"\#aaaaaa"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Census tracts around city center, clipped by 2km buffer "}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(philly\_sf), }\AttributeTok{border=}\StringTok{"\#aaaaaa"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Census tracts around city center,}\SpecialCharTok{\textbackslash{}n}\StringTok{clipped by 2km buffer "}\NormalTok{)}
 \FunctionTok{plot}\NormalTok{(philly\_intersection, }\AttributeTok{add=}\NormalTok{T, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{border =} \StringTok{"red"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1749,11 +1741,11 @@ Thet \texttt{terra} package contains a function called \texttt{lapp()}function t
 outputRaster <- lapp(x, fun)
 \end{verbatim}
 
-where x is a \texttt{SpatRasterDataset} and fun is a custom function for the operation you want to perform.
+where \emph{x} is a \texttt{SpatRasterDataset} and \emph{fun} is a custom function for the operation we want to perform.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{CHM\_ov\_HARV }\OtherTok{\textless{}{-}} \FunctionTok{lapp}\NormalTok{(}\FunctionTok{sds}\NormalTok{(}\FunctionTok{list}\NormalTok{(HARV\_DSM, HARV\_DTM)), }
+\NormalTok{CHM\_ov\_HARV }\OtherTok{\textless{}{-}} \FunctionTok{lapp}\NormalTok{(}\FunctionTok{sds}\NormalTok{(}\FunctionTok{list}\NormalTok{(HARV\_DSM, HARV\_DTM)), }\CommentTok{\# use sds to create a SpatRasterDataset}
                     \AttributeTok{fun =} \ControlFlowTok{function}\NormalTok{(r1, r2) \{ }
                       \FunctionTok{return}\NormalTok{( r1 }\SpecialCharTok{{-}}\NormalTok{ r2) }
 \NormalTok{                      \})}
@@ -1762,19 +1754,17 @@ where x is a \texttt{SpatRasterDataset} and fun is a custom function for the ope
 
 As arguments for our \texttt{lapp} operation we use the \texttt{sds()} function and provide it with the list of rasters that we want to operate on. As custom function we provide the function with two arguments (\texttt{r1} and \texttt{r1}) that subtracts the second (\texttt{r2}) from the first (\texttt{r1}) and returns the difference. The output of \texttt{lapp} is a \texttt{SpatRaster} and we assign it to a new variable \texttt{CHM\_ov\_HARV.}
 
+The two rasters should be the same.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
-\FunctionTok{plot}\NormalTok{(CHM\_ov\_HARV)}
-\FunctionTok{hist}\NormalTok{(CHM\_ov\_HARV)}
+\FunctionTok{identical}\NormalTok{(HARV\_CHM, CHM\_ov\_HARV)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-#> Warning: [hist] a sample of 43% of the cells was used (of which 0% was NA)
+#> [1] TRUE
 \end{verbatim}
-
-\includegraphics{R-spatial_files/figure-latex/plot-lapp-1.pdf}
 
 \hypertarget{mapping}{%
 \chapter{Making Maps in R}\label{mapping}}
@@ -1823,6 +1813,8 @@ For an introduction to \texttt{ggplot} check out \href{http://ggplot2.tidyverse.
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(ggplot2)}
+\CommentTok{\# if you need to read this in again:}
+\CommentTok{\# philly\_crimes\_sf \textless{}{-} st\_read("data/PhillyCrimerate") }
 \FunctionTok{ggplot}\NormalTok{(philly\_crimes\_sf) }\SpecialCharTok{+} 
   \FunctionTok{geom\_sf}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{homic\_rate))}
 \end{Highlighting}
@@ -1830,7 +1822,7 @@ For an introduction to \texttt{ggplot} check out \href{http://ggplot2.tidyverse.
 
 \includegraphics{R-spatial_files/figure-latex/ggplot-sf-1.pdf}
 
-Homicide rate is a continuous variable and is plotted by \texttt{ggplot} as such. If we wanted to plot our map as a `true' choropleth map we need to convert our continous variable into a categoriacal one, according to whichever brackets we want to use.
+Homicide rate is a continuous variable and is plotted by \texttt{ggplot} as such. If we wanted to plot our map as a `true' choropleth map we need to convert our continuous variable into a categorical one, according to whichever brackets we want to use.
 
 This requires two steps:
 
@@ -1842,14 +1834,14 @@ This requires two steps:
   Add a categorical variable to the object which assigns each continious vaule to a bracket.
 \end{itemize}
 
-We will use the \texttt{classInt} package to explicitly determine the breaks.
+We will use the \texttt{classInt} package to explicitly determine the quantile breaks.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(classInt)}
-
 \CommentTok{\# get quantile breaks. Add .00001 offset to catch the lowest value}
-\NormalTok{breaks\_qt }\OtherTok{\textless{}{-}} \FunctionTok{classIntervals}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{min}\NormalTok{(philly\_crimes\_sf}\SpecialCharTok{$}\NormalTok{homic\_rate) }\SpecialCharTok{{-}}\NormalTok{ .}\DecValTok{00001}\NormalTok{, philly\_crimes\_sf}\SpecialCharTok{$}\NormalTok{homic\_rate), }\AttributeTok{n =} \DecValTok{7}\NormalTok{, }\AttributeTok{style =} \StringTok{"quantile"}\NormalTok{)}
+\NormalTok{breaks\_qt }\OtherTok{\textless{}{-}} \FunctionTok{classIntervals}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{min}\NormalTok{(philly\_crimes\_sf}\SpecialCharTok{$}\NormalTok{homic\_rate) }\SpecialCharTok{{-}}\NormalTok{ .}\DecValTok{00001}\NormalTok{,}
+\NormalTok{                              philly\_crimes\_sf}\SpecialCharTok{$}\NormalTok{homic\_rate), }\AttributeTok{n =} \DecValTok{7}\NormalTok{, }\AttributeTok{style =} \StringTok{"quantile"}\NormalTok{)}
 
 \FunctionTok{str}\NormalTok{(breaks\_qt)}
 \end{Highlighting}
@@ -1874,9 +1866,9 @@ Lastly, we can use \texttt{scale\_fill\_brewer} and add our color palette.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{philly\_crimes\_sf }\OtherTok{\textless{}{-}} \FunctionTok{mutate}\NormalTok{(philly\_crimes\_sf, }\AttributeTok{homic\_rate\_cat =} \FunctionTok{cut}\NormalTok{(homic\_rate, breaks\_qt}\SpecialCharTok{$}\NormalTok{brks)) }
-
-\FunctionTok{ggplot}\NormalTok{(philly\_crimes\_sf) }\SpecialCharTok{+} 
+\NormalTok{philly\_crimes\_sf }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{homic\_rate\_cat =} \FunctionTok{cut}\NormalTok{(homic\_rate, breaks\_qt}\SpecialCharTok{$}\NormalTok{brks)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+} 
     \FunctionTok{geom\_sf}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{homic\_rate\_cat)) }\SpecialCharTok{+}
     \FunctionTok{scale\_fill\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"OrRd"}\NormalTok{) }
 \end{Highlighting}
@@ -1889,18 +1881,13 @@ Lastly, we can use \texttt{scale\_fill\_brewer} and add our color palette.
 
 To visualize raster data using \texttt{ggplot2}, we will use the raster with the values for the digital terrain model (DTM).
 
-If you need to read it in again:
+Before using ggplot we need to convert it to a dataframe. The \texttt{terra} package has an built-in function for conversion to a plotable dataframe.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{HARV\_DTM }\OtherTok{\textless{}{-}} \FunctionTok{rast}\NormalTok{(}\StringTok{"data/HARV\_dtmCrop.tif"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\CommentTok{\# If you need to read it in again:}
+\CommentTok{\# HARV\_DTM \textless{}{-} rast("data/HARV\_dtmCrop.tif")}
 
-Before using ggplot we need to convert this to a dataframe. The \texttt{terra} package has an built-in function for conversion to a plotable dataframe.
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{HARV\_DTM\_df }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(HARV\_DTM, }\AttributeTok{xy =} \ConstantTok{TRUE}\NormalTok{)}
 \FunctionTok{str}\NormalTok{(HARV\_DTM\_df)}
 \end{Highlighting}
