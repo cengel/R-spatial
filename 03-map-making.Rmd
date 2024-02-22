@@ -6,7 +6,6 @@ library(sf)
 library(classInt)
 library(RColorBrewer)
 library(ggplot2)
-library(ggmap)
 library(leaflet)
 library(tmap)
 library(dplyr)
@@ -38,32 +37,32 @@ In this section we will explore several alternatives to map spatial data with R.
 
 [`ggplot2`](http://ggplot2.org/) is a widely used and powerful plotting library for R. It is not specifically geared towards mapping, it is possible to create quite nice maps.
 
-
 For an introduction to `ggplot` check out [this site](http://ggplot2.tidyverse.org/) for more pointers.
- 
 
 `ggplot` can plot `sf` objects directly by using the geom `geom_sf`. So all we have to do is:
 
 ```{r ggplot-sf, results='show'}
 library(ggplot2)
+# if you need to read this in again:
+# philly_crimes_sf <- st_read("data/PhillyCrimerate") 
 ggplot(philly_crimes_sf) + 
   geom_sf(aes(fill=homic_rate))
 ```
 
-Homicide rate is a continuous variable and is plotted by `ggplot` as such. If we wanted to plot our map as a 'true' choropleth map we need to convert our continous variable into a categoriacal one, according to whichever brackets we want to use. 
+Homicide rate is a continuous variable and is plotted by `ggplot` as such. If we wanted to plot our map as a 'true' choropleth map we need to convert our continuous variable into a categorical one, according to whichever brackets we want to use. 
 
 This requires two steps: 
 
 - Determine the quantile breaks. 
 - Add a categorical variable to the object which assigns each continious vaule to a bracket.
 
-We will use the `classInt` package to explicitly determine the breaks. 
+We will use the `classInt` package to explicitly determine the quantile breaks. 
 
 ```{r ggplot-sf-getbreaks, results='show'}
 library(classInt)
-
 # get quantile breaks. Add .00001 offset to catch the lowest value
-breaks_qt <- classIntervals(c(min(philly_crimes_sf$homic_rate) - .00001, philly_crimes_sf$homic_rate), n = 7, style = "quantile")
+breaks_qt <- classIntervals(c(min(philly_crimes_sf$homic_rate) - .00001,
+                              philly_crimes_sf$homic_rate), n = 7, style = "quantile")
 
 str(breaks_qt)
 ```
@@ -75,9 +74,9 @@ We use `cut` to divicde `homic_rate` into intervals and code them according to w
 Lastly, we can use `scale_fill_brewer` and add our color palette. 
 
 ```{r ggplot-sf-categorical, results='show'}
-philly_crimes_sf <- mutate(philly_crimes_sf, homic_rate_cat = cut(homic_rate, breaks_qt$brks)) 
-
-ggplot(philly_crimes_sf) + 
+philly_crimes_sf %>% 
+  mutate(homic_rate_cat = cut(homic_rate, breaks_qt$brks)) %>% 
+  ggplot() + 
     geom_sf(aes(fill=homic_rate_cat)) +
     scale_fill_brewer(palette = "OrRd") 
 ```
@@ -86,14 +85,12 @@ ggplot(philly_crimes_sf) +
 
 To visualize raster data using `ggplot2`, we will use the raster with the values for the digital terrain model (DTM). 
 
-If you need to read it in again:
-```{r read-dsm, results='show', eval=FALSE}
-HARV_DTM <- rast("data/HARV_dtmCrop.tif")
-```
-
-Before using ggplot we need to convert this to a dataframe. The `terra` package has an built-in function for conversion to a plotable dataframe.
+Before using ggplot we need to convert it to a dataframe. The `terra` package has an built-in function for conversion to a plotable dataframe.
 
 ```{r rast-df, results='show'}
+# If you need to read it in again:
+# HARV_DTM <- rast("data/HARV_dtmCrop.tif")
+
 HARV_DTM_df <- as.data.frame(HARV_DTM, xy = TRUE)
 str(HARV_DTM_df)
 ```

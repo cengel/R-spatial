@@ -7,11 +7,8 @@ library(terra)
 library(tidyverse)
 
 philly_sf <- st_read("data/Philly/")
-#philly_sp <- readOGR("data/Philly/", "PhillyTotalPopHHinc")
 HARV <- rast("data/HARV_RGB_Ortho.tif")
 philly_homicides_sf <- st_read("data/PhillyHomicides/")
-#philly_crimes_sf <- st_read("data/PhillyCrimerate") # DONT NOT NEED THIS IF CREATION BELOW IS FIXED
-
 ```
 
 # Spatial data manipulation in R {#spatialops}
@@ -311,10 +308,10 @@ Thet `terra` package contains a function called `lapp() `function to make proces
 
     outputRaster <- lapp(x, fun)
 
-where x is a `SpatRasterDataset` and fun is a custom function for the operation you want to perform.
+where *x* is a `SpatRasterDataset` and *fun* is a custom function for the operation we want to perform.
 
 ```{r lapp, results = 'show'}
-CHM_ov_HARV <- lapp(sds(list(HARV_DSM, HARV_DTM)), 
+CHM_ov_HARV <- lapp(sds(list(HARV_DSM, HARV_DTM)), # use sds to create a SpatRasterDataset
                     fun = function(r1, r2) { 
                       return( r1 - r2) 
                       })
@@ -322,8 +319,8 @@ CHM_ov_HARV <- lapp(sds(list(HARV_DSM, HARV_DTM)),
 
 As arguments for our `lapp` operation we use the `sds()` function and provide it with the list of rasters that we want to operate on. As custom function we provide the function with two arguments (`r1` and `r1`) that subtracts the second (`r2`) from the first (`r1`) and returns the difference. The output of `lapp` is a `SpatRaster` and we assign it to a new variable `CHM_ov_HARV.`
 
-```{r plot-lapp, results = 'show'}
-par(mfrow = c(1, 2))
-plot(CHM_ov_HARV)
-hist(CHM_ov_HARV)
+The two rasters should be the same.
+
+```{r rast-ident, results = 'show'}
+identical(HARV_CHM, CHM_ov_HARV)
 ```

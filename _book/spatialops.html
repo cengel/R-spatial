@@ -275,7 +275,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>For the spatial operations we can recur to the suite of geometric operations that come with the <code>sf</code> package.</p>
 <p>We create a 2km buffer around the city center point:</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="spatialops.html#cb74-1" tabindex="-1"></a>philly_buf <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(philly_ctr, <span class="dv">2000</span>)</span></code></pre></div>
-<p>Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer. The <code>sf</code> package has its own <code>sf_filter</code> function that we can use here.</p>
+<p>Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer. The <code>sf</code> package has its own <code>st_filter</code> function that we can use here.</p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="spatialops.html#cb75-1" tabindex="-1"></a>philly_sel <span class="ot">&lt;-</span> <span class="fu">st_filter</span>(philly_sf, philly_buf)</span></code></pre></div>
 <p>Then we can plot what we created like this:</p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="spatialops.html#cb76-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf), <span class="at">border=</span><span class="st">&quot;#aaaaaa&quot;</span>, <span class="at">main=</span><span class="st">&quot;Census tracts that overlap with 2km buffer</span><span class="sc">\n</span><span class="st">around city center&quot;</span>)</span>
@@ -412,17 +412,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This works fine for the small rasters in this tutorial. However, the calculation above becomes less efficient when computations are more complex or file sizes become large.</p>
 <p>Thet <code>terra</code> package contains a function called <code>lapp()</code>function to make processing more efficient. It takes two or more rasters and applies a function to them. The generic syntax is:</p>
 <pre><code>outputRaster &lt;- lapp(x, fun)</code></pre>
-<p>where x is a <code>SpatRasterDataset</code> and fun is a custom function for the operation you want to perform.</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="spatialops.html#cb118-1" tabindex="-1"></a>CHM_ov_HARV <span class="ot">&lt;-</span> <span class="fu">lapp</span>(<span class="fu">sds</span>(<span class="fu">list</span>(HARV_DSM, HARV_DTM)), </span>
+<p>where <em>x</em> is a <code>SpatRasterDataset</code> and <em>fun</em> is a custom function for the operation we want to perform.</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="spatialops.html#cb118-1" tabindex="-1"></a>CHM_ov_HARV <span class="ot">&lt;-</span> <span class="fu">lapp</span>(<span class="fu">sds</span>(<span class="fu">list</span>(HARV_DSM, HARV_DTM)), <span class="co"># use sds to create a SpatRasterDataset</span></span>
 <span id="cb118-2"><a href="spatialops.html#cb118-2" tabindex="-1"></a>                    <span class="at">fun =</span> <span class="cf">function</span>(r1, r2) { </span>
 <span id="cb118-3"><a href="spatialops.html#cb118-3" tabindex="-1"></a>                      <span class="fu">return</span>( r1 <span class="sc">-</span> r2) </span>
 <span id="cb118-4"><a href="spatialops.html#cb118-4" tabindex="-1"></a>                      })</span></code></pre></div>
 <p>As arguments for our <code>lapp</code> operation we use the <code>sds()</code> function and provide it with the list of rasters that we want to operate on. As custom function we provide the function with two arguments (<code>r1</code> and <code>r1</code>) that subtracts the second (<code>r2</code>) from the first (<code>r1</code>) and returns the difference. The output of <code>lapp</code> is a <code>SpatRaster</code> and we assign it to a new variable <code>CHM_ov_HARV.</code></p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="spatialops.html#cb119-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
-<span id="cb119-2"><a href="spatialops.html#cb119-2" tabindex="-1"></a><span class="fu">plot</span>(CHM_ov_HARV)</span>
-<span id="cb119-3"><a href="spatialops.html#cb119-3" tabindex="-1"></a><span class="fu">hist</span>(CHM_ov_HARV)</span></code></pre></div>
-<pre><code>#&gt; Warning: [hist] a sample of 43% of the cells was used (of which 0% was NA)</code></pre>
-<p><img src="R-spatial_files/figure-html/plot-lapp-1.png" width="672" /></p>
+<p>The two rasters should be the same.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="spatialops.html#cb119-1" tabindex="-1"></a><span class="fu">identical</span>(HARV_CHM, CHM_ov_HARV)</span></code></pre></div>
+<pre><code>#&gt; [1] TRUE</code></pre>
 
 </div>
 </div>
