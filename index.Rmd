@@ -46,10 +46,8 @@ You can also download the data manually here [R-spatial-data.zip](https://github
 - For the mapping section install and load these additional libraries:
     - [`classInt`](https://cran.r-project.org/package=classInt)
     - [`RColorBrewer`](https://cran.r-project.org/package=RColorBrewer)
-    - [`ggplot2`](https://cran.r-project.org/package=ggplot2)
     - [`tmap`](https://cran.r-project.org/package=tmap)
-    - [`leaflet`](https://cran.r-project.org/package=leaflet)(On Mac installing binary version is ok)
-
+    - [`leaflet`](https://cran.r-project.org/package=leaflet)
 
 ## References {-}
 

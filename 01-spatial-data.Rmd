@@ -358,7 +358,7 @@ HARV
 >
 > 1. How many bands?
 > 2. What are the names of the bands)?
-> 3. Where are the cell values stored?
+> 3. Where on the system are the cell values stored?
 > 4. What is the CRS?
 
 
