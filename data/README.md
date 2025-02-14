@@ -55,5 +55,14 @@ LiDAR data collected by the NEON Airborne Observation Platform (AOP) and process
 
 Source: datacarpentry.org.
 
+## Schools.csv
+
+https://opendataphilly.org/datasets/schools/
+
+## Roosevelt_blvd
+
+Digitized by hand off Open Street Maps.
+
+
 
 
