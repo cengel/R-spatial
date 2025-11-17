@@ -25,7 +25,7 @@ library(tidyverse)
 
 The [`sf`](https://cran.r-project.org/package=sf)[^3] package was first released on CRAN in late October 2016, and has in the mean time superseded the original R Package for storing and manipulating spatial data, [`sp`](https://CRAN.R-project.org/package=sp ), which was first released in 2005. `sp` is still actively maintained, but less often used now, so you should be aware of it, but we will not teach it here. 
 
-```{r spsf-dl, echo=FALSE, results='asis', out.width='100%', fig.cap='sf vs sp downloads on CRAN'}
+```{r spsf-dl, echo=FALSE, results='asis', out.width='100%', fig.cap='Cumulative downloads of sf and sp from CRAN'}
 knitr::include_graphics('img/spsf_downloads.png')
 ```
 
@@ -140,90 +140,165 @@ st_bbox(pts_sf)
 ```
 
 
-## Creating a spatial object from a lat/lon table
+## Creating a spatial object from a table with coordinates
 
 Often in your research might have a spreadsheet that contains latitude, longitude and perhaps some attribute values. You know how to read the spreadsheet into a tabular format (tibble) with `dplyr::read_table` or `dplyr::read_csv`. We can then very easily convert the table into a spatial object in R.
 
-An `sf` object can be created from a data frame in the following way. We take advantage of the `st_as_sf()` function which converts any foreign object into an `sf` object. Similarly to above, it requires an argument `coords`, which in the case of point data needs to be a vector that specifies the data frame's columns for the longitude and latitude (x,y) coordinates. 
+An `sf` object can be created from a data frame in the following way. We take advantage of the `st_as_sf()` function which converts foreign objects into an `sf` object. Similarly to above, it requires an argument `coords`, which in the case of point data needs to be a vector that specifies the data frame's columns for the longitude and latitude (x,y) coordinates. 
 
     my_sf_object <- st_as_sf(myDataframe, coords)
 
 `st_as_sf()` creates a new object and leaves the original data frame untouched.
 
-We use `read_csv()` to read `philly_homicides.csv` into a tibble in R and name it `philly_homicides_df`.
+We use `read_csv()` to read `philly_homicides.csv` into a tibble in R and name it `homicides_df`.
 
 ```{r read-df, results='show'}
-philly_homicides_df <- read_csv("data/philly_homicides.csv")
+homicides_df <- read_csv("data/philly_homicides.csv")
 ```
 
-We convert the `philly_homicides_df ` data frame into an `sf` object with `st_as_sf()`
+We convert the `homicides_df ` data frame into an `sf` object with `st_as_sf()`
 
 ```{r df-to-sf, results='show'}
 library(sf)
 
-philly_homicides_sf <- st_as_sf(philly_homicides_df, coords = c("POINT_X", "POINT_Y"))
-names(philly_homicides_sf)
+homicides_sf <- st_as_sf(homicides_df, coords = c("POINT_X", "POINT_Y"))
 ```
 
-Note the additional **geometry** list-column which now holds the simple feature collection with the coordinates of all the points. We now use `st_crs()` to check on the projection. 
+Now let's check what we did here. First lets look at the column names:
+```{r names-sf, results='show'}
+names(homicides_sf)
+```
+
+Compare this with the original table:
+```{r names-df, results='show'}
+names(homicides_df)
+```
+
+Note the additional **geometry** list-column which now holds the simple feature collection with the coordinates of all the points. 
+
+The `st_geometry`function provides some helpful details about the spatial geometry of the object we created:
+
+```{r st-geom, results='show'}
+st_geometry(homicides_sf)
+```
+
+And here is what we see when we type the name of the sf object:
+```{r st-obj, results='show'}
+homicides_sf
+```
+
+We now use `st_crs()` to check on the projection. 
 
 ```{r sf-nocrs, results='show'}
-st_crs(philly_homicides_sf)
+st_crs(homicides_sf)
 ```
 
 To make it a complete geographical object we use `st_crs()` to assign the WGS84 projection, which has the EPSG code 4326: 
 
 ```{r sf-crs, results='show'}
-st_crs(philly_homicides_sf) <- 4326
-st_crs(philly_homicides_sf)
+st_crs(homicides_sf) <- 4326
+st_crs(homicides_sf)
 ```
 
-Wow this is long. It is usually more helpful to just retrieve the proj4string:
+Wow this is long! It is usually more helpful to just retrieve the proj4string like so:
+
 ```{r sf-crs-short, results='show'}
-st_crs(philly_homicides_sf)$proj4string
+st_crs(homicides_sf)$proj4string
 ```
 
+Here we assigned the projection in a separate step. You can also assign it at the same time when you read the csv file in with `st_as_sf`:
+
+```{r, eval=FALSE}
+homicides_sf <- st_as_sf(homicides_df, coords = c("POINT_X", "POINT_Y"), 
+                         crs = st_crs(4326)) # assign CRS here
+```
 
 We will save this object as a shapefile on our hard drive for later use. (Note that by default `st_write` checks if the file already exists, and if so it will not overwrite it. If you need to force it to overwrite use the option `delete_layer = TRUE`.)
 
 ```{r sf-save-homicides, eval=FALSE}
-st_write(philly_homicides_sf, "data/PhillyHomicides", driver = "ESRI Shapefile")
+st_write(homicides_sf, "data/PhillyHomicides", driver = "ESRI Shapefile")
 # to force the save: 
-st_write(philly_homicides_sf, "data/PhillyHomicides", driver = "ESRI Shapefile", delete_layer = TRUE)
+st_write(homicides_sf, "data/PhillyHomicides", driver = "ESRI Shapefile", delete_layer = TRUE)
 ```
+
+
+> <h3>Challenge</h3>
+>
+> Read in Schools.csv, convert to a spatial sf object and save out as a shapefile. Assume that the coordinates are in WGS84 geographic projection.
+> I should mention that sf works with piping. You may or may not find that convenient.
+
+
+```{r eval=FALSE, echo=FALSE}
+# Answer
+
+st_read("data/Schools.csv") |> 
+  sr_as_sf(coords = c("X", "Y", crs = st_crs(4326))) |> 
+  st_write("data/PhillySchools", driver = "ESRI Shapefile")
+
+```
+
+
+
 
 
 ## Loading shape files into R
 
-`sf` relies on the powerful [GDAL library](http://gdal.org), which is automatically linked in when loading `sf`. The GDAL provides the  functionality to read and write spatial files of many formats. For shape files we can use `st_read()`, which simply takes the path of the directory with the shapefile as argument. 
+`sf` relies on the powerful [GDAL library](http://gdal.org), which is automatically linked in when loading `sf`. The GDAL provides the  functionality to read and write spatial files of many formats.  The command `st_drivers()` returns the available drivers.
 
+For shape files we can use `st_read()`, which takes the path of the directory with the shapefile as argument. 
 
 ```{r read-shp-sf, eval=TRUE, results='show'}
 # read in
 philly_sf <- st_read("data/Philly/")
+```
 
-# take a look at what we've got
-str(philly_sf) # note again the geometry column
+Take a look at what we've got:
+
+```{r str-shp-sf, eval=TRUE, results='show'}
+str(philly_sf) 
+```
+
+Note again the geometry column. Also note the many other values (or attributes) that are included.
+
+Let's check the geometry column:
+
+```{r geo-shp-sf, eval=TRUE, results='show'}
+st_geometry(philly_sf) 
 ```
 
 Two more words about the geometry column: Though it is not recommended, you can name this column any way you wish. Secondly, you can remove this column and revert to a regular, non-spatial data frame at any dime with `st_drop_geometry()`.
 
-The default `plot` of an `sf` object is a multi-plot of the first attributes, with a warning if not all can be plotted:
+There is a quick-and-dirty way to visualize this object. The default `plot` of an `sf` object will create a multi-plot with choropleth maps of the first attributes. It adds a warning if not all attributes can be plotted. This does not make much sense analytically here, but we can quickly check what we created.
 
 ```{r plot-shp-sf, eval=TRUE, results='show'}
 plot(philly_sf)
 ```
 
-In order to only plot the polygon boundaries we need to directly use the geometry column. We use the `st_geometry()` function. It extracts the `sfc` object (the simple feature geometry list column):
+To make it a little cleaner, we can only plot the polygon boundariesn and forget about the attributes. For this we need to directly use the geometry column. We use the `st_geometry()` function again here, which extracts the `sfc` object (the simple feature geometry list column):
 
 ```{r plot-shp-sfg, eval=TRUE, results='show'}
 plot(st_geometry(philly_sf))
 ```
 
-Let's add a subset of polygons with only the census tracts where the median houshold income (*medHHinc*) is more than $60,000. We can extract elements from an `sf` object based on attributes using the dplyr filter function (base R subsetting also works) and add the census tracts to the plot in a different color.
+Alternatively, we can choose the attributes that we what to plot:
+
+```{r plot-shp-attr, eval=TRUE, results='show'}
+# plot - alternatives
+plot(philly_sf["medHHinc"]) # subset with base R
+philly_sf %>% select(medHHinc) %>%  plot() # piping with tidyverse
+```
+
+
+Now let's get a little fancier.
+
+Let's add a subset of polygons with only the census tracts where the median houshold income (*medHHinc*) is more than $60,000. First we plot the polygon. Then in a second step we extract elements from an `sf` object based on attributes using the dplyr filter function (base R subsetting also works) and add the census tracts to the plot in a different color.
 
 ```{r pipe-subset-plot-shp-sfg, eval=TRUE}
-plot(st_geometry(philly_sf))
+
+# step 1 - plot empty polylgons:
+plot(st_geometry(philly_sf)) 
+
+# step 2 - add colored polygons on top
 philly_sf %>% 
   filter(medHHinc > 60000) %>% # filter for high income
   st_geometry() %>% # extract the geometry for plotting

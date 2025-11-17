@@ -39,53 +39,69 @@ In this section we will explore several alternatives to map spatial data with R.
 
 For an introduction to `ggplot` check out [this site](http://ggplot2.tidyverse.org/) for more pointers.
 
-`ggplot` can plot `sf` objects directly by using the geom `geom_sf`. So all we have to do is:
+`ggplot` can plot `sf` objects directly by using the geom `geom_sf`. So we can take advantage of this and say:
 
 ```{r ggplot-sf, results='show'}
-library(ggplot2)
 # if you need to read this in again:
-# philly_crimes_sf <- st_read("data/PhillyCrimerate") 
-ggplot(philly_crimes_sf) + 
+# crimes_sf <- st_read("data/PhillyCrimerate") 
+ggplot(crimes_sf) + 
   geom_sf(aes(fill=homic_rate))
 ```
 
-Homicide rate is a continuous variable and is plotted by `ggplot` as such. If we wanted to plot our map as a 'true' choropleth map we need to convert our continuous variable into a categorical one, according to whichever brackets we want to use. 
+
+We can add more map layers to ggplot with the familiar "+" sign:
+
+```{r ggplot-sf-addlayer, results='show'}
+# read in another dataset
+rooselvelt_sf <- st_read("data/Roosevelt_blvd/")
+
+ggplot(crimes_sf) + 
+  geom_sf(aes(fill=homic_rate)) +
+  geom_sf(data = rooselvelt_sf, color = "yellow")
+```
+
+
+Homicide rate is a continuous variable and is indicated in legend by `ggplot` as such. To modify the legend to resemble more closely 'choropleth' map legend we need to convert our continuous variable into a categorical one, according to whichever brackets we want to use. 
 
 This requires two steps: 
 
-- Determine the quantile breaks. 
-- Add a categorical variable to the object which assigns each continious vaule to a bracket.
+1. Determine the quantile breaks.     
+2. Add a categorical variable to the object which assigns each continious vaule to a bracket.
 
 We will use the `classInt` package to explicitly determine the quantile breaks. 
 
 ```{r ggplot-sf-getbreaks, results='show'}
 library(classInt)
 # get quantile breaks. Add .00001 offset to catch the lowest value
-breaks_qt <- classIntervals(c(min(philly_crimes_sf$homic_rate) - .00001,
-                              philly_crimes_sf$homic_rate), n = 7, style = "quantile")
+breaks_qt <- classIntervals(c(min(crimes_sf$homic_rate) - .00001,
+                              crimes_sf$homic_rate), 
+                            n = 7,
+                            style = "quantile")
 
 str(breaks_qt)
 ```
 
 Ok. We can retrieve the breaks with `breaks$brks`.
 
-We use `cut` to divicde `homic_rate` into intervals and code them according to which interval they are in. 
+We use `cut` to divide `homic_rate` into intervals and code them according to which interval they are in. 
 
 Lastly, we can use `scale_fill_brewer` and add our color palette. 
 
 ```{r ggplot-sf-categorical, results='show'}
-philly_crimes_sf %>% 
+crimes_sf %>% 
   mutate(homic_rate_cat = cut(homic_rate, breaks_qt$brks)) %>% 
   ggplot() + 
     geom_sf(aes(fill=homic_rate_cat)) +
     scale_fill_brewer(palette = "OrRd") 
 ```
 
+
+
 ## Raster and ggplot
 
 To visualize raster data using `ggplot2`, we will use the raster with the values for the digital terrain model (DTM). 
 
-Before using ggplot we need to convert it to a dataframe. The `terra` package has an built-in function for conversion to a plotable dataframe.
+Before using ggplot we need to convert it to a dataframe. The `terra` package has an built-in function for conversion to a plot-able dataframe.
 
 ```{r rast-df, results='show'}
 # If you need to read it in again:
@@ -107,11 +123,11 @@ ggplot() +
 
 ## Choropleth with `tmap`
 
-`tmap` is specifically designed to make creation of thematic maps more convenient. It borrows from the ggplot syntax and takes care of a lot of the styling and aesthetics. This reduces our amount of code significantly. We only need: 
+`tmap` is specifically designed to make creation of thematic maps more convenient. It borrows from the ggplot syntax and takes care of a lot of the styling and aesthetics. This reduces our amount of code significantly. We need: 
 
-- `tm_shape()` where we provide 
+- `tm_shape()` -- where we provide: 
     - the `sf` object 
-- `tm_polygons()` where we set
+- `tm_polygons()` -- where we set:
     - the attribute variable to map, 
     - the break style, and 
     - a title.
@@ -119,10 +135,11 @@ ggplot() +
 
 ```{r tmap-plot, results='show'}
 library(tmap)
-tm_shape(philly_crimes_sf) +
-  tm_polygons("homic_rate", 
-              style="quantile", 
-              title="Philadelphia \nhomicide density \nper sqKm")
+
+tm_shape(crimes_sf) +
+  tm_polygons(fill = "homic_rate",
+              fill.scale = tm_scale_intervals(style="quantile"),
+              fill.legend = tm_legend(title = "Philadelphia \nhomicides \nper sqKm\n"))
 ```
 
 
@@ -163,13 +180,13 @@ Let's build up the map step by step.
 
 First we load the `leaflet` library. Use the `leaflet()` function with an `sp` or `Spatial*` object and pipe it to `addPolygons()` function. It is not required, but improves readability if you use [the pipe operator `%>%`](https://github.com/tidyverse/magrittr) to chain the elements together when building up a map with `leaflet`. 
 
-And while `tmap` was tolerant about our AEA projection of `philly_crimes_sf`, `leaflet` does require us to explicitly reproject the `sf` object.
+And while `tmap` was tolerant about our AEA projection of `crimes_sf`, `leaflet` does require us to explicitly reproject the `sf` object.
 
 ```{r leaflet-polys, results='show'}
 library(leaflet) 
 
 # reproject
-philly_WGS84 <- st_transform(philly_crimes_sf, 4326)
+philly_WGS84 <- st_transform(crimes_sf, 4326)
 
 leaflet(philly_WGS84) %>%
   addPolygons()

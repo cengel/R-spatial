@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 Introduction to spatial data in R | Using Spatial Data with R</title>
   <meta name="description" content="Workshop materials for Using Spatial Data with R" />
-  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.45 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Introduction to spatial data in R | Using Spatial Data with R" />
   <meta property="og:type" content="book" />
@@ -51,19 +51,21 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
 <script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.2.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -157,7 +159,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction to spatial data in R</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#the-sf-package"><i class="fa fa-check"></i><b>1.1</b> The <code>sf</code> package</a></li>
-<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#creating-a-spatial-object-from-a-latlon-table"><i class="fa fa-check"></i><b>1.2</b> Creating a spatial object from a lat/lon table</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#creating-a-spatial-object-from-a-table-with-coordinates"><i class="fa fa-check"></i><b>1.2</b> Creating a spatial object from a table with coordinates</a></li>
 <li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#loading-shape-files-into-r"><i class="fa fa-check"></i><b>1.3</b> Loading shape files into R</a></li>
 <li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#raster-data-in-r"><i class="fa fa-check"></i><b>1.4</b> Raster data in R</a></li>
 </ul></li>
@@ -169,7 +171,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.3.1" data-path="spatialops.html"><a href="spatialops.html#raster-reprojection"><i class="fa fa-check"></i><b>2.3.1</b> Raster reprojection</a></li>
 </ul></li>
-<li class="chapter" data-level="2.4" data-path="spatialops.html"><a href="spatialops.html#spatial-aggregation-points-in-polygons"><i class="fa fa-check"></i><b>2.4</b> Spatial Aggregation: Points in Polygons</a></li>
+<li class="chapter" data-level="2.4" data-path="spatialops.html"><a href="spatialops.html#spatial-aggregation-points-in-polygon"><i class="fa fa-check"></i><b>2.4</b> Spatial Aggregation: Points in Polygon</a></li>
 <li class="chapter" data-level="2.5" data-path="spatialops.html"><a href="spatialops.html#raster-calculations-with-terra"><i class="fa fa-check"></i><b>2.5</b> Raster calculations with <code>terra</code></a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="mapping.html"><a href="mapping.html"><i class="fa fa-check"></i><b>3</b> Making Maps in R</a>
@@ -218,9 +220,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">1.1</span> The <code>sf</code> package<a href="intro.html#the-sf-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The <a href="https://cran.r-project.org/package=sf"><code>sf</code></a><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> package was first released on CRAN in late October 2016, and has in the mean time superseded the original R Package for storing and manipulating spatial data, <a href="https://CRAN.R-project.org/package=sp"><code>sp</code></a>, which was first released in 2005. <code>sp</code> is still actively maintained, but less often used now, so you should be aware of it, but we will not teach it here.</p>
 <div class="figure"><span style="display:block;" id="fig:spsf-dl"></span>
-<img src="img/spsf_downloads.png" alt="sf vs sp downloads on CRAN" width="100%" />
+<img src="img/spsf_downloads.png" alt="Cumulative downloads of sf and sp from CRAN" width="100%" />
 <p class="caption">
-Figure 1.1: sf vs sp downloads on CRAN
+Figure 1.1: Cumulative downloads of sf and sp from CRAN
 </p>
 </div>
 <p><code>sf</code> implements a formal standard called <a href="https://en.wikipedia.org/wiki/Simple_Features">“Simple Features”</a> that specifies a storage and access model of spatial geometries (point, line, polygon). A feature geometry is called simple when it consists of points connected by straight line pieces, and does not intersect itself. This standard has been adopted widely, not only by spatial databases such as PostGIS, but also more recent standards such as GeoJSON.</p>
@@ -267,10 +269,10 @@ Figure 1.3: Well-Known-Text Multipart geometries (wikipedia)
 <pre><code>#&gt; Geometry set for 2 features 
 #&gt; Geometry type: LINESTRING
 #&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 0.04197872 ymin: 0.03780773 xmax: 0.6474415 ymax: 0.9964999
+#&gt; Bounding box:  xmin: 0.1106804 ymin: 0.2781413 xmax: 0.9729355 ymax: 0.8550861
 #&gt; CRS:           NA</code></pre>
-<pre><code>#&gt; LINESTRING (0.6227143 0.5145761, 0.6474415 0.99...</code></pre>
-<pre><code>#&gt; LINESTRING (0.04197872 0.4958971, 0.4142047 0.0...</code></pre>
+<pre><code>#&gt; LINESTRING (0.805963 0.2781413, 0.1711646 0.850...</code></pre>
+<pre><code>#&gt; LINESTRING (0.9179095 0.8550861, 0.9729355 0.41...</code></pre>
 <p>And lastly create a data frame from above to generate the <code>sf</code> object:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="intro.html#cb8-1" tabindex="-1"></a>dfr <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="fu">c</span>(<span class="st">&quot;hwy1&quot;</span>, <span class="st">&quot;hwy2&quot;</span>), </span>
 <span id="cb8-2"><a href="intro.html#cb8-2" tabindex="-1"></a>                  <span class="at">cars_per_hour =</span> <span class="fu">c</span>(<span class="dv">78</span>, <span class="dv">22</span>))</span>
@@ -278,11 +280,11 @@ Figure 1.3: Well-Known-Text Multipart geometries (wikipedia)
 <pre><code>#&gt; Simple feature collection with 2 features and 2 fields
 #&gt; Geometry type: LINESTRING
 #&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 0.04197872 ymin: 0.03780773 xmax: 0.6474415 ymax: 0.9964999
+#&gt; Bounding box:  xmin: 0.1106804 ymin: 0.2781413 xmax: 0.9729355 ymax: 0.8550861
 #&gt; CRS:           NA
 #&gt;     id cars_per_hour                      lnstr_sfc
-#&gt; 1 hwy1            78 LINESTRING (0.6227143 0.514...
-#&gt; 2 hwy2            22 LINESTRING (0.04197872 0.49...</code></pre>
+#&gt; 1 hwy1            78 LINESTRING (0.805963 0.2781...
+#&gt; 2 hwy2            22 LINESTRING (0.9179095 0.855...</code></pre>
 <p>There are many methods available in the <code>sf</code> package, to find out use</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="intro.html#cb10-1" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class=</span><span class="st">&quot;sf&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;   [1] [                            [[&lt;-                        
@@ -323,29 +325,31 @@ Figure 1.3: Well-Known-Text Multipart geometries (wikipedia)
 #&gt;  [71] st_convex_hull               st_coordinates              
 #&gt;  [73] st_crop                      st_crs                      
 #&gt;  [75] st_crs&lt;-                     st_difference               
-#&gt;  [77] st_drop_geometry             st_filter                   
-#&gt;  [79] st_geometry                  st_geometry&lt;-               
-#&gt;  [81] st_inscribed_circle          st_interpolate_aw           
-#&gt;  [83] st_intersection              st_intersects               
-#&gt;  [85] st_is_valid                  st_is                       
-#&gt;  [87] st_join                      st_line_merge               
-#&gt;  [89] st_m_range                   st_make_valid               
-#&gt;  [91] st_minimum_rotated_rectangle st_nearest_points           
-#&gt;  [93] st_node                      st_normalize                
-#&gt;  [95] st_point_on_surface          st_polygonize               
-#&gt;  [97] st_precision                 st_reverse                  
-#&gt;  [99] st_sample                    st_segmentize               
-#&gt; [101] st_set_precision             st_shift_longitude          
-#&gt; [103] st_simplify                  st_snap                     
-#&gt; [105] st_sym_difference            st_transform                
-#&gt; [107] st_triangulate_constrained   st_triangulate              
-#&gt; [109] st_union                     st_voronoi                  
-#&gt; [111] st_wrap_dateline             st_write                    
-#&gt; [113] st_z_range                   st_zm                       
-#&gt; [115] summarise                    svc                         
-#&gt; [117] transform                    transmute                   
-#&gt; [119] ungroup                      unite                       
-#&gt; [121] unnest                       vect                        
+#&gt;  [77] st_drop_geometry             st_exterior_ring            
+#&gt;  [79] st_filter                    st_geometry                 
+#&gt;  [81] st_geometry&lt;-                st_inscribed_circle         
+#&gt;  [83] st_interpolate_aw            st_intersection             
+#&gt;  [85] st_intersects                st_is_full                  
+#&gt;  [87] st_is_valid                  st_is                       
+#&gt;  [89] st_join                      st_line_merge               
+#&gt;  [91] st_m_range                   st_make_valid               
+#&gt;  [93] st_minimum_bounding_circle   st_minimum_rotated_rectangle
+#&gt;  [95] st_nearest_points            st_node                     
+#&gt;  [97] st_normalize                 st_point_on_surface         
+#&gt;  [99] st_polygonize                st_precision                
+#&gt; [101] st_reverse                   st_sample                   
+#&gt; [103] st_segmentize                st_set_precision            
+#&gt; [105] st_shift_longitude           st_simplify                 
+#&gt; [107] st_snap                      st_sym_difference           
+#&gt; [109] st_transform                 st_triangulate_constrained  
+#&gt; [111] st_triangulate               st_union                    
+#&gt; [113] st_voronoi                   st_wrap_dateline            
+#&gt; [115] st_write                     st_z_range                  
+#&gt; [117] st_zm                        summarise                   
+#&gt; [119] svc                          text                        
+#&gt; [121] transform                    transmute                   
+#&gt; [123] ungroup                      unite                       
+#&gt; [125] unnest                       vect                        
 #&gt; see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>Here are some of the other highlights of <code>sf</code> you might be interested in:</p>
 <ul>
@@ -372,14 +376,14 @@ Challenge
 </ol>
 </blockquote>
 </div>
-<div id="creating-a-spatial-object-from-a-latlon-table" class="section level2 hasAnchor" number="1.2">
-<h2><span class="header-section-number">1.2</span> Creating a spatial object from a lat/lon table<a href="intro.html#creating-a-spatial-object-from-a-latlon-table" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="creating-a-spatial-object-from-a-table-with-coordinates" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Creating a spatial object from a table with coordinates<a href="intro.html#creating-a-spatial-object-from-a-table-with-coordinates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Often in your research might have a spreadsheet that contains latitude, longitude and perhaps some attribute values. You know how to read the spreadsheet into a tabular format (tibble) with <code>dplyr::read_table</code> or <code>dplyr::read_csv</code>. We can then very easily convert the table into a spatial object in R.</p>
-<p>An <code>sf</code> object can be created from a data frame in the following way. We take advantage of the <code>st_as_sf()</code> function which converts any foreign object into an <code>sf</code> object. Similarly to above, it requires an argument <code>coords</code>, which in the case of point data needs to be a vector that specifies the data frame’s columns for the longitude and latitude (x,y) coordinates.</p>
+<p>An <code>sf</code> object can be created from a data frame in the following way. We take advantage of the <code>st_as_sf()</code> function which converts foreign objects into an <code>sf</code> object. Similarly to above, it requires an argument <code>coords</code>, which in the case of point data needs to be a vector that specifies the data frame’s columns for the longitude and latitude (x,y) coordinates.</p>
 <pre><code>my_sf_object &lt;- st_as_sf(myDataframe, coords)</code></pre>
 <p><code>st_as_sf()</code> creates a new object and leaves the original data frame untouched.</p>
-<p>We use <code>read_csv()</code> to read <code>philly_homicides.csv</code> into a tibble in R and name it <code>philly_homicides_df</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="intro.html#cb13-1" tabindex="-1"></a>philly_homicides_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/philly_homicides.csv&quot;</span>)</span></code></pre></div>
+<p>We use <code>read_csv()</code> to read <code>philly_homicides.csv</code> into a tibble in R and name it <code>homicides_df</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="intro.html#cb13-1" tabindex="-1"></a>homicides_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/philly_homicides.csv&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; Rows: 3883 Columns: 10
 #&gt; ── Column specification ────────────────────────────────────────────────────────
 #&gt; Delimiter: &quot;,&quot;
@@ -390,20 +394,63 @@ Challenge
 #&gt; 
 #&gt; ℹ Use `spec()` to retrieve the full column specification for this data.
 #&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<p>We convert the <code>philly_homicides_df</code> data frame into an <code>sf</code> object with <code>st_as_sf()</code></p>
+<p>We convert the <code>homicides_df</code> data frame into an <code>sf</code> object with <code>st_as_sf()</code></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="intro.html#cb15-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb15-2"><a href="intro.html#cb15-2" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="intro.html#cb15-3" tabindex="-1"></a>philly_homicides_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(philly_homicides_df, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;POINT_X&quot;</span>, <span class="st">&quot;POINT_Y&quot;</span>))</span>
-<span id="cb15-4"><a href="intro.html#cb15-4" tabindex="-1"></a><span class="fu">names</span>(philly_homicides_sf)</span></code></pre></div>
+<span id="cb15-3"><a href="intro.html#cb15-3" tabindex="-1"></a>homicides_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(homicides_df, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;POINT_X&quot;</span>, <span class="st">&quot;POINT_Y&quot;</span>))</span></code></pre></div>
+<p>Now let’s check what we did here. First lets look at the column names:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="intro.html#cb16-1" tabindex="-1"></a><span class="fu">names</span>(homicides_sf)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;DC_DIST&quot;           &quot;SECTOR&quot;            &quot;DISPATCH_DATE&quot;    
 #&gt; [4] &quot;DISPATCH_TIME&quot;     &quot;LOCATION_BLOCK&quot;    &quot;UCR_GENERAL&quot;      
 #&gt; [7] &quot;OBJ_ID&quot;            &quot;TEXT_GENERAL_CODE&quot; &quot;geometry&quot;</code></pre>
-<p>Note the additional <strong>geometry</strong> list-column which now holds the simple feature collection with the coordinates of all the points. We now use <code>st_crs()</code> to check on the projection.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="intro.html#cb17-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)</span></code></pre></div>
+<p>Compare this with the original table:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="intro.html#cb18-1" tabindex="-1"></a><span class="fu">names</span>(homicides_df)</span></code></pre></div>
+<pre><code>#&gt;  [1] &quot;DC_DIST&quot;           &quot;SECTOR&quot;            &quot;DISPATCH_DATE&quot;    
+#&gt;  [4] &quot;DISPATCH_TIME&quot;     &quot;LOCATION_BLOCK&quot;    &quot;UCR_GENERAL&quot;      
+#&gt;  [7] &quot;OBJ_ID&quot;            &quot;TEXT_GENERAL_CODE&quot; &quot;POINT_X&quot;          
+#&gt; [10] &quot;POINT_Y&quot;</code></pre>
+<p>Note the additional <strong>geometry</strong> list-column which now holds the simple feature collection with the coordinates of all the points.</p>
+<p>The <code>st_geometry</code>function provides some helpful details about the spatial geometry of the object we created:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="intro.html#cb20-1" tabindex="-1"></a><span class="fu">st_geometry</span>(homicides_sf)</span></code></pre></div>
+<pre><code>#&gt; Geometry set for 3883 features 
+#&gt; Geometry type: POINT
+#&gt; Dimension:     XY
+#&gt; Bounding box:  xmin: -75.26809 ymin: 39.87503 xmax: -74.95874 ymax: 40.13086
+#&gt; CRS:           NA
+#&gt; First 5 geometries:</code></pre>
+<pre><code>#&gt; POINT (-75.1568 39.98804)</code></pre>
+<pre><code>#&gt; POINT (-75.17873 39.92801)</code></pre>
+<pre><code>#&gt; POINT (-75.18275 39.92607)</code></pre>
+<pre><code>#&gt; POINT (-75.18092 39.92704)</code></pre>
+<pre><code>#&gt; POINT (-75.17204 39.92463)</code></pre>
+<p>And here is what we see when we type the name of the sf object:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="intro.html#cb27-1" tabindex="-1"></a>homicides_sf</span></code></pre></div>
+<pre><code>#&gt; Simple feature collection with 3883 features and 8 fields
+#&gt; Geometry type: POINT
+#&gt; Dimension:     XY
+#&gt; Bounding box:  xmin: -75.26809 ymin: 39.87503 xmax: -74.95874 ymax: 40.13086
+#&gt; CRS:           NA
+#&gt; # A tibble: 3,883 × 9
+#&gt;    DC_DIST SECTOR DISPATCH_DATE DISPATCH_TIME LOCATION_BLOCK  UCR_GENERAL OBJ_ID
+#&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;date&gt;        &lt;time&gt;        &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt;
+#&gt;  1      22 1      2014-09-14    16:00         1800 BLOCK W M…         100      1
+#&gt;  2       1 B      2006-01-14    00:00         2000 BLOCK MIF…         100      1
+#&gt;  3       1 B      2006-04-01    16:05         S 22ND ST /SNY…         100      1
+#&gt;  4       1 B      2006-05-10    11:13         2100 BLOCK MC …         100      1
+#&gt;  5       1 E      2006-07-01    12:42         2100 BLOCK S H…         100      1
+#&gt;  6       1 F      2006-07-09    19:13         1800 BLOCK SNY…         100      1
+#&gt;  7       1 B      2006-07-10    23:20         1800 BLOCK S 2…         100      1
+#&gt;  8       1 J      2006-07-16    01:26         2200 BLOCK JAC…         100      1
+#&gt;  9       1 J      2006-10-03    20:37         2200 BLOCK S H…         100      1
+#&gt; 10       1 A      2006-10-16    19:46         1900 BLOCK MC …         100      1
+#&gt; # ℹ 3,873 more rows
+#&gt; # ℹ 2 more variables: TEXT_GENERAL_CODE &lt;chr&gt;, geometry &lt;POINT&gt;</code></pre>
+<p>We now use <code>st_crs()</code> to check on the projection.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="intro.html#cb29-1" tabindex="-1"></a><span class="fu">st_crs</span>(homicides_sf)</span></code></pre></div>
 <pre><code>#&gt; Coordinate Reference System: NA</code></pre>
 <p>To make it a complete geographical object we use <code>st_crs()</code> to assign the WGS84 projection, which has the EPSG code 4326:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="intro.html#cb19-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf) <span class="ot">&lt;-</span> <span class="dv">4326</span></span>
-<span id="cb19-2"><a href="intro.html#cb19-2" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="intro.html#cb31-1" tabindex="-1"></a><span class="fu">st_crs</span>(homicides_sf) <span class="ot">&lt;-</span> <span class="dv">4326</span></span>
+<span id="cb31-2"><a href="intro.html#cb31-2" tabindex="-1"></a><span class="fu">st_crs</span>(homicides_sf)</span></code></pre></div>
 <pre><code>#&gt; Coordinate Reference System:
 #&gt;   User input: EPSG:4326 
 #&gt;   wkt:
@@ -416,6 +463,7 @@ Challenge
 #&gt;         MEMBER[&quot;World Geodetic System 1984 (G1674)&quot;],
 #&gt;         MEMBER[&quot;World Geodetic System 1984 (G1762)&quot;],
 #&gt;         MEMBER[&quot;World Geodetic System 1984 (G2139)&quot;],
+#&gt;         MEMBER[&quot;World Geodetic System 1984 (G2296)&quot;],
 #&gt;         ELLIPSOID[&quot;WGS 84&quot;,6378137,298.257223563,
 #&gt;             LENGTHUNIT[&quot;metre&quot;,1]],
 #&gt;         ENSEMBLEACCURACY[2.0]],
@@ -433,19 +481,30 @@ Challenge
 #&gt;         AREA[&quot;World.&quot;],
 #&gt;         BBOX[-90,-180,90,180]],
 #&gt;     ID[&quot;EPSG&quot;,4326]]</code></pre>
-<p>Wow this is long. It is usually more helpful to just retrieve the proj4string:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="intro.html#cb21-1" tabindex="-1"></a><span class="fu">st_crs</span>(philly_homicides_sf)<span class="sc">$</span>proj4string</span></code></pre></div>
+<p>Wow this is long! It is usually more helpful to just retrieve the proj4string like so:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="intro.html#cb33-1" tabindex="-1"></a><span class="fu">st_crs</span>(homicides_sf)<span class="sc">$</span>proj4string</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
+<p>Here we assigned the projection in a separate step. You can also assign it at the same time when you read the csv file in with <code>st_as_sf</code>:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="intro.html#cb35-1" tabindex="-1"></a>homicides_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(homicides_df, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;POINT_X&quot;</span>, <span class="st">&quot;POINT_Y&quot;</span>), </span>
+<span id="cb35-2"><a href="intro.html#cb35-2" tabindex="-1"></a>                         <span class="at">crs =</span> <span class="fu">st_crs</span>(<span class="dv">4326</span>)) <span class="co"># assign CRS here</span></span></code></pre></div>
 <p>We will save this object as a shapefile on our hard drive for later use. (Note that by default <code>st_write</code> checks if the file already exists, and if so it will not overwrite it. If you need to force it to overwrite use the option <code>delete_layer = TRUE</code>.)</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="intro.html#cb23-1" tabindex="-1"></a><span class="fu">st_write</span>(philly_homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)</span>
-<span id="cb23-2"><a href="intro.html#cb23-2" tabindex="-1"></a><span class="co"># to force the save: </span></span>
-<span id="cb23-3"><a href="intro.html#cb23-3" tabindex="-1"></a><span class="fu">st_write</span>(philly_homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="intro.html#cb36-1" tabindex="-1"></a><span class="fu">st_write</span>(homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>)</span>
+<span id="cb36-2"><a href="intro.html#cb36-2" tabindex="-1"></a><span class="co"># to force the save: </span></span>
+<span id="cb36-3"><a href="intro.html#cb36-3" tabindex="-1"></a><span class="fu">st_write</span>(homicides_sf, <span class="st">&quot;data/PhillyHomicides&quot;</span>, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<blockquote>
+<h3>
+Challenge
+</h3>
+<p>Read in Schools.csv, convert to a spatial sf object and save out as a shapefile. Assume that the coordinates are in WGS84 geographic projection.
+I should mention that sf works with piping. You may or may not find that convenient.</p>
+</blockquote>
 </div>
 <div id="loading-shape-files-into-r" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> Loading shape files into R<a href="intro.html#loading-shape-files-into-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><code>sf</code> relies on the powerful <a href="http://gdal.org">GDAL library</a>, which is automatically linked in when loading <code>sf</code>. The GDAL provides the functionality to read and write spatial files of many formats. For shape files we can use <code>st_read()</code>, which simply takes the path of the directory with the shapefile as argument.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="intro.html#cb24-1" tabindex="-1"></a><span class="co"># read in</span></span>
-<span id="cb24-2"><a href="intro.html#cb24-2" tabindex="-1"></a>philly_sf <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/Philly/&quot;</span>)</span></code></pre></div>
+<p><code>sf</code> relies on the powerful <a href="http://gdal.org">GDAL library</a>, which is automatically linked in when loading <code>sf</code>. The GDAL provides the functionality to read and write spatial files of many formats. The command <code>st_drivers()</code> returns the available drivers.</p>
+<p>For shape files we can use <code>st_read()</code>, which takes the path of the directory with the shapefile as argument.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="intro.html#cb37-1" tabindex="-1"></a><span class="co"># read in</span></span>
+<span id="cb37-2"><a href="intro.html#cb37-2" tabindex="-1"></a>philly_sf <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/Philly/&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; Reading layer `PhillyTotalPopHHinc&#39; from data source 
 #&gt;   `/Users/cengel/Anthro/R_Class/R_Workshops/R-spatial/data/Philly&#39; 
 #&gt;   using driver `ESRI Shapefile&#39;
@@ -454,8 +513,8 @@ Challenge
 #&gt; Dimension:     XY
 #&gt; Bounding box:  xmin: 1739497 ymin: 457343.7 xmax: 1764030 ymax: 490544.9
 #&gt; Projected CRS: Albers</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="intro.html#cb26-1" tabindex="-1"></a><span class="co"># take a look at what we&#39;ve got</span></span>
-<span id="cb26-2"><a href="intro.html#cb26-2" tabindex="-1"></a><span class="fu">str</span>(philly_sf) <span class="co"># note again the geometry column</span></span></code></pre></div>
+<p>Take a look at what we’ve got:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="intro.html#cb39-1" tabindex="-1"></a><span class="fu">str</span>(philly_sf) </span></code></pre></div>
 <pre><code>#&gt; Classes &#39;sf&#39; and &#39;data.frame&#39;:   384 obs. of  18 variables:
 #&gt;  $ STATEFP10 : chr  &quot;42&quot; &quot;42&quot; &quot;42&quot; &quot;42&quot; ...
 #&gt;  $ COUNTYFP10: chr  &quot;101&quot; &quot;101&quot; &quot;101&quot; &quot;101&quot; ...
@@ -481,21 +540,44 @@ Challenge
 #&gt;  - attr(*, &quot;sf_column&quot;)= chr &quot;geometry&quot;
 #&gt;  - attr(*, &quot;agr&quot;)= Factor w/ 3 levels &quot;constant&quot;,&quot;aggregate&quot;,..: NA NA NA NA NA NA NA NA NA NA ...
 #&gt;   ..- attr(*, &quot;names&quot;)= chr [1:17] &quot;STATEFP10&quot; &quot;COUNTYFP10&quot; &quot;TRACTCE10&quot; &quot;GEOID10&quot; ...</code></pre>
+<p>Note again the geometry column. Also note the many other values (or attributes) that are included.</p>
+<p>Let’s check the geometry column:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="intro.html#cb41-1" tabindex="-1"></a><span class="fu">st_geometry</span>(philly_sf) </span></code></pre></div>
+<pre><code>#&gt; Geometry set for 384 features 
+#&gt; Geometry type: MULTIPOLYGON
+#&gt; Dimension:     XY
+#&gt; Bounding box:  xmin: 1739497 ymin: 457343.7 xmax: 1764030 ymax: 490544.9
+#&gt; Projected CRS: Albers
+#&gt; First 5 geometries:</code></pre>
+<pre><code>#&gt; MULTIPOLYGON (((1763647 484837.3, 1763473 48519...</code></pre>
+<pre><code>#&gt; MULTIPOLYGON (((1761348 489213.5, 1761372 48918...</code></pre>
+<pre><code>#&gt; MULTIPOLYGON (((1752887 468814.9, 1752808 46863...</code></pre>
+<pre><code>#&gt; MULTIPOLYGON (((1761207 482777.8, 1761634 48258...</code></pre>
+<pre><code>#&gt; MULTIPOLYGON (((1759301 482266.6, 1759120 48186...</code></pre>
 <p>Two more words about the geometry column: Though it is not recommended, you can name this column any way you wish. Secondly, you can remove this column and revert to a regular, non-spatial data frame at any dime with <code>st_drop_geometry()</code>.</p>
-<p>The default <code>plot</code> of an <code>sf</code> object is a multi-plot of the first attributes, with a warning if not all can be plotted:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="intro.html#cb28-1" tabindex="-1"></a><span class="fu">plot</span>(philly_sf)</span></code></pre></div>
+<p>There is a quick-and-dirty way to visualize this object. The default <code>plot</code> of an <code>sf</code> object will create a multi-plot with choropleth maps of the first attributes. It adds a warning if not all attributes can be plotted. This does not make much sense analytically here, but we can quickly check what we created.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="intro.html#cb48-1" tabindex="-1"></a><span class="fu">plot</span>(philly_sf)</span></code></pre></div>
 <pre><code>#&gt; Warning: plotting the first 10 out of 17 attributes; use max.plot = 17 to plot
 #&gt; all</code></pre>
 <p><img src="R-spatial_files/figure-html/plot-shp-sf-1.png" width="672" /></p>
-<p>In order to only plot the polygon boundaries we need to directly use the geometry column. We use the <code>st_geometry()</code> function. It extracts the <code>sfc</code> object (the simple feature geometry list column):</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="intro.html#cb30-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf))</span></code></pre></div>
+<p>To make it a little cleaner, we can only plot the polygon boundariesn and forget about the attributes. For this we need to directly use the geometry column. We use the <code>st_geometry()</code> function again here, which extracts the <code>sfc</code> object (the simple feature geometry list column):</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="intro.html#cb50-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf))</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/plot-shp-sfg-1.png" width="672" /></p>
-<p>Let’s add a subset of polygons with only the census tracts where the median houshold income (<em>medHHinc</em>) is more than $60,000. We can extract elements from an <code>sf</code> object based on attributes using the dplyr filter function (base R subsetting also works) and add the census tracts to the plot in a different color.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="intro.html#cb31-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf))</span>
-<span id="cb31-2"><a href="intro.html#cb31-2" tabindex="-1"></a>philly_sf <span class="sc">%&gt;%</span> </span>
-<span id="cb31-3"><a href="intro.html#cb31-3" tabindex="-1"></a>  <span class="fu">filter</span>(medHHinc <span class="sc">&gt;</span> <span class="dv">60000</span>) <span class="sc">%&gt;%</span> <span class="co"># filter for high income</span></span>
-<span id="cb31-4"><a href="intro.html#cb31-4" tabindex="-1"></a>  <span class="fu">st_geometry</span>() <span class="sc">%&gt;%</span> <span class="co"># extract the geometry for plotting</span></span>
-<span id="cb31-5"><a href="intro.html#cb31-5" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">add=</span>T) <span class="co"># add to the plot</span></span></code></pre></div>
+<p>Alternatively, we can choose the attributes that we what to plot:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="intro.html#cb51-1" tabindex="-1"></a><span class="co"># plot - alternatives</span></span>
+<span id="cb51-2"><a href="intro.html#cb51-2" tabindex="-1"></a><span class="fu">plot</span>(philly_sf[<span class="st">&quot;medHHinc&quot;</span>]) <span class="co"># subset with base R</span></span></code></pre></div>
+<p><img src="R-spatial_files/figure-html/plot-shp-attr-1.png" width="672" /></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="intro.html#cb52-1" tabindex="-1"></a>philly_sf <span class="sc">%&gt;%</span> <span class="fu">select</span>(medHHinc) <span class="sc">%&gt;%</span>  <span class="fu">plot</span>() <span class="co"># piping with tidyverse</span></span></code></pre></div>
+<p>Now let’s get a little fancier.</p>
+<p>Let’s add a subset of polygons with only the census tracts where the median houshold income (<em>medHHinc</em>) is more than $60,000. First we plot the polygon. Then in a second step we extract elements from an <code>sf</code> object based on attributes using the dplyr filter function (base R subsetting also works) and add the census tracts to the plot in a different color.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="intro.html#cb53-1" tabindex="-1"></a><span class="co"># step 1 - plot empty polylgons:</span></span>
+<span id="cb53-2"><a href="intro.html#cb53-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(philly_sf)) </span>
+<span id="cb53-3"><a href="intro.html#cb53-3" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="intro.html#cb53-4" tabindex="-1"></a><span class="co"># step 2 - add colored polygons on top</span></span>
+<span id="cb53-5"><a href="intro.html#cb53-5" tabindex="-1"></a>philly_sf <span class="sc">%&gt;%</span> </span>
+<span id="cb53-6"><a href="intro.html#cb53-6" tabindex="-1"></a>  <span class="fu">filter</span>(medHHinc <span class="sc">&gt;</span> <span class="dv">60000</span>) <span class="sc">%&gt;%</span> <span class="co"># filter for high income</span></span>
+<span id="cb53-7"><a href="intro.html#cb53-7" tabindex="-1"></a>  <span class="fu">st_geometry</span>() <span class="sc">%&gt;%</span> <span class="co"># extract the geometry for plotting</span></span>
+<span id="cb53-8"><a href="intro.html#cb53-8" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">add=</span>T) <span class="co"># add to the plot</span></span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/pipe-subset-plot-shp-sfg-1.png" width="672" /></p>
 </div>
 <div id="raster-data-in-r" class="section level2 hasAnchor" number="1.4">
@@ -518,15 +600,15 @@ Figure 1.4: raster vs terra downloads on CRAN
 </div>
 <p>The <code>terra</code> package has functions for creating, reading, manipulating, and writing raster data. The package also implements raster algebra and many other functions for raster data manipulation.</p>
 <p>The package works with <code>SpatRaster</code> objects. The <code>rast()</code> function is used to create these objects. For example, to create a raster object from scratch we would do the following:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="intro.html#cb32-1" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb32-2"><a href="intro.html#cb32-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="at">nrows=</span><span class="dv">20</span>, <span class="at">ncols=</span><span class="dv">20</span>, <span class="co"># number of cells in x and y dimension</span></span>
-<span id="cb32-3"><a href="intro.html#cb32-3" tabindex="-1"></a>          <span class="at">xmin=</span><span class="dv">0</span>, <span class="at">xmax=</span><span class="dv">360</span>) <span class="co"># min and max x coordinates (left-right borders)</span></span>
-<span id="cb32-4"><a href="intro.html#cb32-4" tabindex="-1"></a>r</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="intro.html#cb54-1" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb54-2"><a href="intro.html#cb54-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="at">nrows=</span><span class="dv">20</span>, <span class="at">ncols=</span><span class="dv">20</span>, <span class="co"># number of cells in x and y dimension</span></span>
+<span id="cb54-3"><a href="intro.html#cb54-3" tabindex="-1"></a>          <span class="at">xmin=</span><span class="dv">0</span>, <span class="at">xmax=</span><span class="dv">360</span>) <span class="co"># min and max x coordinates (left-right borders)</span></span>
+<span id="cb54-4"><a href="intro.html#cb54-4" tabindex="-1"></a>r</span></code></pre></div>
 <pre><code>#&gt; class       : SpatRaster 
-#&gt; dimensions  : 20, 20, 1  (nrow, ncol, nlyr)
+#&gt; size        : 20, 20, 1  (nrow, ncol, nlyr)
 #&gt; resolution  : 18, 9  (x, y)
 #&gt; extent      : 0, 360, -90, 90  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. : lon/lat WGS 84</code></pre>
+#&gt; coord. ref. : lon/lat WGS 84 (CRS84) (OGC:CRS84)</code></pre>
 <p>From the output above we know that:</p>
 <ul>
 <li>the object is of class <code>SpatRaster</code></li>
@@ -537,33 +619,33 @@ Figure 1.4: raster vs terra downloads on CRAN
 </ul>
 <p>Good to know.</p>
 <p>There are functions to look at individual properties of the raster object. For examle for the number of cells:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="intro.html#cb34-1" tabindex="-1"></a><span class="fu">ncell</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="intro.html#cb56-1" tabindex="-1"></a><span class="fu">ncell</span>(r)</span></code></pre></div>
 <pre><code>#&gt; [1] 400</code></pre>
 <p>Or we can retrieve just the number of bands using the <code>nlyr()</code> function.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="intro.html#cb36-1" tabindex="-1"></a><span class="fu">nlyr</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="intro.html#cb58-1" tabindex="-1"></a><span class="fu">nlyr</span>(r)</span></code></pre></div>
 <pre><code>#&gt; [1] 1</code></pre>
 <p>We can also find out about the Coordinate Reference System (CRS) with the <code>crs</code> function. The default output looks a little messy:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="intro.html#cb38-1" tabindex="-1"></a><span class="fu">crs</span>(r)</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;GEOGCRS[\&quot;WGS 84\&quot;,\n    DATUM[\&quot;World Geodetic System 1984\&quot;,\n        ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,\n            LENGTHUNIT[\&quot;metre\&quot;,1]],\n        ID[\&quot;EPSG\&quot;,6326]],\n    PRIMEM[\&quot;Greenwich\&quot;,0,\n        ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],\n        ID[\&quot;EPSG\&quot;,8901]],\n    CS[ellipsoidal,2],\n        AXIS[\&quot;longitude\&quot;,east,\n            ORDER[1],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]],\n        AXIS[\&quot;latitude\&quot;,north,\n            ORDER[2],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]]]&quot;</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="intro.html#cb60-1" tabindex="-1"></a><span class="fu">crs</span>(r)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;GEOGCRS[\&quot;WGS 84 (CRS84)\&quot;,\n    DATUM[\&quot;World Geodetic System 1984\&quot;,\n        ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,\n            LENGTHUNIT[\&quot;metre\&quot;,1]]],\n    PRIMEM[\&quot;Greenwich\&quot;,0,\n        ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\&quot;geodetic longitude (Lon)\&quot;,east,\n            ORDER[1],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],\n        AXIS[\&quot;geodetic latitude (Lat)\&quot;,north,\n            ORDER[2],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],\n    USAGE[\n        SCOPE[\&quot;unknown\&quot;],\n        AREA[\&quot;World\&quot;],\n        BBOX[-90,-180,90,180]],\n    ID[\&quot;OGC\&quot;,\&quot;CRS84\&quot;]]&quot;</code></pre>
 <p>We can make this easier to read by setting the proj argument:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="intro.html#cb40-1" tabindex="-1"></a><span class="fu">crs</span>(r, <span class="at">proj =</span> <span class="cn">TRUE</span>) <span class="co"># return the PROJ-string notation</span></span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="intro.html#cb62-1" tabindex="-1"></a><span class="fu">crs</span>(r, <span class="at">proj =</span> <span class="cn">TRUE</span>) <span class="co"># return the PROJ-string notation</span></span></code></pre></div>
 <pre><code>#&gt; [1] &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
 <p>Let’s try and plot this.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="intro.html#cb42-1" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="intro.html#cb64-1" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
 <p>The canvas is empty! This is because even though we have a layer, the cells do not have any values.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="intro.html#cb43-1" tabindex="-1"></a><span class="fu">values</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="intro.html#cb65-1" tabindex="-1"></a><span class="fu">values</span>(r)</span></code></pre></div>
 <p>To add some random values to the cells we can take advantage of the <code>ncells()</code> function and do this:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="intro.html#cb44-1" tabindex="-1"></a><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fu">ncell</span>(r))</span>
-<span id="cb44-2"><a href="intro.html#cb44-2" tabindex="-1"></a>r </span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="intro.html#cb66-1" tabindex="-1"></a><span class="fu">values</span>(r) <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fu">ncell</span>(r))</span>
+<span id="cb66-2"><a href="intro.html#cb66-2" tabindex="-1"></a>r </span></code></pre></div>
 <pre><code>#&gt; class       : SpatRaster 
-#&gt; dimensions  : 20, 20, 1  (nrow, ncol, nlyr)
+#&gt; size        : 20, 20, 1  (nrow, ncol, nlyr)
 #&gt; resolution  : 18, 9  (x, y)
 #&gt; extent      : 0, 360, -90, 90  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. : lon/lat WGS 84 
+#&gt; coord. ref. : lon/lat WGS 84 (CRS84) (OGC:CRS84) 
 #&gt; source(s)   : memory
-#&gt; name        :       lyr.1 
-#&gt; min value   : 0.002745141 
-#&gt; max value   : 0.999664087</code></pre>
+#&gt; name        :        lyr.1 
+#&gt; min value   : 0.0002538064 
+#&gt; max value   : 0.9989342857</code></pre>
 <p>In addition to the output above, we now see:</p>
 <ul>
 <li>the source, which indicates where the cell values are stored (here they are in memory)</li>
@@ -571,23 +653,23 @@ Figure 1.4: raster vs terra downloads on CRAN
 <li>the name, of the layer which is by default lyr.1.</li>
 </ul>
 <p>This now plots successfully:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="intro.html#cb46-1" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
-<p><img src="R-spatial_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="intro.html#cb68-1" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code></pre></div>
+<p><img src="R-spatial_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>(The <a href="https://cran.r-project.org/web/packages/rasterVis/index.html"><code>rasterVis</code> package</a> provides a set of methods for enhanced visualization and interaction for more advanced plotting of raster objects.)</p>
 <p><code>SpatRaster</code> objects can also be created from a matrix.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="intro.html#cb47-1" tabindex="-1"></a><span class="fu">class</span>(volcano)</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="intro.html#cb69-1" tabindex="-1"></a><span class="fu">class</span>(volcano)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="intro.html#cb49-1" tabindex="-1"></a>volcano.r <span class="ot">&lt;-</span> <span class="fu">rast</span>(volcano)</span>
-<span id="cb49-2"><a href="intro.html#cb49-2" tabindex="-1"></a><span class="fu">class</span>(volcano.r)</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="intro.html#cb71-1" tabindex="-1"></a>volcano.r <span class="ot">&lt;-</span> <span class="fu">rast</span>(volcano)</span>
+<span id="cb71-2"><a href="intro.html#cb71-2" tabindex="-1"></a><span class="fu">class</span>(volcano.r)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;SpatRaster&quot;
 #&gt; attr(,&quot;package&quot;)
 #&gt; [1] &quot;terra&quot;</code></pre>
 <p>We also use the <code>rast()</code> function to read in a raster file. This raster is generated as part of the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV">NEON Harvard Forest field site</a>.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="intro.html#cb51-1" tabindex="-1"></a>HARV <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="intro.html#cb73-1" tabindex="-1"></a>HARV <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)</span></code></pre></div>
 <p>Typing the name of the object will give us what’s in there:</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="intro.html#cb52-1" tabindex="-1"></a>HARV</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="intro.html#cb74-1" tabindex="-1"></a>HARV</span></code></pre></div>
 <pre><code>#&gt; class       : SpatRaster 
-#&gt; dimensions  : 2317, 3073, 3  (nrow, ncol, nlyr)
+#&gt; size        : 2317, 3073, 3  (nrow, ncol, nlyr)
 #&gt; resolution  : 0.25, 0.25  (x, y)
 #&gt; extent      : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
 #&gt; coord. ref. : WGS 84 / UTM zone 18N (EPSG:32618) 
@@ -603,101 +685,99 @@ Challenge
 <ol style="list-style-type: decimal">
 <li>How many bands?</li>
 <li>What are the names of the bands)?</li>
-<li>Where are the cell values stored?</li>
+<li>Where on the system are the cell values stored?</li>
 <li>What is the CRS?</li>
 </ol>
 </blockquote>
 <p>We can plot the object like this:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="intro.html#cb54-1" tabindex="-1"></a><span class="fu">plot</span>(HARV)</span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="intro.html#cb76-1" tabindex="-1"></a><span class="fu">plot</span>(HARV)</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/plot-raster-1.png" width="672" /></p>
 <p>Or to plot a single band:</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="intro.html#cb55-1" tabindex="-1"></a><span class="fu">plot</span>(HARV, <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="intro.html#cb77-1" tabindex="-1"></a><span class="fu">plot</span>(HARV, <span class="dv">3</span>)</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/plot-raster-single-1.png" width="672" /></p>
 <p>We can also use the <code>rast()</code> function to import one single band:</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="intro.html#cb56-1" tabindex="-1"></a>HARV_Band2 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>, <span class="at">lyrs =</span> <span class="dv">2</span>)</span>
-<span id="cb56-2"><a href="intro.html#cb56-2" tabindex="-1"></a><span class="fu">plot</span>(HARV_Band2)</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="intro.html#cb78-1" tabindex="-1"></a>HARV_Band2 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>, <span class="at">lyrs =</span> <span class="dv">2</span>)</span>
+<span id="cb78-2"><a href="intro.html#cb78-2" tabindex="-1"></a><span class="fu">plot</span>(HARV_Band2)</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/one-multiband-1.png" width="672" /></p>
 <p>Let’s now explore the distribution of values contained within our raster using the <code>hist()</code> function which produces a histogram. Histograms are often useful in identifying outliers and bad data values in our raster data.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="intro.html#cb57-1" tabindex="-1"></a><span class="fu">hist</span>(HARV)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="intro.html#cb79-1" tabindex="-1"></a><span class="fu">hist</span>(HARV)</span></code></pre></div>
 <pre><code>#&gt; Warning: [hist] a sample of 14% of the cells was used
-
 #&gt; Warning: [hist] a sample of 14% of the cells was used
-
 #&gt; Warning: [hist] a sample of 14% of the cells was used</code></pre>
 <p><img src="R-spatial_files/figure-html/n-hist-1.png" width="672" /></p>
 <p>Notice that a warning message is produced when R creates the histogram. By default the maximum cells processed per band is 1,000,000. This maximum value is to ensure processing efficiency as our data become larger. We can force the <code>hist</code> function to use all cell values.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="intro.html#cb59-1" tabindex="-1"></a><span class="fu">ncell</span>(HARV)</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="intro.html#cb81-1" tabindex="-1"></a><span class="fu">ncell</span>(HARV)</span></code></pre></div>
 <pre><code>#&gt; [1] 7120141</code></pre>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="intro.html#cb61-1" tabindex="-1"></a><span class="fu">hist</span>(HARV, <span class="at">maxcell =</span> <span class="fu">ncell</span>(HARV))</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="intro.html#cb83-1" tabindex="-1"></a><span class="fu">hist</span>(HARV, <span class="at">maxcell =</span> <span class="fu">ncell</span>(HARV))</span></code></pre></div>
 <p><img src="R-spatial_files/figure-html/n-hist-allvals-1.png" width="672" /></p>
 <p>At times it may be useful to explore raster metadata before loading them into R. This can be done with the function <code>describe()</code></p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="intro.html#cb62-1" tabindex="-1"></a><span class="fu">describe</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="intro.html#cb84-1" tabindex="-1"></a><span class="fu">describe</span>(<span class="st">&quot;data/HARV_RGB_Ortho.tif&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;  [1] &quot;Driver: GTiff/GeoTIFF&quot;                                                                                                                                                                                                                                                          
 #&gt;  [2] &quot;Files: data/HARV_RGB_Ortho.tif&quot;                                                                                                                                                                                                                                                 
 #&gt;  [3] &quot;Size is 3073, 2317&quot;                                                                                                                                                                                                                                                             
 #&gt;  [4] &quot;Coordinate System is:&quot;                                                                                                                                                                                                                                                          
 #&gt;  [5] &quot;PROJCRS[\&quot;WGS 84 / UTM zone 18N\&quot;,&quot;                                                                                                                                                                                                                                             
 #&gt;  [6] &quot;    BASEGEOGCRS[\&quot;WGS 84\&quot;,&quot;                                                                                                                                                                                                                                                    
-#&gt;  [7] &quot;        DATUM[\&quot;World Geodetic System 1984\&quot;,&quot;                                                                                                                                                                                                                                  
-#&gt;  [8] &quot;            ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,&quot;                                                                                                                                                                                                                        
-#&gt;  [9] &quot;                LENGTHUNIT[\&quot;metre\&quot;,1]]],&quot;                                                                                                                                                                                                                                     
-#&gt; [10] &quot;        PRIMEM[\&quot;Greenwich\&quot;,0,&quot;                                                                                                                                                                                                                                                
-#&gt; [11] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],&quot;                                                                                                                                                                                                                         
-#&gt; [12] &quot;        ID[\&quot;EPSG\&quot;,4326]],&quot;                                                                                                                                                                                                                                                    
-#&gt; [13] &quot;    CONVERSION[\&quot;UTM zone 18N\&quot;,&quot;                                                                                                                                                                                                                                               
-#&gt; [14] &quot;        METHOD[\&quot;Transverse Mercator\&quot;,&quot;                                                                                                                                                                                                                                        
-#&gt; [15] &quot;            ID[\&quot;EPSG\&quot;,9807]],&quot;                                                                                                                                                                                                                                                
-#&gt; [16] &quot;        PARAMETER[\&quot;Latitude of natural origin\&quot;,0,&quot;                                                                                                                                                                                                                            
-#&gt; [17] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],&quot;                                                                                                                                                                                                                          
-#&gt; [18] &quot;            ID[\&quot;EPSG\&quot;,8801]],&quot;                                                                                                                                                                                                                                                
-#&gt; [19] &quot;        PARAMETER[\&quot;Longitude of natural origin\&quot;,-75,&quot;                                                                                                                                                                                                                         
-#&gt; [20] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],&quot;                                                                                                                                                                                                                          
-#&gt; [21] &quot;            ID[\&quot;EPSG\&quot;,8802]],&quot;                                                                                                                                                                                                                                                
-#&gt; [22] &quot;        PARAMETER[\&quot;Scale factor at natural origin\&quot;,0.9996,&quot;                                                                                                                                                                                                                   
-#&gt; [23] &quot;            SCALEUNIT[\&quot;unity\&quot;,1],&quot;                                                                                                                                                                                                                                            
-#&gt; [24] &quot;            ID[\&quot;EPSG\&quot;,8805]],&quot;                                                                                                                                                                                                                                                
-#&gt; [25] &quot;        PARAMETER[\&quot;False easting\&quot;,500000,&quot;                                                                                                                                                                                                                                    
-#&gt; [26] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1],&quot;                                                                                                                                                                                                                                           
-#&gt; [27] &quot;            ID[\&quot;EPSG\&quot;,8806]],&quot;                                                                                                                                                                                                                                                
-#&gt; [28] &quot;        PARAMETER[\&quot;False northing\&quot;,0,&quot;                                                                                                                                                                                                                                        
-#&gt; [29] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1],&quot;                                                                                                                                                                                                                                           
-#&gt; [30] &quot;            ID[\&quot;EPSG\&quot;,8807]]],&quot;                                                                                                                                                                                                                                               
-#&gt; [31] &quot;    CS[Cartesian,2],&quot;                                                                                                                                                                                                                                                           
-#&gt; [32] &quot;        AXIS[\&quot;(E)\&quot;,east,&quot;                                                                                                                                                                                                                                                     
-#&gt; [33] &quot;            ORDER[1],&quot;                                                                                                                                                                                                                                                          
-#&gt; [34] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1]],&quot;                                                                                                                                                                                                                                          
-#&gt; [35] &quot;        AXIS[\&quot;(N)\&quot;,north,&quot;                                                                                                                                                                                                                                                    
-#&gt; [36] &quot;            ORDER[2],&quot;                                                                                                                                                                                                                                                          
-#&gt; [37] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1]],&quot;                                                                                                                                                                                                                                          
-#&gt; [38] &quot;    USAGE[&quot;                                                                                                                                                                                                                                                                     
-#&gt; [39] &quot;        SCOPE[\&quot;Engineering survey, topographic mapping.\&quot;],&quot;                                                                                                                                                                                                                   
-#&gt; [40] &quot;        AREA[\&quot;Between 78°W and 72°W, northern hemisphere between equator and 84°N, onshore and offshore. Bahamas. Canada - Nunavut; Ontario; Quebec. Colombia. Cuba. Ecuador. Greenland. Haiti. Jamaica. Panama. Turks and Caicos Islands. United States (USA). Venezuela.\&quot;],&quot;
-#&gt; [41] &quot;        BBOX[0,-78,84,-72]],&quot;                                                                                                                                                                                                                                                   
-#&gt; [42] &quot;    ID[\&quot;EPSG\&quot;,32618]]&quot;                                                                                                                                                                                                                                                        
-#&gt; [43] &quot;Data axis to CRS axis mapping: 1,2&quot;                                                                                                                                                                                                                                             
-#&gt; [44] &quot;Origin = (731998.500000000000000,4713535.500000000000000)&quot;                                                                                                                                                                                                                      
-#&gt; [45] &quot;Pixel Size = (0.250000000000000,-0.250000000000000)&quot;                                                                                                                                                                                                                            
-#&gt; [46] &quot;Metadata:&quot;                                                                                                                                                                                                                                                                      
-#&gt; [47] &quot;  AREA_OR_POINT=Area&quot;                                                                                                                                                                                                                                                           
-#&gt; [48] &quot;Image Structure Metadata:&quot;                                                                                                                                                                                                                                                      
-#&gt; [49] &quot;  COMPRESSION=LZW&quot;                                                                                                                                                                                                                                                              
-#&gt; [50] &quot;  INTERLEAVE=PIXEL&quot;                                                                                                                                                                                                                                                             
-#&gt; [51] &quot;Corner Coordinates:&quot;                                                                                                                                                                                                                                                            
-#&gt; [52] &quot;Upper Left  (  731998.500, 4713535.500) ( 72d10&#39;29.27\&quot;W, 42d32&#39;21.80\&quot;N)&quot;                                                                                                                                                                                                      
-#&gt; [53] &quot;Lower Left  (  731998.500, 4712956.250) ( 72d10&#39;30.11\&quot;W, 42d32&#39; 3.04\&quot;N)&quot;                                                                                                                                                                                                      
-#&gt; [54] &quot;Upper Right (  732766.750, 4713535.500) ( 72d 9&#39;55.63\&quot;W, 42d32&#39;20.97\&quot;N)&quot;                                                                                                                                                                                                      
-#&gt; [55] &quot;Lower Right (  732766.750, 4712956.250) ( 72d 9&#39;56.48\&quot;W, 42d32&#39; 2.21\&quot;N)&quot;                                                                                                                                                                                                      
-#&gt; [56] &quot;Center      (  732382.625, 4713245.875) ( 72d10&#39;12.87\&quot;W, 42d32&#39;12.00\&quot;N)&quot;                                                                                                                                                                                                      
-#&gt; [57] &quot;Band 1 Block=3073x1 Type=Float64, ColorInterp=Gray&quot;                                                                                                                                                                                                                             
-#&gt; [58] &quot;  Min=0.000 Max=255.000 &quot;                                                                                                                                                                                                                                                       
-#&gt; [59] &quot;  Minimum=0.000, Maximum=255.000, Mean=nan, StdDev=nan&quot;                                                                                                                                                                                                                         
-#&gt; [60] &quot;  NoData Value=-1.7e+308&quot;                                                                                                                                                                                                                                                       
-#&gt; [61] &quot;  Metadata:&quot;                                                                                                                                                                                                                                                                    
-#&gt; [62] &quot;    STATISTICS_MAXIMUM=255&quot;                                                                                                                                                                                                                                                     
-#&gt; [63] &quot;    STATISTICS_MEAN=nan&quot;                                                                                                                                                                                                                                                        
-#&gt; [64] &quot;    STATISTICS_MINIMUM=0&quot;                                                                                                                                                                                                                                                       
-#&gt; [65] &quot;    STATISTICS_STDDEV=nan&quot;                                                                                                                                                                                                                                                      
-#&gt; [66] &quot;Band 2 Block=3073x1 Type=Float64, ColorInterp=Undefined&quot;                                                                                                                                                                                                                        
+#&gt;  [7] &quot;        ENSEMBLE[\&quot;World Geodetic System 1984 ensemble\&quot;,&quot;                                                                                                                                                                                                                      
+#&gt;  [8] &quot;            MEMBER[\&quot;World Geodetic System 1984 (Transit)\&quot;],&quot;                                                                                                                                                                                                                  
+#&gt;  [9] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G730)\&quot;],&quot;                                                                                                                                                                                                                     
+#&gt; [10] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G873)\&quot;],&quot;                                                                                                                                                                                                                     
+#&gt; [11] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G1150)\&quot;],&quot;                                                                                                                                                                                                                    
+#&gt; [12] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G1674)\&quot;],&quot;                                                                                                                                                                                                                    
+#&gt; [13] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G1762)\&quot;],&quot;                                                                                                                                                                                                                    
+#&gt; [14] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G2139)\&quot;],&quot;                                                                                                                                                                                                                    
+#&gt; [15] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G2296)\&quot;],&quot;                                                                                                                                                                                                                    
+#&gt; [16] &quot;            ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,&quot;                                                                                                                                                                                                                        
+#&gt; [17] &quot;                LENGTHUNIT[\&quot;metre\&quot;,1]],&quot;                                                                                                                                                                                                                                      
+#&gt; [18] &quot;            ENSEMBLEACCURACY[2.0]],&quot;                                                                                                                                                                                                                                            
+#&gt; [19] &quot;        PRIMEM[\&quot;Greenwich\&quot;,0,&quot;                                                                                                                                                                                                                                                
+#&gt; [20] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],&quot;                                                                                                                                                                                                                         
+#&gt; [21] &quot;        ID[\&quot;EPSG\&quot;,4326]],&quot;                                                                                                                                                                                                                                                    
+#&gt; [22] &quot;    CONVERSION[\&quot;UTM zone 18N\&quot;,&quot;                                                                                                                                                                                                                                               
+#&gt; [23] &quot;        METHOD[\&quot;Transverse Mercator\&quot;,&quot;                                                                                                                                                                                                                                        
+#&gt; [24] &quot;            ID[\&quot;EPSG\&quot;,9807]],&quot;                                                                                                                                                                                                                                                
+#&gt; [25] &quot;        PARAMETER[\&quot;Latitude of natural origin\&quot;,0,&quot;                                                                                                                                                                                                                            
+#&gt; [26] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],&quot;                                                                                                                                                                                                                          
+#&gt; [27] &quot;            ID[\&quot;EPSG\&quot;,8801]],&quot;                                                                                                                                                                                                                                                
+#&gt; [28] &quot;        PARAMETER[\&quot;Longitude of natural origin\&quot;,-75,&quot;                                                                                                                                                                                                                         
+#&gt; [29] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],&quot;                                                                                                                                                                                                                          
+#&gt; [30] &quot;            ID[\&quot;EPSG\&quot;,8802]],&quot;                                                                                                                                                                                                                                                
+#&gt; [31] &quot;        PARAMETER[\&quot;Scale factor at natural origin\&quot;,0.9996,&quot;                                                                                                                                                                                                                   
+#&gt; [32] &quot;            SCALEUNIT[\&quot;unity\&quot;,1],&quot;                                                                                                                                                                                                                                            
+#&gt; [33] &quot;            ID[\&quot;EPSG\&quot;,8805]],&quot;                                                                                                                                                                                                                                                
+#&gt; [34] &quot;        PARAMETER[\&quot;False easting\&quot;,500000,&quot;                                                                                                                                                                                                                                    
+#&gt; [35] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1],&quot;                                                                                                                                                                                                                                           
+#&gt; [36] &quot;            ID[\&quot;EPSG\&quot;,8806]],&quot;                                                                                                                                                                                                                                                
+#&gt; [37] &quot;        PARAMETER[\&quot;False northing\&quot;,0,&quot;                                                                                                                                                                                                                                        
+#&gt; [38] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1],&quot;                                                                                                                                                                                                                                           
+#&gt; [39] &quot;            ID[\&quot;EPSG\&quot;,8807]]],&quot;                                                                                                                                                                                                                                               
+#&gt; [40] &quot;    CS[Cartesian,2],&quot;                                                                                                                                                                                                                                                           
+#&gt; [41] &quot;        AXIS[\&quot;(E)\&quot;,east,&quot;                                                                                                                                                                                                                                                     
+#&gt; [42] &quot;            ORDER[1],&quot;                                                                                                                                                                                                                                                          
+#&gt; [43] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1]],&quot;                                                                                                                                                                                                                                          
+#&gt; [44] &quot;        AXIS[\&quot;(N)\&quot;,north,&quot;                                                                                                                                                                                                                                                    
+#&gt; [45] &quot;            ORDER[2],&quot;                                                                                                                                                                                                                                                          
+#&gt; [46] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1]],&quot;                                                                                                                                                                                                                                          
+#&gt; [47] &quot;    USAGE[&quot;                                                                                                                                                                                                                                                                     
+#&gt; [48] &quot;        SCOPE[\&quot;Navigation and medium accuracy spatial referencing.\&quot;],&quot;                                                                                                                                                                                                        
+#&gt; [49] &quot;        AREA[\&quot;Between 78°W and 72°W, northern hemisphere between equator and 84°N, onshore and offshore. Bahamas. Canada - Nunavut; Ontario; Quebec. Colombia. Cuba. Ecuador. Greenland. Haiti. Jamaica. Panama. Turks and Caicos Islands. United States (USA). Venezuela.\&quot;],&quot;
+#&gt; [50] &quot;        BBOX[0,-78,84,-72]],&quot;                                                                                                                                                                                                                                                   
+#&gt; [51] &quot;    ID[\&quot;EPSG\&quot;,32618]]&quot;                                                                                                                                                                                                                                                        
+#&gt; [52] &quot;Data axis to CRS axis mapping: 1,2&quot;                                                                                                                                                                                                                                             
+#&gt; [53] &quot;Origin = (731998.500000000000000,4713535.500000000000000)&quot;                                                                                                                                                                                                                      
+#&gt; [54] &quot;Pixel Size = (0.250000000000000,-0.250000000000000)&quot;                                                                                                                                                                                                                            
+#&gt; [55] &quot;Metadata:&quot;                                                                                                                                                                                                                                                                      
+#&gt; [56] &quot;  AREA_OR_POINT=Area&quot;                                                                                                                                                                                                                                                           
+#&gt; [57] &quot;Image Structure Metadata:&quot;                                                                                                                                                                                                                                                      
+#&gt; [58] &quot;  COMPRESSION=LZW&quot;                                                                                                                                                                                                                                                              
+#&gt; [59] &quot;  INTERLEAVE=PIXEL&quot;                                                                                                                                                                                                                                                             
+#&gt; [60] &quot;Corner Coordinates:&quot;                                                                                                                                                                                                                                                            
+#&gt; [61] &quot;Upper Left  (  731998.500, 4713535.500) ( 72d10&#39;29.27\&quot;W, 42d32&#39;21.80\&quot;N)&quot;                                                                                                                                                                                                      
+#&gt; [62] &quot;Lower Left  (  731998.500, 4712956.250) ( 72d10&#39;30.11\&quot;W, 42d32&#39; 3.04\&quot;N)&quot;                                                                                                                                                                                                      
+#&gt; [63] &quot;Upper Right (  732766.750, 4713535.500) ( 72d 9&#39;55.63\&quot;W, 42d32&#39;20.97\&quot;N)&quot;                                                                                                                                                                                                      
+#&gt; [64] &quot;Lower Right (  732766.750, 4712956.250) ( 72d 9&#39;56.48\&quot;W, 42d32&#39; 2.21\&quot;N)&quot;                                                                                                                                                                                                      
+#&gt; [65] &quot;Center      (  732382.625, 4713245.875) ( 72d10&#39;12.87\&quot;W, 42d32&#39;12.00\&quot;N)&quot;                                                                                                                                                                                                      
+#&gt; [66] &quot;Band 1 Block=3073x1 Type=Float64, ColorInterp=Gray&quot;                                                                                                                                                                                                                             
 #&gt; [67] &quot;  Min=0.000 Max=255.000 &quot;                                                                                                                                                                                                                                                       
 #&gt; [68] &quot;  Minimum=0.000, Maximum=255.000, Mean=nan, StdDev=nan&quot;                                                                                                                                                                                                                         
 #&gt; [69] &quot;  NoData Value=-1.7e+308&quot;                                                                                                                                                                                                                                                       
@@ -706,7 +786,7 @@ Challenge
 #&gt; [72] &quot;    STATISTICS_MEAN=nan&quot;                                                                                                                                                                                                                                                        
 #&gt; [73] &quot;    STATISTICS_MINIMUM=0&quot;                                                                                                                                                                                                                                                       
 #&gt; [74] &quot;    STATISTICS_STDDEV=nan&quot;                                                                                                                                                                                                                                                      
-#&gt; [75] &quot;Band 3 Block=3073x1 Type=Float64, ColorInterp=Undefined&quot;                                                                                                                                                                                                                        
+#&gt; [75] &quot;Band 2 Block=3073x1 Type=Float64, ColorInterp=Undefined&quot;                                                                                                                                                                                                                        
 #&gt; [76] &quot;  Min=0.000 Max=255.000 &quot;                                                                                                                                                                                                                                                       
 #&gt; [77] &quot;  Minimum=0.000, Maximum=255.000, Mean=nan, StdDev=nan&quot;                                                                                                                                                                                                                         
 #&gt; [78] &quot;  NoData Value=-1.7e+308&quot;                                                                                                                                                                                                                                                       
@@ -714,9 +794,18 @@ Challenge
 #&gt; [80] &quot;    STATISTICS_MAXIMUM=255&quot;                                                                                                                                                                                                                                                     
 #&gt; [81] &quot;    STATISTICS_MEAN=nan&quot;                                                                                                                                                                                                                                                        
 #&gt; [82] &quot;    STATISTICS_MINIMUM=0&quot;                                                                                                                                                                                                                                                       
-#&gt; [83] &quot;    STATISTICS_STDDEV=nan&quot;</code></pre>
+#&gt; [83] &quot;    STATISTICS_STDDEV=nan&quot;                                                                                                                                                                                                                                                      
+#&gt; [84] &quot;Band 3 Block=3073x1 Type=Float64, ColorInterp=Undefined&quot;                                                                                                                                                                                                                        
+#&gt; [85] &quot;  Min=0.000 Max=255.000 &quot;                                                                                                                                                                                                                                                       
+#&gt; [86] &quot;  Minimum=0.000, Maximum=255.000, Mean=nan, StdDev=nan&quot;                                                                                                                                                                                                                         
+#&gt; [87] &quot;  NoData Value=-1.7e+308&quot;                                                                                                                                                                                                                                                       
+#&gt; [88] &quot;  Metadata:&quot;                                                                                                                                                                                                                                                                    
+#&gt; [89] &quot;    STATISTICS_MAXIMUM=255&quot;                                                                                                                                                                                                                                                     
+#&gt; [90] &quot;    STATISTICS_MEAN=nan&quot;                                                                                                                                                                                                                                                        
+#&gt; [91] &quot;    STATISTICS_MINIMUM=0&quot;                                                                                                                                                                                                                                                       
+#&gt; [92] &quot;    STATISTICS_STDDEV=nan&quot;</code></pre>
 <p>For the many functions available for working with such an object see:</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="intro.html#cb64-1" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class=</span><span class="st">&quot;SpatRaster&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="intro.html#cb86-1" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class=</span><span class="st">&quot;SpatRaster&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;   [1] !                     [                     [[                   
 #&gt;   [4] [[&lt;-                  [&lt;-                   %in%                 
 #&gt;   [7] $                     $&lt;-                   activeCat            
@@ -731,97 +820,104 @@ Challenge
 #&gt;  [34] as.logical            as.matrix             as.numeric           
 #&gt;  [37] as.points             as.polygons           as.raster            
 #&gt;  [40] atan_2                atan2                 autocor              
-#&gt;  [43] barplot               blocks                boundaries           
-#&gt;  [46] boxplot               buffer                c                    
-#&gt;  [49] catalyze              categories            cats                 
-#&gt;  [52] cellFromRowCol        cellFromRowColCombine cellFromXY           
-#&gt;  [55] cells                 cellSize              clamp_ts             
-#&gt;  [58] clamp                 classify              click                
-#&gt;  [61] coerce                colFromCell           colFromX             
-#&gt;  [64] colorize              coltab                coltab&lt;-             
-#&gt;  [67] Compare               compare               compareGeom          
-#&gt;  [70] concats               contour               costDist             
-#&gt;  [73] countNA               cover                 crds                 
-#&gt;  [76] crop                  crosstab              crs                  
-#&gt;  [79] crs&lt;-                 datatype              deepcopy             
-#&gt;  [82] density               depth                 depth&lt;-              
-#&gt;  [85] diff                  dim                   dim&lt;-                
-#&gt;  [88] direction             disagg                distance             
-#&gt;  [91] droplevels            expanse               ext                  
-#&gt;  [94] ext&lt;-                 extend                extract              
-#&gt;  [97] extractRange          fillTime              flip                 
-#&gt; [100] focal                 focal3D               focalCor             
-#&gt; [103] focalCpp              focalPairs            focalReg             
-#&gt; [106] focalValues           freq                  getTileExtents       
-#&gt; [109] global                gridDist              gridDistance         
-#&gt; [112] has.colors            has.RGB               has.time             
-#&gt; [115] hasMinMax             hasValues             head                 
-#&gt; [118] hist                  identical             ifel                 
-#&gt; [121] image                 init                  inMemory             
-#&gt; [124] inset                 interpIDW             interpNear           
-#&gt; [127] interpolate           intersect             is.bool              
-#&gt; [130] is.factor             is.finite             is.infinite          
-#&gt; [133] is.int                is.lonlat             is.na                
-#&gt; [136] is.nan                is.related            is.rotated           
-#&gt; [139] isFALSE               isTRUE                k_means              
-#&gt; [142] lapp                  layerCor              levels               
-#&gt; [145] levels&lt;-              linearUnits           lines                
-#&gt; [148] log                   Logic                 logic                
-#&gt; [151] longnames             longnames&lt;-           makeTiles            
-#&gt; [154] mask                  match                 math                 
-#&gt; [157] Math                  Math2                 mean                 
-#&gt; [160] median                merge                 meta                 
-#&gt; [163] metags                metags&lt;-              minmax               
-#&gt; [166] modal                 mosaic                NAflag               
-#&gt; [169] NAflag&lt;-              names                 names&lt;-              
-#&gt; [172] ncell                 ncol                  ncol&lt;-               
-#&gt; [175] nlyr                  nlyr&lt;-                noNA                 
-#&gt; [178] not.na                nrow                  nrow&lt;-               
-#&gt; [181] nsrc                  origin                origin&lt;-             
-#&gt; [184] pairs                 panel                 patches              
-#&gt; [187] persp                 plet                  plot                 
-#&gt; [190] plotRGB               points                polys                
-#&gt; [193] prcomp                predict               princomp             
-#&gt; [196] project               quantile              rangeFill            
-#&gt; [199] rapp                  rast                  rasterize            
-#&gt; [202] rasterizeGeom         rasterizeWin          rcl                  
-#&gt; [205] readStart             readStop              readValues           
-#&gt; [208] rectify               regress               relate               
-#&gt; [211] rep                   res                   res&lt;-                
-#&gt; [214] resample              rescale               rev                  
-#&gt; [217] RGB                   RGB&lt;-                 roll                 
-#&gt; [220] rotate                rowColCombine         rowColFromCell       
-#&gt; [223] rowFromCell           rowFromY              sapp                 
-#&gt; [226] saveRDS               scale                 scoff                
-#&gt; [229] scoff&lt;-               sds                   segregate            
-#&gt; [232] sel                   selectHighest         selectRange          
-#&gt; [235] serialize             set.cats              set.crs              
-#&gt; [238] set.ext               set.names             set.RGB              
-#&gt; [241] set.values            setMinMax             setValues            
-#&gt; [244] shift                 show                  sieve                
-#&gt; [247] size                  sort                  sources              
-#&gt; [250] spatSample            split                 sprc                 
-#&gt; [253] st_bbox               st_crs                stdev                
-#&gt; [256] str                   stretch               subset               
-#&gt; [259] subst                 summary               Summary              
-#&gt; [262] t                     tail                  tapp                 
-#&gt; [265] terrain               text                  tighten              
-#&gt; [268] time                  time&lt;-                timeInfo             
-#&gt; [271] trans                 trim                  unique               
-#&gt; [274] units                 units&lt;-               update               
-#&gt; [277] values                values&lt;-              varnames             
-#&gt; [280] varnames&lt;-            viewshed              weighted.mean        
-#&gt; [283] where.max             where.min             which.lyr            
-#&gt; [286] which.max             which.min             window               
-#&gt; [289] window&lt;-              wrap                  wrapCache            
-#&gt; [292] writeCDF              writeRaster           writeStart           
-#&gt; [295] writeStop             writeValues           xapp                 
-#&gt; [298] xFromCell             xFromCol              xmax                 
-#&gt; [301] xmax&lt;-                xmin                  xmin&lt;-               
-#&gt; [304] xres                  xyFromCell            yFromCell            
-#&gt; [307] yFromRow              ymax                  ymax&lt;-               
-#&gt; [310] ymin                  ymin&lt;-                yres                 
-#&gt; [313] zonal                 zoom                 
+#&gt;  [43] barplot               bestMatch             blocks               
+#&gt;  [46] boundaries            boxplot               buffer               
+#&gt;  [49] c                     catalyze              categories           
+#&gt;  [52] cats                  cellFromRowCol        cellFromRowColCombine
+#&gt;  [55] cellFromXY            cells                 cellSize             
+#&gt;  [58] clamp_ts              clamp                 classify             
+#&gt;  [61] click                 coerce                colFromCell          
+#&gt;  [64] colFromX              colMeans              colorize             
+#&gt;  [67] colSums               coltab                coltab&lt;-             
+#&gt;  [70] Compare               compare               compareGeom          
+#&gt;  [73] concats               contour               costDist             
+#&gt;  [76] countNA               cover                 crds                 
+#&gt;  [79] crop                  crosstab              crs                  
+#&gt;  [82] crs&lt;-                 datatype              deepcopy             
+#&gt;  [85] density               depth                 depth&lt;-              
+#&gt;  [88] depthName             depthName&lt;-           depthUnit            
+#&gt;  [91] depthUnit&lt;-           describe              diff                 
+#&gt;  [94] dim                   dim&lt;-                 direction            
+#&gt;  [97] disagg                distance              divide               
+#&gt; [100] droplevels            expanse               ext                  
+#&gt; [103] ext&lt;-                 extend                extract              
+#&gt; [106] extractRange          fillTime              flip                 
+#&gt; [109] flowAccumulation      focal                 focal3D              
+#&gt; [112] focalCpp              focalPairs            focalReg             
+#&gt; [115] focalValues           freq                  getTileExtents       
+#&gt; [118] global                gridDist              gridDistance         
+#&gt; [121] has.colors            has.RGB               has.time             
+#&gt; [124] hasMinMax             hasValues             head                 
+#&gt; [127] hist                  identical             ifel                 
+#&gt; [130] image                 init                  inMemory             
+#&gt; [133] inset                 interpIDW             interpNear           
+#&gt; [136] interpolate           intersect             is.bool              
+#&gt; [139] is.factor             is.finite             is.flipped           
+#&gt; [142] is.infinite           is.int                is.lonlat            
+#&gt; [145] is.na                 is.nan                is.num               
+#&gt; [148] is.related            is.rotated            isFALSE              
+#&gt; [151] isTRUE                k_means               lapp                 
+#&gt; [154] layerCor              levels                levels&lt;-             
+#&gt; [157] linearUnits           lines                 log                  
+#&gt; [160] Logic                 logic                 longnames            
+#&gt; [163] longnames&lt;-           makeTiles             mask                 
+#&gt; [166] match                 math                  Math                 
+#&gt; [169] Math2                 mean                  median               
+#&gt; [172] merge                 meta                  metags               
+#&gt; [175] metags&lt;-              minmax                modal                
+#&gt; [178] mosaic                NAflag                NAflag&lt;-             
+#&gt; [181] names                 names&lt;-               ncell                
+#&gt; [184] ncol                  ncol&lt;-                NIDP                 
+#&gt; [187] nlyr                  nlyr&lt;-                noNA                 
+#&gt; [190] not.na                nrow                  nrow&lt;-               
+#&gt; [193] nsrc                  origin                origin&lt;-             
+#&gt; [196] pairs                 panel                 patches              
+#&gt; [199] persp                 pitfinder             plet                 
+#&gt; [202] plot                  plotRGB               points               
+#&gt; [205] polys                 prcomp                predict              
+#&gt; [208] princomp              project               quantile             
+#&gt; [211] rangeFill             rapp                  rast                 
+#&gt; [214] rasterize             rasterizeGeom         rasterizeWin         
+#&gt; [217] rcl                   readStart             readStop             
+#&gt; [220] readValues            rectify               regress              
+#&gt; [223] relate                rep                   res                  
+#&gt; [226] res&lt;-                 resample              rescale              
+#&gt; [229] rev                   RGB                   RGB&lt;-                
+#&gt; [232] roll                  rotate                rowColCombine        
+#&gt; [235] rowColFromCell        rowFromCell           rowFromY             
+#&gt; [238] rowMeans              rowSums               sapp                 
+#&gt; [241] saveRDS               scale_linear          scale                
+#&gt; [244] scoff                 scoff&lt;-               sds                  
+#&gt; [247] segregate             sel                   selectHighest        
+#&gt; [250] selectRange           serialize             set.cats             
+#&gt; [253] set.crs               set.ext               set.names            
+#&gt; [256] set.RGB               set.values            set.window           
+#&gt; [259] setMinMax             setValues             shift                
+#&gt; [262] show                  sieve                 simplifyLevels       
+#&gt; [265] size                  sort                  sources              
+#&gt; [268] spatSample            split                 sprc                 
+#&gt; [271] st_bbox               st_crs                stdev                
+#&gt; [274] str                   stretch               subset               
+#&gt; [277] subst                 summary               Summary              
+#&gt; [280] surfArea              t                     tail                 
+#&gt; [283] tapp                  terrain               text                 
+#&gt; [286] thresh                tighten               time                 
+#&gt; [289] time&lt;-                timeInfo              toMemory             
+#&gt; [292] trans                 trim                  unique               
+#&gt; [295] units                 units&lt;-               update               
+#&gt; [298] values                values&lt;-              varnames             
+#&gt; [301] varnames&lt;-            viewshed              watershed            
+#&gt; [304] weighted.mean         where.max             where.min            
+#&gt; [307] which.lyr             which.max             which.min            
+#&gt; [310] window                window&lt;-              wrap                 
+#&gt; [313] wrapCache             writeCDF              writeRaster          
+#&gt; [316] writeStart            writeStop             writeValues          
+#&gt; [319] xapp                  xFromCell             xFromCol             
+#&gt; [322] xmax                  xmax&lt;-                xmin                 
+#&gt; [325] xmin&lt;-                xres                  xyFromCell           
+#&gt; [328] yFromCell             yFromRow              ymax                 
+#&gt; [331] ymax&lt;-                ymin                  ymin&lt;-               
+#&gt; [334] yres                  zonal                 zoom                 
 #&gt; see &#39;?methods&#39; for accessing help and source code</code></pre>
 
 </div>
@@ -853,42 +949,42 @@ future perspectives</a><a href="intro.html#fnref1" class="footnote-back">↩︎<
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": true,
-"facebook": false,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/cengel/R-spatial/edit/master/01-spatial-data.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["R-spatial.pdf", "R-spatial.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": true,
+    "facebook": false,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/cengel/R-spatial/edit/master/01-spatial-data.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["R-spatial.pdf", "R-spatial.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

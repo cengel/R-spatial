@@ -23,13 +23,11 @@ To get the most out of this workshop you should have:
 
 **Recommended**: 
 
-- Create a new RStudio project `R-spatial` in a new folder `R-spatial`.
-
-- Create a new folder under `R-spatial` and call it `data`. 
-
-- Open up a new R Script file and call it `R-spatial.R` for the code you'll create during the workshop.
-
-- If you have your working directory set to `R-spatial` which contains a folder called `data` you can copy, paste, and run the following lines in R:
+1. Create a new RStudio project `R-spatial` in a new folder `R-spatial`.    
+2. Create a new folder under `R-spatial` and call it `data`.    
+3. Open up a new R Script file and call it `R-spatial.R` for the code you'll create during the workshop.
+4. Make sure your working directory is set to `R-spatial` and contains a folder called `data`.     
+5. Copy, paste, and run the following lines in R:
 
 ```{r download-files, eval=FALSE}
 download.file("http://bit.ly/R-spatial-data", "R-spatial-data.zip")
@@ -47,7 +45,7 @@ You can also download the data manually here [R-spatial-data.zip](https://github
     - [`classInt`](https://cran.r-project.org/package=classInt)
     - [`RColorBrewer`](https://cran.r-project.org/package=RColorBrewer)
     - [`tmap`](https://cran.r-project.org/package=tmap)
-    - [`leaflet`](https://cran.r-project.org/package=leaflet)
+    - [`leaflet`](https://cran.r-project.org/package=leaflet) (optional)
 
 ## References {-}
 

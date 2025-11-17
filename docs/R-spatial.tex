@@ -1,10 +1,11 @@
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
-%
 \documentclass[
 ]{book}
+\usepackage{xcolor}
 \usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
@@ -35,7 +36,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{xcolor}
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -88,21 +88,24 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
 % Set default figure placement to htbp
-\makeatletter
 \def\fps@figure{htbp}
 \makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{5}
+\usepackage[]{natbib}
+\bibliographystyle{apalike}
 \usepackage{booktabs}
 \usepackage{amsthm}
 \makeatletter
@@ -111,12 +114,7 @@
   \thm@postskip=\thm@preskip
 }
 \makeatother
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
-\usepackage[]{natbib}
-\bibliographystyle{apalike}
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
@@ -127,7 +125,7 @@
 
 \title{Using Spatial Data with R}
 \author{Claudia A Engel}
-\date{Last updated: February 21, 2024}
+\date{Last updated: November 17, 2025}
 
 \begin{document}
 \maketitle
@@ -136,8 +134,7 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\hypertarget{prerequisites-and-preparations}{%
-\chapter*{Prerequisites and Preparations}\label{prerequisites-and-preparations}}
+\chapter*{Prerequisites and Preparations}\label{prerequisites-and-preparations}
 \addcontentsline{toc}{chapter}{Prerequisites and Preparations}
 
 To get the most out of this workshop you should have:
@@ -152,16 +149,20 @@ To get the most out of this workshop you should have:
 
 \textbf{Recommended}:
 
-\begin{itemize}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
 \item
-  Create a new RStudio project \texttt{R-spatial} in a new folder \texttt{R-spatial}.
+  Create a new RStudio project \texttt{R-spatial} in a new folder \texttt{R-spatial}.\\
 \item
-  Create a new folder under \texttt{R-spatial} and call it \texttt{data}.
+  Create a new folder under \texttt{R-spatial} and call it \texttt{data}.\\
 \item
   Open up a new R Script file and call it \texttt{R-spatial.R} for the code you'll create during the workshop.
 \item
-  If you have your working directory set to \texttt{R-spatial} which contains a folder called \texttt{data} you can copy, paste, and run the following lines in R:
-\end{itemize}
+  Make sure your working directory is set to \texttt{R-spatial} and contains a folder called \texttt{data}.\\
+\item
+  Copy, paste, and run the following lines in R:
+\end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -196,16 +197,13 @@ You can also download the data manually here \href{https://github.com/cengel/R-s
   \item
     \href{https://cran.r-project.org/package=RColorBrewer}{\texttt{RColorBrewer}}
   \item
-    \href{https://cran.r-project.org/package=ggplot2}{\texttt{ggplot2}}
-  \item
     \href{https://cran.r-project.org/package=tmap}{\texttt{tmap}}
   \item
-    \href{https://cran.r-project.org/package=leaflet}{\texttt{leaflet}}(On Mac installing binary version is ok)
+    \href{https://cran.r-project.org/package=leaflet}{\texttt{leaflet}} (optional)
   \end{itemize}
 \end{itemize}
 
-\hypertarget{references}{%
-\section*{References}\label{references}}
+\section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
 
 Lovelace, R., Nowosad, J., Muenchow. J. (2024): \href{https://r.geocompx.org/}{Geocomputation with R}
@@ -218,14 +216,12 @@ Gimond, M (2023): \href{https://mgimond.github.io/Spatial/index.html}{Intro to G
 
 \href{https://CRAN.R-project.org/view=Spatial}{CRAN Task View: Analysis of Spatial Data}
 
-\hypertarget{acknowledgements}{%
-\section*{Acknowledgements}\label{acknowledgements}}
+\section*{Acknowledgements}\label{acknowledgements}
 \addcontentsline{toc}{section}{Acknowledgements}
 
 Some of the materials for this tutorial are adapted from \url{http://datacarpentry.org}
 
-\hypertarget{intro}{%
-\chapter{Introduction to spatial data in R}\label{intro}}
+\chapter{Introduction to spatial data in R}\label{intro}
 
 \begin{quote}
 Learning Objectives
@@ -249,14 +245,13 @@ Learning Objectives
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\hypertarget{the-sf-package}{%
-\section{\texorpdfstring{The \texttt{sf} package}{The sf package}}\label{the-sf-package}}
+\section{\texorpdfstring{The \texttt{sf} package}{The sf package}}\label{the-sf-package}
 
 The \href{https://cran.r-project.org/package=sf}{\texttt{sf}}\footnote{E. Pebesma \& R. Bivand (2016)\href{http://pebesma.staff.ifgi.de/pebesma_sfr.pdf}{Spatial data in R: simple features and
   future perspectives}} package was first released on CRAN in late October 2016, and has in the mean time superseded the original R Package for storing and manipulating spatial data, \href{https://CRAN.R-project.org/package=sp}{\texttt{sp}}, which was first released in 2005. \texttt{sp} is still actively maintained, but less often used now, so you should be aware of it, but we will not teach it here.
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{img/spsf_downloads} \caption{sf vs sp downloads on CRAN}\label{fig:spsf-dl}
+\includegraphics[width=1\linewidth]{img/spsf_downloads} \caption{Cumulative downloads of sf and sp from CRAN}\label{fig:spsf-dl}
 \end{figure}
 
 \texttt{sf} implements a formal standard called \href{https://en.wikipedia.org/wiki/Simple_Features}{``Simple Features''} that specifies a storage and access model of spatial geometries (point, line, polygon). A feature geometry is called simple when it consists of points connected by straight line pieces, and does not intersect itself. This standard has been adopted widely, not only by spatial databases such as PostGIS, but also more recent standards such as GeoJSON.
@@ -332,16 +327,16 @@ We would then combine this into a simple feature collection :
 #> Geometry set for 2 features 
 #> Geometry type: LINESTRING
 #> Dimension:     XY
-#> Bounding box:  xmin: 0.06688615 ymin: 0.1567866 xmax: 0.9410966 ymax: 0.9058131
+#> Bounding box:  xmin: 0.1501735 ymin: 0.1093448 xmax: 0.6776345 ymax: 0.9639884
 #> CRS:           NA
 \end{verbatim}
 
 \begin{verbatim}
-#> LINESTRING (0.06688615 0.1567866, 0.6752471 0.5...
+#> LINESTRING (0.1501735 0.8985337, 0.2639807 0.43...
 \end{verbatim}
 
 \begin{verbatim}
-#> LINESTRING (0.533915 0.4474753, 0.9410966 0.717...
+#> LINESTRING (0.6776345 0.1985623, 0.4561752 0.10...
 \end{verbatim}
 
 And lastly create a data frame from above to generate the \texttt{sf} object:
@@ -358,11 +353,11 @@ And lastly create a data frame from above to generate the \texttt{sf} object:
 #> Simple feature collection with 2 features and 2 fields
 #> Geometry type: LINESTRING
 #> Dimension:     XY
-#> Bounding box:  xmin: 0.06688615 ymin: 0.1567866 xmax: 0.9410966 ymax: 0.9058131
+#> Bounding box:  xmin: 0.1501735 ymin: 0.1093448 xmax: 0.6776345 ymax: 0.9639884
 #> CRS:           NA
 #>     id cars_per_hour                      lnstr_sfc
-#> 1 hwy1            78 LINESTRING (0.06688615 0.15...
-#> 2 hwy2            22 LINESTRING (0.533915 0.4474...
+#> 1 hwy1            78 LINESTRING (0.1501735 0.898...
+#> 2 hwy2            22 LINESTRING (0.6776345 0.198...
 \end{verbatim}
 
 There are many methods available in the \texttt{sf} package, to find out use
@@ -412,29 +407,31 @@ There are many methods available in the \texttt{sf} package, to find out use
 #>  [71] st_convex_hull               st_coordinates              
 #>  [73] st_crop                      st_crs                      
 #>  [75] st_crs<-                     st_difference               
-#>  [77] st_drop_geometry             st_filter                   
-#>  [79] st_geometry                  st_geometry<-               
-#>  [81] st_inscribed_circle          st_interpolate_aw           
-#>  [83] st_intersection              st_intersects               
-#>  [85] st_is_valid                  st_is                       
-#>  [87] st_join                      st_line_merge               
-#>  [89] st_m_range                   st_make_valid               
-#>  [91] st_minimum_rotated_rectangle st_nearest_points           
-#>  [93] st_node                      st_normalize                
-#>  [95] st_point_on_surface          st_polygonize               
-#>  [97] st_precision                 st_reverse                  
-#>  [99] st_sample                    st_segmentize               
-#> [101] st_set_precision             st_shift_longitude          
-#> [103] st_simplify                  st_snap                     
-#> [105] st_sym_difference            st_transform                
-#> [107] st_triangulate_constrained   st_triangulate              
-#> [109] st_union                     st_voronoi                  
-#> [111] st_wrap_dateline             st_write                    
-#> [113] st_z_range                   st_zm                       
-#> [115] summarise                    svc                         
-#> [117] transform                    transmute                   
-#> [119] ungroup                      unite                       
-#> [121] unnest                       vect                        
+#>  [77] st_drop_geometry             st_exterior_ring            
+#>  [79] st_filter                    st_geometry                 
+#>  [81] st_geometry<-                st_inscribed_circle         
+#>  [83] st_interpolate_aw            st_intersection             
+#>  [85] st_intersects                st_is_full                  
+#>  [87] st_is_valid                  st_is                       
+#>  [89] st_join                      st_line_merge               
+#>  [91] st_m_range                   st_make_valid               
+#>  [93] st_minimum_bounding_circle   st_minimum_rotated_rectangle
+#>  [95] st_nearest_points            st_node                     
+#>  [97] st_normalize                 st_point_on_surface         
+#>  [99] st_polygonize                st_precision                
+#> [101] st_reverse                   st_sample                   
+#> [103] st_segmentize                st_set_precision            
+#> [105] st_shift_longitude           st_simplify                 
+#> [107] st_snap                      st_sym_difference           
+#> [109] st_transform                 st_triangulate_constrained  
+#> [111] st_triangulate               st_union                    
+#> [113] st_voronoi                   st_wrap_dateline            
+#> [115] st_write                     st_z_range                  
+#> [117] st_zm                        summarise                   
+#> [119] svc                          text                        
+#> [121] transform                    transmute                   
+#> [123] ungroup                      unite                       
+#> [125] unnest                       vect                        
 #> see '?methods' for accessing help and source code
 \end{verbatim}
 
@@ -481,12 +478,11 @@ Generate an \texttt{sf} point object.
 \end{enumerate}
 \end{quote}
 
-\hypertarget{creating-a-spatial-object-from-a-latlon-table}{%
-\section{Creating a spatial object from a lat/lon table}\label{creating-a-spatial-object-from-a-latlon-table}}
+\section{Creating a spatial object from a table with coordinates}\label{creating-a-spatial-object-from-a-table-with-coordinates}
 
 Often in your research might have a spreadsheet that contains latitude, longitude and perhaps some attribute values. You know how to read the spreadsheet into a tabular format (tibble) with \texttt{dplyr::read\_table} or \texttt{dplyr::read\_csv}. We can then very easily convert the table into a spatial object in R.
 
-An \texttt{sf} object can be created from a data frame in the following way. We take advantage of the \texttt{st\_as\_sf()} function which converts any foreign object into an \texttt{sf} object. Similarly to above, it requires an argument \texttt{coords}, which in the case of point data needs to be a vector that specifies the data frame's columns for the longitude and latitude (x,y) coordinates.
+An \texttt{sf} object can be created from a data frame in the following way. We take advantage of the \texttt{st\_as\_sf()} function which converts foreign objects into an \texttt{sf} object. Similarly to above, it requires an argument \texttt{coords}, which in the case of point data needs to be a vector that specifies the data frame's columns for the longitude and latitude (x,y) coordinates.
 
 \begin{verbatim}
 my_sf_object <- st_as_sf(myDataframe, coords)
@@ -494,11 +490,11 @@ my_sf_object <- st_as_sf(myDataframe, coords)
 
 \texttt{st\_as\_sf()} creates a new object and leaves the original data frame untouched.
 
-We use \texttt{read\_csv()} to read \texttt{philly\_homicides.csv} into a tibble in R and name it \texttt{philly\_homicides\_df}.
+We use \texttt{read\_csv()} to read \texttt{philly\_homicides.csv} into a tibble in R and name it \texttt{homicides\_df}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{philly\_homicides\_df }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/philly\_homicides.csv"}\NormalTok{)}
+\NormalTok{homicides\_df }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/philly\_homicides.csv"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -515,14 +511,21 @@ We use \texttt{read\_csv()} to read \texttt{philly\_homicides.csv} into a tibble
 #> i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 \end{verbatim}
 
-We convert the \texttt{philly\_homicides\_df} data frame into an \texttt{sf} object with \texttt{st\_as\_sf()}
+We convert the \texttt{homicides\_df} data frame into an \texttt{sf} object with \texttt{st\_as\_sf()}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(sf)}
 
-\NormalTok{philly\_homicides\_sf }\OtherTok{\textless{}{-}} \FunctionTok{st\_as\_sf}\NormalTok{(philly\_homicides\_df, }\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"POINT\_X"}\NormalTok{, }\StringTok{"POINT\_Y"}\NormalTok{))}
-\FunctionTok{names}\NormalTok{(philly\_homicides\_sf)}
+\NormalTok{homicides\_sf }\OtherTok{\textless{}{-}} \FunctionTok{st\_as\_sf}\NormalTok{(homicides\_df, }\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"POINT\_X"}\NormalTok{, }\StringTok{"POINT\_Y"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+Now let's check what we did here. First lets look at the column names:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{names}\NormalTok{(homicides\_sf)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -532,11 +535,96 @@ We convert the \texttt{philly\_homicides\_df} data frame into an \texttt{sf} obj
 #> [7] "OBJ_ID"            "TEXT_GENERAL_CODE" "geometry"
 \end{verbatim}
 
-Note the additional \textbf{geometry} list-column which now holds the simple feature collection with the coordinates of all the points. We now use \texttt{st\_crs()} to check on the projection.
+Compare this with the original table:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{st\_crs}\NormalTok{(philly\_homicides\_sf)}
+\FunctionTok{names}\NormalTok{(homicides\_df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#>  [1] "DC_DIST"           "SECTOR"            "DISPATCH_DATE"    
+#>  [4] "DISPATCH_TIME"     "LOCATION_BLOCK"    "UCR_GENERAL"      
+#>  [7] "OBJ_ID"            "TEXT_GENERAL_CODE" "POINT_X"          
+#> [10] "POINT_Y"
+\end{verbatim}
+
+Note the additional \textbf{geometry} list-column which now holds the simple feature collection with the coordinates of all the points.
+
+The \texttt{st\_geometry}function provides some helpful details about the spatial geometry of the object we created:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{st\_geometry}\NormalTok{(homicides\_sf)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> Geometry set for 3883 features 
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: -75.26809 ymin: 39.87503 xmax: -74.95874 ymax: 40.13086
+#> CRS:           NA
+#> First 5 geometries:
+\end{verbatim}
+
+\begin{verbatim}
+#> POINT (-75.1568 39.98804)
+\end{verbatim}
+
+\begin{verbatim}
+#> POINT (-75.17873 39.92801)
+\end{verbatim}
+
+\begin{verbatim}
+#> POINT (-75.18275 39.92607)
+\end{verbatim}
+
+\begin{verbatim}
+#> POINT (-75.18092 39.92704)
+\end{verbatim}
+
+\begin{verbatim}
+#> POINT (-75.17204 39.92463)
+\end{verbatim}
+
+And here is what we see when we type the name of the sf object:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{homicides\_sf}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> Simple feature collection with 3883 features and 8 fields
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: -75.26809 ymin: 39.87503 xmax: -74.95874 ymax: 40.13086
+#> CRS:           NA
+#> # A tibble: 3,883 x 9
+#>    DC_DIST SECTOR DISPATCH_DATE DISPATCH_TIME LOCATION_BLOCK  UCR_GENERAL OBJ_ID
+#>      <dbl> <chr>  <date>        <time>        <chr>                 <dbl>  <dbl>
+#>  1      22 1      2014-09-14    16:00         1800 BLOCK W M~         100      1
+#>  2       1 B      2006-01-14    00:00         2000 BLOCK MIF~         100      1
+#>  3       1 B      2006-04-01    16:05         S 22ND ST /SNY~         100      1
+#>  4       1 B      2006-05-10    11:13         2100 BLOCK MC ~         100      1
+#>  5       1 E      2006-07-01    12:42         2100 BLOCK S H~         100      1
+#>  6       1 F      2006-07-09    19:13         1800 BLOCK SNY~         100      1
+#>  7       1 B      2006-07-10    23:20         1800 BLOCK S 2~         100      1
+#>  8       1 J      2006-07-16    01:26         2200 BLOCK JAC~         100      1
+#>  9       1 J      2006-10-03    20:37         2200 BLOCK S H~         100      1
+#> 10       1 A      2006-10-16    19:46         1900 BLOCK MC ~         100      1
+#> # i 3,873 more rows
+#> # i 2 more variables: TEXT_GENERAL_CODE <chr>, geometry <POINT>
+\end{verbatim}
+
+We now use \texttt{st\_crs()} to check on the projection.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{st\_crs}\NormalTok{(homicides\_sf)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -548,8 +636,8 @@ To make it a complete geographical object we use \texttt{st\_crs()} to assign th
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{st\_crs}\NormalTok{(philly\_homicides\_sf) }\OtherTok{\textless{}{-}} \DecValTok{4326}
-\FunctionTok{st\_crs}\NormalTok{(philly\_homicides\_sf)}
+\FunctionTok{st\_crs}\NormalTok{(homicides\_sf) }\OtherTok{\textless{}{-}} \DecValTok{4326}
+\FunctionTok{st\_crs}\NormalTok{(homicides\_sf)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -566,6 +654,7 @@ To make it a complete geographical object we use \texttt{st\_crs()} to assign th
 #>         MEMBER["World Geodetic System 1984 (G1674)"],
 #>         MEMBER["World Geodetic System 1984 (G1762)"],
 #>         MEMBER["World Geodetic System 1984 (G2139)"],
+#>         MEMBER["World Geodetic System 1984 (G2296)"],
 #>         ELLIPSOID["WGS 84",6378137,298.257223563,
 #>             LENGTHUNIT["metre",1]],
 #>         ENSEMBLEACCURACY[2.0]],
@@ -585,11 +674,11 @@ To make it a complete geographical object we use \texttt{st\_crs()} to assign th
 #>     ID["EPSG",4326]]
 \end{verbatim}
 
-Wow this is long. It is usually more helpful to just retrieve the proj4string:
+Wow this is long! It is usually more helpful to just retrieve the proj4string like so:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{st\_crs}\NormalTok{(philly\_homicides\_sf)}\SpecialCharTok{$}\NormalTok{proj4string}
+\FunctionTok{st\_crs}\NormalTok{(homicides\_sf)}\SpecialCharTok{$}\NormalTok{proj4string}
 \end{Highlighting}
 \end{Shaded}
 
@@ -597,20 +686,37 @@ Wow this is long. It is usually more helpful to just retrieve the proj4string:
 #> [1] "+proj=longlat +datum=WGS84 +no_defs"
 \end{verbatim}
 
+Here we assigned the projection in a separate step. You can also assign it at the same time when you read the csv file in with \texttt{st\_as\_sf}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{homicides\_sf }\OtherTok{\textless{}{-}} \FunctionTok{st\_as\_sf}\NormalTok{(homicides\_df, }\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"POINT\_X"}\NormalTok{, }\StringTok{"POINT\_Y"}\NormalTok{), }
+                         \AttributeTok{crs =} \FunctionTok{st\_crs}\NormalTok{(}\DecValTok{4326}\NormalTok{)) }\CommentTok{\# assign CRS here}
+\end{Highlighting}
+\end{Shaded}
+
 We will save this object as a shapefile on our hard drive for later use. (Note that by default \texttt{st\_write} checks if the file already exists, and if so it will not overwrite it. If you need to force it to overwrite use the option \texttt{delete\_layer\ =\ TRUE}.)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{st\_write}\NormalTok{(philly\_homicides\_sf, }\StringTok{"data/PhillyHomicides"}\NormalTok{, }\AttributeTok{driver =} \StringTok{"ESRI Shapefile"}\NormalTok{)}
+\FunctionTok{st\_write}\NormalTok{(homicides\_sf, }\StringTok{"data/PhillyHomicides"}\NormalTok{, }\AttributeTok{driver =} \StringTok{"ESRI Shapefile"}\NormalTok{)}
 \CommentTok{\# to force the save: }
-\FunctionTok{st\_write}\NormalTok{(philly\_homicides\_sf, }\StringTok{"data/PhillyHomicides"}\NormalTok{, }\AttributeTok{driver =} \StringTok{"ESRI Shapefile"}\NormalTok{, }\AttributeTok{delete\_layer =} \ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{st\_write}\NormalTok{(homicides\_sf, }\StringTok{"data/PhillyHomicides"}\NormalTok{, }\AttributeTok{driver =} \StringTok{"ESRI Shapefile"}\NormalTok{, }\AttributeTok{delete\_layer =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{loading-shape-files-into-r}{%
-\section{Loading shape files into R}\label{loading-shape-files-into-r}}
+\begin{quote}
+Challenge
 
-\texttt{sf} relies on the powerful \href{http://gdal.org}{GDAL library}, which is automatically linked in when loading \texttt{sf}. The GDAL provides the functionality to read and write spatial files of many formats. For shape files we can use \texttt{st\_read()}, which simply takes the path of the directory with the shapefile as argument.
+Read in Schools.csv, convert to a spatial sf object and save out as a shapefile. Assume that the coordinates are in WGS84 geographic projection.
+I should mention that sf works with piping. You may or may not find that convenient.
+\end{quote}
+
+\section{Loading shape files into R}\label{loading-shape-files-into-r}
+
+\texttt{sf} relies on the powerful \href{http://gdal.org}{GDAL library}, which is automatically linked in when loading \texttt{sf}. The GDAL provides the functionality to read and write spatial files of many formats. The command \texttt{st\_drivers()} returns the available drivers.
+
+For shape files we can use \texttt{st\_read()}, which takes the path of the directory with the shapefile as argument.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -630,10 +736,11 @@ We will save this object as a shapefile on our hard drive for later use. (Note t
 #> Projected CRS: Albers
 \end{verbatim}
 
+Take a look at what we've got:
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# take a look at what we\textquotesingle{}ve got}
-\FunctionTok{str}\NormalTok{(philly\_sf) }\CommentTok{\# note again the geometry column}
+\FunctionTok{str}\NormalTok{(philly\_sf) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -665,9 +772,48 @@ We will save this object as a shapefile on our hard drive for later use. (Note t
 #>   ..- attr(*, "names")= chr [1:17] "STATEFP10" "COUNTYFP10" "TRACTCE10" "GEOID10" ...
 \end{verbatim}
 
+Note again the geometry column. Also note the many other values (or attributes) that are included.
+
+Let's check the geometry column:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{st\_geometry}\NormalTok{(philly\_sf) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> Geometry set for 384 features 
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: 1739497 ymin: 457343.7 xmax: 1764030 ymax: 490544.9
+#> Projected CRS: Albers
+#> First 5 geometries:
+\end{verbatim}
+
+\begin{verbatim}
+#> MULTIPOLYGON (((1763647 484837.3, 1763473 48519...
+\end{verbatim}
+
+\begin{verbatim}
+#> MULTIPOLYGON (((1761348 489213.5, 1761372 48918...
+\end{verbatim}
+
+\begin{verbatim}
+#> MULTIPOLYGON (((1752887 468814.9, 1752808 46863...
+\end{verbatim}
+
+\begin{verbatim}
+#> MULTIPOLYGON (((1761207 482777.8, 1761634 48258...
+\end{verbatim}
+
+\begin{verbatim}
+#> MULTIPOLYGON (((1759301 482266.6, 1759120 48186...
+\end{verbatim}
+
 Two more words about the geometry column: Though it is not recommended, you can name this column any way you wish. Secondly, you can remove this column and revert to a regular, non-spatial data frame at any dime with \texttt{st\_drop\_geometry()}.
 
-The default \texttt{plot} of an \texttt{sf} object is a multi-plot of the first attributes, with a warning if not all can be plotted:
+There is a quick-and-dirty way to visualize this object. The default \texttt{plot} of an \texttt{sf} object will create a multi-plot with choropleth maps of the first attributes. It adds a warning if not all attributes can be plotted. This does not make much sense analytically here, but we can quickly check what we created.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -680,9 +826,9 @@ The default \texttt{plot} of an \texttt{sf} object is a multi-plot of the first 
 #> all
 \end{verbatim}
 
-\includegraphics{R-spatial_files/figure-latex/plot-shp-sf-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/plot-shp-sf-1.pdf}}
 
-In order to only plot the polygon boundaries we need to directly use the geometry column. We use the \texttt{st\_geometry()} function. It extracts the \texttt{sfc} object (the simple feature geometry list column):
+To make it a little cleaner, we can only plot the polygon boundariesn and forget about the attributes. For this we need to directly use the geometry column. We use the \texttt{st\_geometry()} function again here, which extracts the \texttt{sfc} object (the simple feature geometry list column):
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -690,13 +836,35 @@ In order to only plot the polygon boundaries we need to directly use the geometr
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/plot-shp-sfg-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/plot-shp-sfg-1.pdf}}
 
-Let's add a subset of polygons with only the census tracts where the median houshold income (\emph{medHHinc}) is more than \$60,000. We can extract elements from an \texttt{sf} object based on attributes using the dplyr filter function (base R subsetting also works) and add the census tracts to the plot in a different color.
+Alternatively, we can choose the attributes that we what to plot:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(philly\_sf))}
+\CommentTok{\# plot {-} alternatives}
+\FunctionTok{plot}\NormalTok{(philly\_sf[}\StringTok{"medHHinc"}\NormalTok{]) }\CommentTok{\# subset with base R}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/plot-shp-attr-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{philly\_sf }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(medHHinc) }\SpecialCharTok{\%\textgreater{}\%}  \FunctionTok{plot}\NormalTok{() }\CommentTok{\# piping with tidyverse}
+\end{Highlighting}
+\end{Shaded}
+
+Now let's get a little fancier.
+
+Let's add a subset of polygons with only the census tracts where the median houshold income (\emph{medHHinc}) is more than \$60,000. First we plot the polygon. Then in a second step we extract elements from an \texttt{sf} object based on attributes using the dplyr filter function (base R subsetting also works) and add the census tracts to the plot in a different color.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# step 1 {-} plot empty polylgons:}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(philly\_sf)) }
+
+\CommentTok{\# step 2 {-} add colored polygons on top}
 \NormalTok{philly\_sf }\SpecialCharTok{\%\textgreater{}\%} 
   \FunctionTok{filter}\NormalTok{(medHHinc }\SpecialCharTok{\textgreater{}} \DecValTok{60000}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# filter for high income}
   \FunctionTok{st\_geometry}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# extract the geometry for plotting}
@@ -704,10 +872,9 @@ Let's add a subset of polygons with only the census tracts where the median hous
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/pipe-subset-plot-shp-sfg-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/pipe-subset-plot-shp-sfg-1.pdf}}
 
-\hypertarget{raster-data-in-r}{%
-\section{Raster data in R}\label{raster-data-in-r}}
+\section{Raster data in R}\label{raster-data-in-r}
 
 Raster files, as you might know, have a more compact data structure than vectors. Because of their regular structure the coordinates do not need to be recorded for each pixel or cell in the rectangular extent. A raster is defined by:
 
@@ -748,10 +915,10 @@ The package works with \texttt{SpatRaster} objects. The \texttt{rast()} function
 
 \begin{verbatim}
 #> class       : SpatRaster 
-#> dimensions  : 20, 20, 1  (nrow, ncol, nlyr)
+#> size        : 20, 20, 1  (nrow, ncol, nlyr)
 #> resolution  : 18, 9  (x, y)
 #> extent      : 0, 360, -90, 90  (xmin, xmax, ymin, ymax)
-#> coord. ref. : lon/lat WGS 84
+#> coord. ref. : lon/lat WGS 84 (CRS84) (OGC:CRS84)
 \end{verbatim}
 
 From the output above we know that:
@@ -805,7 +972,7 @@ We can also find out about the Coordinate Reference System (CRS) with the \textt
 \end{Shaded}
 
 \begin{verbatim}
-#> [1] "GEOGCRS[\"WGS 84\",\n    DATUM[\"World Geodetic System 1984\",\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n            LENGTHUNIT[\"metre\",1]],\n        ID[\"EPSG\",6326]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433],\n        ID[\"EPSG\",8901]],\n    CS[ellipsoidal,2],\n        AXIS[\"longitude\",east,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433,\n                ID[\"EPSG\",9122]]],\n        AXIS[\"latitude\",north,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433,\n                ID[\"EPSG\",9122]]]]"
+#> [1] "GEOGCRS[\"WGS 84 (CRS84)\",\n    DATUM[\"World Geodetic System 1984\",\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n            LENGTHUNIT[\"metre\",1]]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"geodetic longitude (Lon)\",east,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"geodetic latitude (Lat)\",north,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    USAGE[\n        SCOPE[\"unknown\"],\n        AREA[\"World\"],\n        BBOX[-90,-180,90,180]],\n    ID[\"OGC\",\"CRS84\"]]"
 \end{verbatim}
 
 We can make this easier to read by setting the proj argument:
@@ -847,14 +1014,14 @@ To add some random values to the cells we can take advantage of the \texttt{ncel
 
 \begin{verbatim}
 #> class       : SpatRaster 
-#> dimensions  : 20, 20, 1  (nrow, ncol, nlyr)
+#> size        : 20, 20, 1  (nrow, ncol, nlyr)
 #> resolution  : 18, 9  (x, y)
 #> extent      : 0, 360, -90, 90  (xmin, xmax, ymin, ymax)
-#> coord. ref. : lon/lat WGS 84 
+#> coord. ref. : lon/lat WGS 84 (CRS84) (OGC:CRS84) 
 #> source(s)   : memory
-#> name        :       lyr.1 
-#> min value   : 0.003116596 
-#> max value   : 0.998842893
+#> name        :        lyr.1 
+#> min value   : 0.0005268205 
+#> max value   : 0.9975202840
 \end{verbatim}
 
 In addition to the output above, we now see:
@@ -877,7 +1044,7 @@ This now plots successfully:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/unnamed-chunk-7-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/unnamed-chunk-9-1.pdf}}
 
 (The \href{https://cran.r-project.org/web/packages/rasterVis/index.html}{\texttt{rasterVis} package} provides a set of methods for enhanced visualization and interaction for more advanced plotting of raster objects.)
 
@@ -924,7 +1091,7 @@ Typing the name of the object will give us what's in there:
 
 \begin{verbatim}
 #> class       : SpatRaster 
-#> dimensions  : 2317, 3073, 3  (nrow, ncol, nlyr)
+#> size        : 2317, 3073, 3  (nrow, ncol, nlyr)
 #> resolution  : 0.25, 0.25  (x, y)
 #> extent      : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
 #> coord. ref. : WGS 84 / UTM zone 18N (EPSG:32618) 
@@ -947,7 +1114,7 @@ Based on the output above answer the following questions:
 \item
   What are the names of the bands)?
 \item
-  Where are the cell values stored?
+  Where on the system are the cell values stored?
 \item
   What is the CRS?
 \end{enumerate}
@@ -961,7 +1128,7 @@ We can plot the object like this:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/plot-raster-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/plot-raster-1.pdf}}
 
 Or to plot a single band:
 
@@ -971,7 +1138,7 @@ Or to plot a single band:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/plot-raster-single-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/plot-raster-single-1.pdf}}
 
 We can also use the \texttt{rast()} function to import one single band:
 
@@ -982,7 +1149,7 @@ We can also use the \texttt{rast()} function to import one single band:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/one-multiband-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/one-multiband-1.pdf}}
 
 Let's now explore the distribution of values contained within our raster using the \texttt{hist()} function which produces a histogram. Histograms are often useful in identifying outliers and bad data values in our raster data.
 
@@ -994,13 +1161,11 @@ Let's now explore the distribution of values contained within our raster using t
 
 \begin{verbatim}
 #> Warning: [hist] a sample of 14% of the cells was used
-
 #> Warning: [hist] a sample of 14% of the cells was used
-
 #> Warning: [hist] a sample of 14% of the cells was used
 \end{verbatim}
 
-\includegraphics{R-spatial_files/figure-latex/n-hist-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/n-hist-1.pdf}}
 
 Notice that a warning message is produced when R creates the histogram. By default the maximum cells processed per band is 1,000,000. This maximum value is to ensure processing efficiency as our data become larger. We can force the \texttt{hist} function to use all cell values.
 
@@ -1020,7 +1185,7 @@ Notice that a warning message is produced when R creates the histogram. By defau
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/n-hist-allvals-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/n-hist-allvals-1.pdf}}
 
 At times it may be useful to explore raster metadata before loading them into R. This can be done with the function \texttt{describe()}
 
@@ -1037,66 +1202,66 @@ At times it may be useful to explore raster metadata before loading them into R.
 #>  [4] "Coordinate System is:"                                                                                                                                                                                                                                                          
 #>  [5] "PROJCRS[\"WGS 84 / UTM zone 18N\","                                                                                                                                                                                                                                             
 #>  [6] "    BASEGEOGCRS[\"WGS 84\","                                                                                                                                                                                                                                                    
-#>  [7] "        DATUM[\"World Geodetic System 1984\","                                                                                                                                                                                                                                  
-#>  [8] "            ELLIPSOID[\"WGS 84\",6378137,298.257223563,"                                                                                                                                                                                                                        
-#>  [9] "                LENGTHUNIT[\"metre\",1]]],"                                                                                                                                                                                                                                     
-#> [10] "        PRIMEM[\"Greenwich\",0,"                                                                                                                                                                                                                                                
-#> [11] "            ANGLEUNIT[\"degree\",0.0174532925199433]],"                                                                                                                                                                                                                         
-#> [12] "        ID[\"EPSG\",4326]],"                                                                                                                                                                                                                                                    
-#> [13] "    CONVERSION[\"UTM zone 18N\","                                                                                                                                                                                                                                               
-#> [14] "        METHOD[\"Transverse Mercator\","                                                                                                                                                                                                                                        
-#> [15] "            ID[\"EPSG\",9807]],"                                                                                                                                                                                                                                                
-#> [16] "        PARAMETER[\"Latitude of natural origin\",0,"                                                                                                                                                                                                                            
-#> [17] "            ANGLEUNIT[\"degree\",0.0174532925199433],"                                                                                                                                                                                                                          
-#> [18] "            ID[\"EPSG\",8801]],"                                                                                                                                                                                                                                                
-#> [19] "        PARAMETER[\"Longitude of natural origin\",-75,"                                                                                                                                                                                                                         
-#> [20] "            ANGLEUNIT[\"degree\",0.0174532925199433],"                                                                                                                                                                                                                          
-#> [21] "            ID[\"EPSG\",8802]],"                                                                                                                                                                                                                                                
-#> [22] "        PARAMETER[\"Scale factor at natural origin\",0.9996,"                                                                                                                                                                                                                   
-#> [23] "            SCALEUNIT[\"unity\",1],"                                                                                                                                                                                                                                            
-#> [24] "            ID[\"EPSG\",8805]],"                                                                                                                                                                                                                                                
-#> [25] "        PARAMETER[\"False easting\",500000,"                                                                                                                                                                                                                                    
-#> [26] "            LENGTHUNIT[\"metre\",1],"                                                                                                                                                                                                                                           
-#> [27] "            ID[\"EPSG\",8806]],"                                                                                                                                                                                                                                                
-#> [28] "        PARAMETER[\"False northing\",0,"                                                                                                                                                                                                                                        
-#> [29] "            LENGTHUNIT[\"metre\",1],"                                                                                                                                                                                                                                           
-#> [30] "            ID[\"EPSG\",8807]]],"                                                                                                                                                                                                                                               
-#> [31] "    CS[Cartesian,2],"                                                                                                                                                                                                                                                           
-#> [32] "        AXIS[\"(E)\",east,"                                                                                                                                                                                                                                                     
-#> [33] "            ORDER[1],"                                                                                                                                                                                                                                                          
-#> [34] "            LENGTHUNIT[\"metre\",1]],"                                                                                                                                                                                                                                          
-#> [35] "        AXIS[\"(N)\",north,"                                                                                                                                                                                                                                                    
-#> [36] "            ORDER[2],"                                                                                                                                                                                                                                                          
-#> [37] "            LENGTHUNIT[\"metre\",1]],"                                                                                                                                                                                                                                          
-#> [38] "    USAGE["                                                                                                                                                                                                                                                                     
-#> [39] "        SCOPE[\"Engineering survey, topographic mapping.\"],"                                                                                                                                                                                                                   
-#> [40] "        AREA[\"Between 78°W and 72°W, northern hemisphere between equator and 84°N, onshore and offshore. Bahamas. Canada - Nunavut; Ontario; Quebec. Colombia. Cuba. Ecuador. Greenland. Haiti. Jamaica. Panama. Turks and Caicos Islands. United States (USA). Venezuela.\"],"
-#> [41] "        BBOX[0,-78,84,-72]],"                                                                                                                                                                                                                                                   
-#> [42] "    ID[\"EPSG\",32618]]"                                                                                                                                                                                                                                                        
-#> [43] "Data axis to CRS axis mapping: 1,2"                                                                                                                                                                                                                                             
-#> [44] "Origin = (731998.500000000000000,4713535.500000000000000)"                                                                                                                                                                                                                      
-#> [45] "Pixel Size = (0.250000000000000,-0.250000000000000)"                                                                                                                                                                                                                            
-#> [46] "Metadata:"                                                                                                                                                                                                                                                                      
-#> [47] "  AREA_OR_POINT=Area"                                                                                                                                                                                                                                                           
-#> [48] "Image Structure Metadata:"                                                                                                                                                                                                                                                      
-#> [49] "  COMPRESSION=LZW"                                                                                                                                                                                                                                                              
-#> [50] "  INTERLEAVE=PIXEL"                                                                                                                                                                                                                                                             
-#> [51] "Corner Coordinates:"                                                                                                                                                                                                                                                            
-#> [52] "Upper Left  (  731998.500, 4713535.500) ( 72d10'29.27\"W, 42d32'21.80\"N)"                                                                                                                                                                                                      
-#> [53] "Lower Left  (  731998.500, 4712956.250) ( 72d10'30.11\"W, 42d32' 3.04\"N)"                                                                                                                                                                                                      
-#> [54] "Upper Right (  732766.750, 4713535.500) ( 72d 9'55.63\"W, 42d32'20.97\"N)"                                                                                                                                                                                                      
-#> [55] "Lower Right (  732766.750, 4712956.250) ( 72d 9'56.48\"W, 42d32' 2.21\"N)"                                                                                                                                                                                                      
-#> [56] "Center      (  732382.625, 4713245.875) ( 72d10'12.87\"W, 42d32'12.00\"N)"                                                                                                                                                                                                      
-#> [57] "Band 1 Block=3073x1 Type=Float64, ColorInterp=Gray"                                                                                                                                                                                                                             
-#> [58] "  Min=0.000 Max=255.000 "                                                                                                                                                                                                                                                       
-#> [59] "  Minimum=0.000, Maximum=255.000, Mean=nan, StdDev=nan"                                                                                                                                                                                                                         
-#> [60] "  NoData Value=-1.7e+308"                                                                                                                                                                                                                                                       
-#> [61] "  Metadata:"                                                                                                                                                                                                                                                                    
-#> [62] "    STATISTICS_MAXIMUM=255"                                                                                                                                                                                                                                                     
-#> [63] "    STATISTICS_MEAN=nan"                                                                                                                                                                                                                                                        
-#> [64] "    STATISTICS_MINIMUM=0"                                                                                                                                                                                                                                                       
-#> [65] "    STATISTICS_STDDEV=nan"                                                                                                                                                                                                                                                      
-#> [66] "Band 2 Block=3073x1 Type=Float64, ColorInterp=Undefined"                                                                                                                                                                                                                        
+#>  [7] "        ENSEMBLE[\"World Geodetic System 1984 ensemble\","                                                                                                                                                                                                                      
+#>  [8] "            MEMBER[\"World Geodetic System 1984 (Transit)\"],"                                                                                                                                                                                                                  
+#>  [9] "            MEMBER[\"World Geodetic System 1984 (G730)\"],"                                                                                                                                                                                                                     
+#> [10] "            MEMBER[\"World Geodetic System 1984 (G873)\"],"                                                                                                                                                                                                                     
+#> [11] "            MEMBER[\"World Geodetic System 1984 (G1150)\"],"                                                                                                                                                                                                                    
+#> [12] "            MEMBER[\"World Geodetic System 1984 (G1674)\"],"                                                                                                                                                                                                                    
+#> [13] "            MEMBER[\"World Geodetic System 1984 (G1762)\"],"                                                                                                                                                                                                                    
+#> [14] "            MEMBER[\"World Geodetic System 1984 (G2139)\"],"                                                                                                                                                                                                                    
+#> [15] "            MEMBER[\"World Geodetic System 1984 (G2296)\"],"                                                                                                                                                                                                                    
+#> [16] "            ELLIPSOID[\"WGS 84\",6378137,298.257223563,"                                                                                                                                                                                                                        
+#> [17] "                LENGTHUNIT[\"metre\",1]],"                                                                                                                                                                                                                                      
+#> [18] "            ENSEMBLEACCURACY[2.0]],"                                                                                                                                                                                                                                            
+#> [19] "        PRIMEM[\"Greenwich\",0,"                                                                                                                                                                                                                                                
+#> [20] "            ANGLEUNIT[\"degree\",0.0174532925199433]],"                                                                                                                                                                                                                         
+#> [21] "        ID[\"EPSG\",4326]],"                                                                                                                                                                                                                                                    
+#> [22] "    CONVERSION[\"UTM zone 18N\","                                                                                                                                                                                                                                               
+#> [23] "        METHOD[\"Transverse Mercator\","                                                                                                                                                                                                                                        
+#> [24] "            ID[\"EPSG\",9807]],"                                                                                                                                                                                                                                                
+#> [25] "        PARAMETER[\"Latitude of natural origin\",0,"                                                                                                                                                                                                                            
+#> [26] "            ANGLEUNIT[\"degree\",0.0174532925199433],"                                                                                                                                                                                                                          
+#> [27] "            ID[\"EPSG\",8801]],"                                                                                                                                                                                                                                                
+#> [28] "        PARAMETER[\"Longitude of natural origin\",-75,"                                                                                                                                                                                                                         
+#> [29] "            ANGLEUNIT[\"degree\",0.0174532925199433],"                                                                                                                                                                                                                          
+#> [30] "            ID[\"EPSG\",8802]],"                                                                                                                                                                                                                                                
+#> [31] "        PARAMETER[\"Scale factor at natural origin\",0.9996,"                                                                                                                                                                                                                   
+#> [32] "            SCALEUNIT[\"unity\",1],"                                                                                                                                                                                                                                            
+#> [33] "            ID[\"EPSG\",8805]],"                                                                                                                                                                                                                                                
+#> [34] "        PARAMETER[\"False easting\",500000,"                                                                                                                                                                                                                                    
+#> [35] "            LENGTHUNIT[\"metre\",1],"                                                                                                                                                                                                                                           
+#> [36] "            ID[\"EPSG\",8806]],"                                                                                                                                                                                                                                                
+#> [37] "        PARAMETER[\"False northing\",0,"                                                                                                                                                                                                                                        
+#> [38] "            LENGTHUNIT[\"metre\",1],"                                                                                                                                                                                                                                           
+#> [39] "            ID[\"EPSG\",8807]]],"                                                                                                                                                                                                                                               
+#> [40] "    CS[Cartesian,2],"                                                                                                                                                                                                                                                           
+#> [41] "        AXIS[\"(E)\",east,"                                                                                                                                                                                                                                                     
+#> [42] "            ORDER[1],"                                                                                                                                                                                                                                                          
+#> [43] "            LENGTHUNIT[\"metre\",1]],"                                                                                                                                                                                                                                          
+#> [44] "        AXIS[\"(N)\",north,"                                                                                                                                                                                                                                                    
+#> [45] "            ORDER[2],"                                                                                                                                                                                                                                                          
+#> [46] "            LENGTHUNIT[\"metre\",1]],"                                                                                                                                                                                                                                          
+#> [47] "    USAGE["                                                                                                                                                                                                                                                                     
+#> [48] "        SCOPE[\"Navigation and medium accuracy spatial referencing.\"],"                                                                                                                                                                                                        
+#> [49] "        AREA[\"Between 78°W and 72°W, northern hemisphere between equator and 84°N, onshore and offshore. Bahamas. Canada - Nunavut; Ontario; Quebec. Colombia. Cuba. Ecuador. Greenland. Haiti. Jamaica. Panama. Turks and Caicos Islands. United States (USA). Venezuela.\"],"
+#> [50] "        BBOX[0,-78,84,-72]],"                                                                                                                                                                                                                                                   
+#> [51] "    ID[\"EPSG\",32618]]"                                                                                                                                                                                                                                                        
+#> [52] "Data axis to CRS axis mapping: 1,2"                                                                                                                                                                                                                                             
+#> [53] "Origin = (731998.500000000000000,4713535.500000000000000)"                                                                                                                                                                                                                      
+#> [54] "Pixel Size = (0.250000000000000,-0.250000000000000)"                                                                                                                                                                                                                            
+#> [55] "Metadata:"                                                                                                                                                                                                                                                                      
+#> [56] "  AREA_OR_POINT=Area"                                                                                                                                                                                                                                                           
+#> [57] "Image Structure Metadata:"                                                                                                                                                                                                                                                      
+#> [58] "  COMPRESSION=LZW"                                                                                                                                                                                                                                                              
+#> [59] "  INTERLEAVE=PIXEL"                                                                                                                                                                                                                                                             
+#> [60] "Corner Coordinates:"                                                                                                                                                                                                                                                            
+#> [61] "Upper Left  (  731998.500, 4713535.500) ( 72d10'29.27\"W, 42d32'21.80\"N)"                                                                                                                                                                                                      
+#> [62] "Lower Left  (  731998.500, 4712956.250) ( 72d10'30.11\"W, 42d32' 3.04\"N)"                                                                                                                                                                                                      
+#> [63] "Upper Right (  732766.750, 4713535.500) ( 72d 9'55.63\"W, 42d32'20.97\"N)"                                                                                                                                                                                                      
+#> [64] "Lower Right (  732766.750, 4712956.250) ( 72d 9'56.48\"W, 42d32' 2.21\"N)"                                                                                                                                                                                                      
+#> [65] "Center      (  732382.625, 4713245.875) ( 72d10'12.87\"W, 42d32'12.00\"N)"                                                                                                                                                                                                      
+#> [66] "Band 1 Block=3073x1 Type=Float64, ColorInterp=Gray"                                                                                                                                                                                                                             
 #> [67] "  Min=0.000 Max=255.000 "                                                                                                                                                                                                                                                       
 #> [68] "  Minimum=0.000, Maximum=255.000, Mean=nan, StdDev=nan"                                                                                                                                                                                                                         
 #> [69] "  NoData Value=-1.7e+308"                                                                                                                                                                                                                                                       
@@ -1105,7 +1270,7 @@ At times it may be useful to explore raster metadata before loading them into R.
 #> [72] "    STATISTICS_MEAN=nan"                                                                                                                                                                                                                                                        
 #> [73] "    STATISTICS_MINIMUM=0"                                                                                                                                                                                                                                                       
 #> [74] "    STATISTICS_STDDEV=nan"                                                                                                                                                                                                                                                      
-#> [75] "Band 3 Block=3073x1 Type=Float64, ColorInterp=Undefined"                                                                                                                                                                                                                        
+#> [75] "Band 2 Block=3073x1 Type=Float64, ColorInterp=Undefined"                                                                                                                                                                                                                        
 #> [76] "  Min=0.000 Max=255.000 "                                                                                                                                                                                                                                                       
 #> [77] "  Minimum=0.000, Maximum=255.000, Mean=nan, StdDev=nan"                                                                                                                                                                                                                         
 #> [78] "  NoData Value=-1.7e+308"                                                                                                                                                                                                                                                       
@@ -1113,7 +1278,16 @@ At times it may be useful to explore raster metadata before loading them into R.
 #> [80] "    STATISTICS_MAXIMUM=255"                                                                                                                                                                                                                                                     
 #> [81] "    STATISTICS_MEAN=nan"                                                                                                                                                                                                                                                        
 #> [82] "    STATISTICS_MINIMUM=0"                                                                                                                                                                                                                                                       
-#> [83] "    STATISTICS_STDDEV=nan"
+#> [83] "    STATISTICS_STDDEV=nan"                                                                                                                                                                                                                                                      
+#> [84] "Band 3 Block=3073x1 Type=Float64, ColorInterp=Undefined"                                                                                                                                                                                                                        
+#> [85] "  Min=0.000 Max=255.000 "                                                                                                                                                                                                                                                       
+#> [86] "  Minimum=0.000, Maximum=255.000, Mean=nan, StdDev=nan"                                                                                                                                                                                                                         
+#> [87] "  NoData Value=-1.7e+308"                                                                                                                                                                                                                                                       
+#> [88] "  Metadata:"                                                                                                                                                                                                                                                                    
+#> [89] "    STATISTICS_MAXIMUM=255"                                                                                                                                                                                                                                                     
+#> [90] "    STATISTICS_MEAN=nan"                                                                                                                                                                                                                                                        
+#> [91] "    STATISTICS_MINIMUM=0"                                                                                                                                                                                                                                                       
+#> [92] "    STATISTICS_STDDEV=nan"
 \end{verbatim}
 
 For the many functions available for working with such an object see:
@@ -1139,102 +1313,108 @@ For the many functions available for working with such an object see:
 #>  [34] as.logical            as.matrix             as.numeric           
 #>  [37] as.points             as.polygons           as.raster            
 #>  [40] atan_2                atan2                 autocor              
-#>  [43] barplot               blocks                boundaries           
-#>  [46] boxplot               buffer                c                    
-#>  [49] catalyze              categories            cats                 
-#>  [52] cellFromRowCol        cellFromRowColCombine cellFromXY           
-#>  [55] cells                 cellSize              clamp_ts             
-#>  [58] clamp                 classify              click                
-#>  [61] coerce                colFromCell           colFromX             
-#>  [64] colorize              coltab                coltab<-             
-#>  [67] Compare               compare               compareGeom          
-#>  [70] concats               contour               costDist             
-#>  [73] countNA               cover                 crds                 
-#>  [76] crop                  crosstab              crs                  
-#>  [79] crs<-                 datatype              deepcopy             
-#>  [82] density               depth                 depth<-              
-#>  [85] diff                  dim                   dim<-                
-#>  [88] direction             disagg                distance             
-#>  [91] droplevels            expanse               ext                  
-#>  [94] ext<-                 extend                extract              
-#>  [97] extractRange          fillTime              flip                 
-#> [100] focal                 focal3D               focalCor             
-#> [103] focalCpp              focalPairs            focalReg             
-#> [106] focalValues           freq                  getTileExtents       
-#> [109] global                gridDist              gridDistance         
-#> [112] has.colors            has.RGB               has.time             
-#> [115] hasMinMax             hasValues             head                 
-#> [118] hist                  identical             ifel                 
-#> [121] image                 init                  inMemory             
-#> [124] inset                 interpIDW             interpNear           
-#> [127] interpolate           intersect             is.bool              
-#> [130] is.factor             is.finite             is.infinite          
-#> [133] is.int                is.lonlat             is.na                
-#> [136] is.nan                is.related            is.rotated           
-#> [139] isFALSE               isTRUE                k_means              
-#> [142] lapp                  layerCor              levels               
-#> [145] levels<-              linearUnits           lines                
-#> [148] log                   Logic                 logic                
-#> [151] longnames             longnames<-           makeTiles            
-#> [154] mask                  match                 math                 
-#> [157] Math                  Math2                 mean                 
-#> [160] median                merge                 meta                 
-#> [163] metags                metags<-              minmax               
-#> [166] modal                 mosaic                NAflag               
-#> [169] NAflag<-              names                 names<-              
-#> [172] ncell                 ncol                  ncol<-               
-#> [175] nlyr                  nlyr<-                noNA                 
-#> [178] not.na                nrow                  nrow<-               
-#> [181] nsrc                  origin                origin<-             
-#> [184] pairs                 panel                 patches              
-#> [187] persp                 plet                  plot                 
-#> [190] plotRGB               points                polys                
-#> [193] prcomp                predict               princomp             
-#> [196] project               quantile              rangeFill            
-#> [199] rapp                  rast                  rasterize            
-#> [202] rasterizeGeom         rasterizeWin          rcl                  
-#> [205] readStart             readStop              readValues           
-#> [208] rectify               regress               relate               
-#> [211] rep                   res                   res<-                
-#> [214] resample              rescale               rev                  
-#> [217] RGB                   RGB<-                 roll                 
-#> [220] rotate                rowColCombine         rowColFromCell       
-#> [223] rowFromCell           rowFromY              sapp                 
-#> [226] saveRDS               scale                 scoff                
-#> [229] scoff<-               sds                   segregate            
-#> [232] sel                   selectHighest         selectRange          
-#> [235] serialize             set.cats              set.crs              
-#> [238] set.ext               set.names             set.RGB              
-#> [241] set.values            setMinMax             setValues            
-#> [244] shift                 show                  sieve                
-#> [247] size                  sort                  sources              
-#> [250] spatSample            split                 sprc                 
-#> [253] st_bbox               st_crs                stdev                
-#> [256] str                   stretch               subset               
-#> [259] subst                 summary               Summary              
-#> [262] t                     tail                  tapp                 
-#> [265] terrain               text                  tighten              
-#> [268] time                  time<-                timeInfo             
-#> [271] trans                 trim                  unique               
-#> [274] units                 units<-               update               
-#> [277] values                values<-              varnames             
-#> [280] varnames<-            viewshed              weighted.mean        
-#> [283] where.max             where.min             which.lyr            
-#> [286] which.max             which.min             window               
-#> [289] window<-              wrap                  wrapCache            
-#> [292] writeCDF              writeRaster           writeStart           
-#> [295] writeStop             writeValues           xapp                 
-#> [298] xFromCell             xFromCol              xmax                 
-#> [301] xmax<-                xmin                  xmin<-               
-#> [304] xres                  xyFromCell            yFromCell            
-#> [307] yFromRow              ymax                  ymax<-               
-#> [310] ymin                  ymin<-                yres                 
-#> [313] zonal                 zoom                 
+#>  [43] barplot               bestMatch             blocks               
+#>  [46] boundaries            boxplot               buffer               
+#>  [49] c                     catalyze              categories           
+#>  [52] cats                  cellFromRowCol        cellFromRowColCombine
+#>  [55] cellFromXY            cells                 cellSize             
+#>  [58] clamp_ts              clamp                 classify             
+#>  [61] click                 coerce                colFromCell          
+#>  [64] colFromX              colMeans              colorize             
+#>  [67] colSums               coltab                coltab<-             
+#>  [70] Compare               compare               compareGeom          
+#>  [73] concats               contour               costDist             
+#>  [76] countNA               cover                 crds                 
+#>  [79] crop                  crosstab              crs                  
+#>  [82] crs<-                 datatype              deepcopy             
+#>  [85] density               depth                 depth<-              
+#>  [88] depthName             depthName<-           depthUnit            
+#>  [91] depthUnit<-           describe              diff                 
+#>  [94] dim                   dim<-                 direction            
+#>  [97] disagg                distance              divide               
+#> [100] droplevels            expanse               ext                  
+#> [103] ext<-                 extend                extract              
+#> [106] extractRange          fillTime              flip                 
+#> [109] flowAccumulation      focal                 focal3D              
+#> [112] focalCpp              focalPairs            focalReg             
+#> [115] focalValues           freq                  getTileExtents       
+#> [118] global                gridDist              gridDistance         
+#> [121] has.colors            has.RGB               has.time             
+#> [124] hasMinMax             hasValues             head                 
+#> [127] hist                  identical             ifel                 
+#> [130] image                 init                  inMemory             
+#> [133] inset                 interpIDW             interpNear           
+#> [136] interpolate           intersect             is.bool              
+#> [139] is.factor             is.finite             is.flipped           
+#> [142] is.infinite           is.int                is.lonlat            
+#> [145] is.na                 is.nan                is.num               
+#> [148] is.related            is.rotated            isFALSE              
+#> [151] isTRUE                k_means               lapp                 
+#> [154] layerCor              levels                levels<-             
+#> [157] linearUnits           lines                 log                  
+#> [160] Logic                 logic                 longnames            
+#> [163] longnames<-           makeTiles             mask                 
+#> [166] match                 math                  Math                 
+#> [169] Math2                 mean                  median               
+#> [172] merge                 meta                  metags               
+#> [175] metags<-              minmax                modal                
+#> [178] mosaic                NAflag                NAflag<-             
+#> [181] names                 names<-               ncell                
+#> [184] ncol                  ncol<-                NIDP                 
+#> [187] nlyr                  nlyr<-                noNA                 
+#> [190] not.na                nrow                  nrow<-               
+#> [193] nsrc                  origin                origin<-             
+#> [196] pairs                 panel                 patches              
+#> [199] persp                 pitfinder             plet                 
+#> [202] plot                  plotRGB               points               
+#> [205] polys                 prcomp                predict              
+#> [208] princomp              project               quantile             
+#> [211] rangeFill             rapp                  rast                 
+#> [214] rasterize             rasterizeGeom         rasterizeWin         
+#> [217] rcl                   readStart             readStop             
+#> [220] readValues            rectify               regress              
+#> [223] relate                rep                   res                  
+#> [226] res<-                 resample              rescale              
+#> [229] rev                   RGB                   RGB<-                
+#> [232] roll                  rotate                rowColCombine        
+#> [235] rowColFromCell        rowFromCell           rowFromY             
+#> [238] rowMeans              rowSums               sapp                 
+#> [241] saveRDS               scale_linear          scale                
+#> [244] scoff                 scoff<-               sds                  
+#> [247] segregate             sel                   selectHighest        
+#> [250] selectRange           serialize             set.cats             
+#> [253] set.crs               set.ext               set.names            
+#> [256] set.RGB               set.values            set.window           
+#> [259] setMinMax             setValues             shift                
+#> [262] show                  sieve                 simplifyLevels       
+#> [265] size                  sort                  sources              
+#> [268] spatSample            split                 sprc                 
+#> [271] st_bbox               st_crs                stdev                
+#> [274] str                   stretch               subset               
+#> [277] subst                 summary               Summary              
+#> [280] surfArea              t                     tail                 
+#> [283] tapp                  terrain               text                 
+#> [286] thresh                tighten               time                 
+#> [289] time<-                timeInfo              toMemory             
+#> [292] trans                 trim                  unique               
+#> [295] units                 units<-               update               
+#> [298] values                values<-              varnames             
+#> [301] varnames<-            viewshed              watershed            
+#> [304] weighted.mean         where.max             where.min            
+#> [307] which.lyr             which.max             which.min            
+#> [310] window                window<-              wrap                 
+#> [313] wrapCache             writeCDF              writeRaster          
+#> [316] writeStart            writeStop             writeValues          
+#> [319] xapp                  xFromCell             xFromCol             
+#> [322] xmax                  xmax<-                xmin                 
+#> [325] xmin<-                xres                  xyFromCell           
+#> [328] yFromCell             yFromRow              ymax                 
+#> [331] ymax<-                ymin                  ymin<-               
+#> [334] yres                  zonal                 zoom                 
 #> see '?methods' for accessing help and source code
 \end{verbatim}
 
-\hypertarget{spatialops}{%
-\chapter{Spatial data manipulation in R}\label{spatialops}}
+\chapter{Spatial data manipulation in R}\label{spatialops}
 
 \begin{quote}
 Learning Objectives
@@ -1256,22 +1436,21 @@ Learning Objectives
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-There are a wide variety of spatial, topological, and attribute data operations you can perform with R. \href{https://r.geocompx.org/}{Lovelace et al's recent publication}\footnote{Lovelace, R., Nowosad, J., \& Muenchow, J. (2024). Geocomputation with R. CRC Press.} goes into great depth about this and is highly recommended.
+There are a wide variety of spatial, topological, and attribute data operations you can perform with R. \href{https://r.geocompx.org/}{Lovelace et al's recent publication}\footnote{Lovelace, R., Nowosad, J., \& Muenchow, J. (2025). Geocomputation with R. CRC Press.} goes into great depth about this and is highly recommended.
 
 In this section we will look at a few examples for libraries and commands that allow us to process spatial data in R and perform a few commonly used operations.
 
-\hypertarget{attribute-join}{%
-\section{Attribute Join}\label{attribute-join}}
+\section{Attribute Join}\label{attribute-join}
 
 An attribute join on vector data brings tabular data into a geographic context. It refers to the process of joining data in tabular format to data in a format that holds the geometries (polygon, line, or point).
 
 If you have done attribute joins of shapefiles in GIS software like \emph{ArcGIS} or \emph{QGis} you know that you need a \textbf{unique identifier} in both the attribute table of the shapefile and the table to be joined.
 
-First we will load the CSV table \texttt{PhiladelphiaEduAttain.csv} into a dataframe in R and name it \texttt{ph\_edu}.
+First we will load the CSV table \texttt{PhiladelphiaEduAttain.csv} into a dataframe in R and name it \texttt{edu}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{ph\_edu }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/PhiladelphiaEduAttain.csv"}\NormalTok{)}
+\NormalTok{edu }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/PhiladelphiaEduAttain.csv"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1288,11 +1467,11 @@ First we will load the CSV table \texttt{PhiladelphiaEduAttain.csv} into a dataf
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{names}\NormalTok{(ph\_edu)}
+\FunctionTok{names}\NormalTok{(edu)}
 \end{Highlighting}
 \end{Shaded}
 
-If you don't have the object still loaded read the the \texttt{PhillyTotalPopHHinc} shapefile into an object named \texttt{philly\_sf}. Check out the column names of \texttt{philly\_sf} and of \texttt{ph\_edu} to determine which one might contain the unique identifier for the join.
+If you don't have the object still loaded read the the \texttt{Philly} shapefile into an object named \texttt{philly\_sf}. Check out the column names of \texttt{philly\_sf} and of \texttt{edu} to determine which one might contain the unique identifier for the join.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1302,12 +1481,12 @@ If you don't have the object still loaded read the the \texttt{PhillyTotalPopHHi
 \end{Highlighting}
 \end{Shaded}
 
-To join the \texttt{ph\_edu} data frame with \texttt{philly\_sf} we can use \texttt{merge} like this:
+To join the \texttt{edu} data frame with \texttt{philly\_sf} we can use \texttt{join} like this:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{philly\_sf\_merged }\OtherTok{\textless{}{-}} \FunctionTok{left\_join}\NormalTok{(philly\_sf, ph\_edu, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"GEOID10"} \OtherTok{=} \StringTok{"GEOID"}\NormalTok{))}
-\FunctionTok{names}\NormalTok{(philly\_sf\_merged) }
+\NormalTok{edu\_sf }\OtherTok{\textless{}{-}} \FunctionTok{left\_join}\NormalTok{(philly\_sf, edu, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"GEOID10"} \OtherTok{=} \StringTok{"GEOID"}\NormalTok{))}
+\FunctionTok{names}\NormalTok{(edu\_sf) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -1324,8 +1503,25 @@ To join the \texttt{ph\_edu} data frame with \texttt{philly\_sf} we can use \tex
 
 We see the new attribute columns added, as well as the geometry column.
 
-\hypertarget{topological-subsetting-select-polygons-by-location}{%
-\section{Topological Subsetting: Select Polygons by Location}\label{topological-subsetting-select-polygons-by-location}}
+We can now use the attributes we have joined to display them spatially.
+
+\begin{quote}
+Challenge
+
+1.Given what you have learned so far about plotting attributes, use the attributes
+in edu\_sf, add a new variable and calculate the ratio of the female population with a high school education out of the total population. (Hint: you can use mutate)
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Given what you have learned so far about plotting attributes create a simple
+  plot that displays the ratio you just calculated.
+\end{enumerate}
+\end{quote}
+
+\section{Topological Subsetting: Select Polygons by Location}\label{topological-subsetting-select-polygons-by-location}
 
 For the next example our goal is to select all Philadelphia census tracts that are approximately within a range of 2 kilometers from the city center.
 
@@ -1341,6 +1537,7 @@ Think about this for a moment -- what might be the steps you'd follow?
 \CommentTok{\# 2. Find the Philadelphia city center coordinates.}
 \CommentTok{\# 3. Create a buffer around the city center point.}
 \CommentTok{\# 4. Select all census tract polygons that intersect with the center buffer}
+\CommentTok{\# 5. Plot}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1351,9 +1548,9 @@ In addition, we need to create a \texttt{sf} Point object with the Philadelphia 
 \[x = 1750160\]
 \[y = 467499.9\]
 
-These coordinates are also in the \emph{USA Contiguous Albers Equal Area Conic} projected CRS, which is the same as CRS as \texttt{philly\_sf}.
+These coordinates are already in the \emph{USA Contiguous Albers Equal Area Conic} projected CRS, which is the same as CRS as \texttt{philly\_sf}. We can use \texttt{str\_crs} to extract the projection definition from \texttt{philly\_sf}, so we don't have to type it out and then directly assign it to our new centroid object.
 
-With this information, we create a object that holds the coordinates of the city center. Since we don't have attributes we will just create it as a simple feature collection, \texttt{scf}.
+With this information, we create an object that holds the coordinates of the city center. Since we don't have attributes we will only create it as a simple feature collection, \texttt{scf} (not \texttt{sf}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1363,13 +1560,25 @@ With this information, we create a object that holds the coordinates of the city
 \CommentTok{\# make a simple feature point with CRS}
 \NormalTok{philly\_ctr }\OtherTok{\textless{}{-}} 
   \FunctionTok{st\_point}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1750160}\NormalTok{, }\FloatTok{467499.9}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# point coordinates}
-  \FunctionTok{st\_sfc}\NormalTok{(}\AttributeTok{crs =} \FunctionTok{st\_crs}\NormalTok{(philly\_sf))  }\CommentTok{\# create feature collection}
+  \FunctionTok{st\_sfc}\NormalTok{(}\AttributeTok{crs =} \FunctionTok{st\_crs}\NormalTok{(philly\_sf))  }\CommentTok{\# create feature collection, setting CRS to philly\_sf\textquotesingle{}s CRS}
 \end{Highlighting}
 \end{Shaded}
 
-For the spatial operations we can recur to the suite of geometric operations that come with the \texttt{sf} package.
+For the spatial operations we can take advantage of the suite of geometric operations that come with the \texttt{sf} package.
 
-We create a 2km buffer around the city center point:
+Let's check again the metric units of our CRS:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{st\_crs}\NormalTok{(philly\_ctr)}\SpecialCharTok{$}\NormalTok{proj4string}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> [1] "+proj=aea +lat_0=37.5 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs"
+\end{verbatim}
+
+Ok, so now we create a 2km buffer around the city center point like this:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1377,7 +1586,7 @@ We create a 2km buffer around the city center point:
 \end{Highlighting}
 \end{Shaded}
 
-Ok. Now we can use that buffer to select all census tract polygons that intersect with the center buffer. The \texttt{sf} package has its own \texttt{st\_filter} function that we can use here.
+We use the buffer to select all census tract polygons that intersect with the center buffer. For this step we take advantage of another set of functions in \texttt{sf} that allow us to select by location. We will use \texttt{st\_filter} which ``keeps all x that overlap with y.''
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1395,9 +1604,9 @@ Then we can plot what we created like this:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/sf-intersects-plot-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/sf-intersects-plot-1.pdf}}
 
-Note the difference to \texttt{st\_intersection}, which performs an actual clippin operation and creates an \texttt{sfc} object that cuts out the area of the buffer from the census polygons:
+Note the difference to \texttt{st\_intersection}, which performs an actual clipping operation and creates an \texttt{sfc} object that cuts out the area of the buffer from the census polygons:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1442,10 +1651,9 @@ Note the difference to \texttt{st\_intersection}, which performs an actual clipp
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/sf-intersection-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/sf-intersection-1.pdf}}
 
-\hypertarget{reprojecting}{%
-\section{Reprojecting}\label{reprojecting}}
+\section{Reprojecting}\label{reprojecting}
 
 Occasionally you may have to change the coordinates of your spatial object into a new Coordinate Reference System (CRS). Functions to transform, or \emph{reproject} spatial objects typically take the following two arguments:
 
@@ -1457,38 +1665,20 @@ Occasionally you may have to change the coordinates of your spatial object into 
   a CRS object with the new projection definition
 \end{itemize}
 
-You can reproject
-
-\begin{itemize}
-\tightlist
-\item
-  a \texttt{sf} object with \texttt{st\_transform()}\\
-\item
-  a \texttt{SpatRaster} object with \texttt{project()}
-\end{itemize}
+You can reproject a \texttt{sf} object with `st\_transform().
 
 The perhaps trickiest part here is to determine the definition of the projection, which needs to be a character string in \href{http://trac.osgeo.org/proj/}{proj4} format. You can \href{http://www.spatialreference.org}{look it up online}. For example for \href{http://spatialreference.org/ref/epsg/wgs-84-utm-zone-33n/}{UTM zone 33N (EPSG:32633)} the string would be:
 
 \href{http://spatialreference.org/ref/epsg/wgs-84-utm-zone-33n/proj4js/}{\texttt{+proj=utm\ +zone=33\ +ellps=WGS84\ +datum=WGS84\ +units=m\ +no\_defs}}
 
-You can retrieve the CRS:
-
-\begin{itemize}
-\tightlist
-\item
-  from an \texttt{sf} object with \texttt{st\_crs()}
-\item
-  from a \texttt{SpatRaster} object with \texttt{crs()}
-\end{itemize}
-
-Let us go back to the \texttt{"PhillyHomicides"} shapefile we exported earlier. Let's read it back in and reproject it so it matches the projection of the Philadelphia Census tracts.
+Let us go back to the \texttt{"PhillyHomicides"} shapefile we exported earlier. Let's reproject it so it matches the projection of the Philadelphia Census tracts.
 
 Now let us check the CRS for both files.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#If you need to read the file back in:}
-\CommentTok{\#philly\_homicides\_sf \textless{}{-} st\_read("data/PhillyHomicides/")}
+\CommentTok{\#homicides\_sf \textless{}{-} st\_read("data/PhillyHomicides/")}
 
 \FunctionTok{st\_crs}\NormalTok{(philly\_sf)}\SpecialCharTok{$}\NormalTok{proj4string}
 \end{Highlighting}
@@ -1500,7 +1690,7 @@ Now let us check the CRS for both files.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{st\_crs}\NormalTok{(philly\_homicides\_sf)}\SpecialCharTok{$}\NormalTok{proj4string}
+\FunctionTok{st\_crs}\NormalTok{(homicides\_sf)}\SpecialCharTok{$}\NormalTok{proj4string}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1510,11 +1700,11 @@ Now let us check the CRS for both files.
 
 We see that the CRS are different: we have \texttt{+proj=aea...} and \texttt{+proj=longlat...}. AEA refers to \emph{USA Contiguous Albers Equal Area Conic} which is a projected coordinate system with numeric units. We will need this below for our spatial operations, so we will make sure both files are in that same CRS.
 
-We use \texttt{st\_transform} and assign the result to a new object. Note how we also use \texttt{str\_crs} to extract the projection definition from \texttt{philly\_sf}, so we don't have to type it out.
+We use \texttt{st\_transform} and assign the result to a new object. Note how we can again use \texttt{str\_crs} to extract the projection definition from \texttt{philly\_sf}, so we don't have to type it out.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{philly\_homicides\_sf\_aea }\OtherTok{\textless{}{-}} \FunctionTok{st\_transform}\NormalTok{(philly\_homicides\_sf, }\FunctionTok{st\_crs}\NormalTok{(philly\_sf))}
+\NormalTok{homicides\_sf\_aea }\OtherTok{\textless{}{-}} \FunctionTok{st\_transform}\NormalTok{(homicides\_sf, }\FunctionTok{st\_crs}\NormalTok{(philly\_sf))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1522,7 +1712,7 @@ We can use the \texttt{range()} command from the R base package to compare the c
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{range}\NormalTok{(}\FunctionTok{st\_coordinates}\NormalTok{(philly\_homicides\_sf))}
+\FunctionTok{range}\NormalTok{(}\FunctionTok{st\_coordinates}\NormalTok{(homicides\_sf))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1532,7 +1722,7 @@ We can use the \texttt{range()} command from the R base package to compare the c
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{range}\NormalTok{(}\FunctionTok{st\_coordinates}\NormalTok{(philly\_homicides\_sf\_aea))}
+\FunctionTok{range}\NormalTok{(}\FunctionTok{st\_coordinates}\NormalTok{(homicides\_sf\_aea))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1545,23 +1735,28 @@ We can also compare them visually with:
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{)) }
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(philly\_homicides\_sf), }\AttributeTok{axes=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{main =} \StringTok{"before transform {-} latlon"}\NormalTok{)}
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(philly\_homicides\_sf\_aea), }\AttributeTok{axes=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{main =} \StringTok{"after transform {-} aea"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(homicides\_sf), }\AttributeTok{pch =} \DecValTok{20}\NormalTok{, }\AttributeTok{col=}\StringTok{"\#ccc"}\NormalTok{, }
+     \AttributeTok{axes=}\NormalTok{F, }\AttributeTok{main =} \StringTok{"before transform {-} WGS84"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{las =} \DecValTok{3}\NormalTok{) }\CommentTok{\# adjust text on axes}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{las =} \DecValTok{1}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{st\_geometry}\NormalTok{(homicides\_sf\_aea), }\AttributeTok{pch =} \DecValTok{20}\NormalTok{, }\AttributeTok{col=}\StringTok{"\#ccc"}\NormalTok{, }
+     \AttributeTok{axes=}\NormalTok{F, }\AttributeTok{main =} \StringTok{"after transform {-} AEA"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{1}\NormalTok{, }\AttributeTok{las =} \DecValTok{3}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\AttributeTok{side =} \DecValTok{2}\NormalTok{, }\AttributeTok{las =} \DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/compare-reproj-plots-sf-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/compare-reproj-plots-sf-1.pdf}}
 
 Lastly, let us save the reprojected file as \texttt{PhillyHomicides\_aea} shapefile, as we will use it later on.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{st\_write}\NormalTok{(philly\_homicides\_sf\_aea, }\StringTok{"data/PhillyHomicides\_aea"}\NormalTok{, }\AttributeTok{driver =} \StringTok{"ESRI Shapefile"}\NormalTok{)}
+\FunctionTok{st\_write}\NormalTok{(homicides\_sf\_aea, }\StringTok{"data/PhillyHomicides\_aea"}\NormalTok{, }\AttributeTok{driver =} \StringTok{"ESRI Shapefile"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{raster-reprojection}{%
-\subsection{Raster reprojection}\label{raster-reprojection}}
+\subsection{Raster reprojection}\label{raster-reprojection}
 
 Here is what it would look like to reproject the HARV raster used earlier to a WGS84 projection. We see that see that the original projection is in UTM.
 
@@ -1640,7 +1835,7 @@ And here is the visual proof:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/raster-reproject-plot1-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/raster-reproject-plot1-1.pdf}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1648,10 +1843,9 @@ And here is the visual proof:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/raster-reproject-plot2-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/raster-reproject-plot2-1.pdf}}
 
-\hypertarget{spatial-aggregation-points-in-polygons}{%
-\section{Spatial Aggregation: Points in Polygons}\label{spatial-aggregation-points-in-polygons}}
+\section{Spatial Aggregation: Points in Polygon}\label{spatial-aggregation-points-in-polygon}
 
 Now that we have both homicides and census tracts in the same projection we will forge ahead and ask for the density of homicides for \textbf{each census tract} in Philadelphia: \(\frac{{homicides}}{area}\)
 
@@ -1662,8 +1856,7 @@ We will use piping and build up our object in the following way. First we calcul
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{philly\_sf }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{tract\_area =} \FunctionTok{st\_area}\NormalTok{(geometry)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{head}\NormalTok{()}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{tract\_area =} \FunctionTok{st\_area}\NormalTok{(geometry)) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -1673,20 +1866,19 @@ Next, we use st\_join to perform a spatial join with the points:
 \begin{Highlighting}[]
 \NormalTok{philly\_sf }\SpecialCharTok{\%\textgreater{}\%} 
   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{tract\_area =} \FunctionTok{st\_area}\NormalTok{(geometry)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{st\_join}\NormalTok{(philly\_homicides\_sf\_aea) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{head}\NormalTok{()}
+  \FunctionTok{st\_join}\NormalTok{(homicides\_sf\_aea) }
 \end{Highlighting}
 \end{Shaded}
 
-Now we can group by a variable that uiquely identifies the census tracts, (we choose \emph{GEOID10}) and use \texttt{summarize} to count the points for each tract and calculate the homicide rate. Since our units are in sq meter we multiply by by 1000000 to get sq km. We also need to carry over the area, which I do using \texttt{unique}.
+Now we can group by a variable that uiquely identifies the census tracts, (we choose \emph{GEOID10}) and use \texttt{summarize} to count the points for each tract and calculate the homicide rate. Since our units are in sq meter we multiply by by 1000000 to get sq km. We also need to carry over the area, which I do using \texttt{unique}. \texttt{unique} returns the object, but with duplicate elements/rows removed. \texttt{as.numeric} coerces the result to numeric instead of the value in units of {[}1/m2{]}.
 
-We also assign the output to a new object \texttt{philly\_crimes\_sf}.
+We also assign the output to a new object \texttt{crimes\_sf}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{philly\_crimes\_sf }\OtherTok{\textless{}{-}}\NormalTok{ philly\_sf }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{crimes\_sf }\OtherTok{\textless{}{-}}\NormalTok{ philly\_sf }\SpecialCharTok{\%\textgreater{}\%}
       \FunctionTok{mutate}\NormalTok{(}\AttributeTok{tract\_area =} \FunctionTok{st\_area}\NormalTok{(geometry)) }\SpecialCharTok{\%\textgreater{}\%}
-      \FunctionTok{st\_join}\NormalTok{(philly\_homicides\_sf\_aea) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{st\_join}\NormalTok{(homicides\_sf\_aea) }\SpecialCharTok{\%\textgreater{}\%}
       \FunctionTok{group\_by}\NormalTok{(GEOID10) }\SpecialCharTok{\%\textgreater{}\%}
       \FunctionTok{summarize}\NormalTok{(}\AttributeTok{n\_homic =} \FunctionTok{n}\NormalTok{(),}
                 \AttributeTok{tract\_area =} \FunctionTok{unique}\NormalTok{(tract\_area),}
@@ -1698,12 +1890,11 @@ Finally, we write this out for later:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{st\_write}\NormalTok{(philly\_crimes\_sf, }\StringTok{"data/PhillyCrimerate"}\NormalTok{, }\AttributeTok{driver =} \StringTok{"ESRI Shapefile"}\NormalTok{)}
+\FunctionTok{st\_write}\NormalTok{(crimes\_sf, }\StringTok{"data/PhillyCrimerate"}\NormalTok{, }\AttributeTok{driver =} \StringTok{"ESRI Shapefile"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{raster-calculations-with-terra}{%
-\section{\texorpdfstring{Raster calculations with \texttt{terra}}{Raster calculations with terra}}\label{raster-calculations-with-terra}}
+\section{\texorpdfstring{Raster calculations with \texttt{terra}}{Raster calculations with terra}}\label{raster-calculations-with-terra}
 
 We often want to perform calculations on two or more rasters to create a new output raster. For example, if we are interested in mapping the heights of trees across an entire field site, we might want to calculate the difference between the Digital Surface Model (DSM, tops of trees) and the Digital Terrain Model (DTM, ground level). The resulting dataset is referred to as a Canopy Height Model (CHM) and represents the actual height of trees, buildings, etc. with the influence of ground elevation removed.
 
@@ -1731,11 +1922,17 @@ Now we can subtract the DTM from the DSM to create a Canopy Height Model. It wil
 #> Warning: [hist] a sample of 43% of the cells was used (of which 0% was NA)
 \end{verbatim}
 
-\includegraphics{R-spatial_files/figure-latex/chm-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/chm-1.pdf}}
 
 This works fine for the small rasters in this tutorial. However, the calculation above becomes less efficient when computations are more complex or file sizes become large.
 
-Thet \texttt{terra} package contains a function called \texttt{lapp()}function to make processing more efficient. It takes two or more rasters and applies a function to them. The generic syntax is:
+\begin{quote}
+Challenge
+
+How would you plot only the areas where there are no trees?
+\end{quote}
+
+The \texttt{terra} package contains a function called \texttt{lapp()}function to make processing more efficient. It takes two or more rasters and applies a function to them. The generic syntax is:
 
 \begin{verbatim}
 outputRaster <- lapp(x, fun)
@@ -1766,8 +1963,7 @@ The two rasters should be the same.
 #> [1] TRUE
 \end{verbatim}
 
-\hypertarget{mapping}{%
-\chapter{Making Maps in R}\label{mapping}}
+\chapter{Making Maps in R}\label{mapping}
 
 \begin{quote}
 Learning Objectives
@@ -1801,38 +1997,67 @@ In the preceding examples we have used the base \texttt{plot} command to take a 
 
 In this section we will explore several alternatives to map spatial data with R. For more packages see the ``Visualisation'' section of the \href{https://cran.r-project.org/web/views/Spatial.html}{CRAN Task View}.
 
-\hypertarget{choropleth-mapping-with-ggplot2}{%
-\section{\texorpdfstring{Choropleth Mapping with \texttt{ggplot2}}{Choropleth Mapping with ggplot2}}\label{choropleth-mapping-with-ggplot2}}
+\section{\texorpdfstring{Choropleth Mapping with \texttt{ggplot2}}{Choropleth Mapping with ggplot2}}\label{choropleth-mapping-with-ggplot2}
 
 \href{http://ggplot2.org/}{\texttt{ggplot2}} is a widely used and powerful plotting library for R. It is not specifically geared towards mapping, it is possible to create quite nice maps.
 
 For an introduction to \texttt{ggplot} check out \href{http://ggplot2.tidyverse.org/}{this site} for more pointers.
 
-\texttt{ggplot} can plot \texttt{sf} objects directly by using the geom \texttt{geom\_sf}. So all we have to do is:
+\texttt{ggplot} can plot \texttt{sf} objects directly by using the geom \texttt{geom\_sf}. So we can take advantage of this and say:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(ggplot2)}
 \CommentTok{\# if you need to read this in again:}
-\CommentTok{\# philly\_crimes\_sf \textless{}{-} st\_read("data/PhillyCrimerate") }
-\FunctionTok{ggplot}\NormalTok{(philly\_crimes\_sf) }\SpecialCharTok{+} 
+\CommentTok{\# crimes\_sf \textless{}{-} st\_read("data/PhillyCrimerate") }
+\FunctionTok{ggplot}\NormalTok{(crimes\_sf) }\SpecialCharTok{+} 
   \FunctionTok{geom\_sf}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{homic\_rate))}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/ggplot-sf-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/ggplot-sf-1.pdf}}
 
-Homicide rate is a continuous variable and is plotted by \texttt{ggplot} as such. If we wanted to plot our map as a `true' choropleth map we need to convert our continuous variable into a categorical one, according to whichever brackets we want to use.
+We can add more map layers to ggplot with the familiar ``+'' sign:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# read in another dataset}
+\NormalTok{rooselvelt\_sf }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\StringTok{"data/Roosevelt\_blvd/"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> Reading layer `Roosevelt_blvd' from data source 
+#>   `/Users/cengel/Anthro/R_Class/R_Workshops/R-spatial/data/Roosevelt_blvd' 
+#>   using driver `ESRI Shapefile'
+#> Simple feature collection with 1 feature and 1 field
+#> Geometry type: LINESTRING
+#> Dimension:     XY
+#> Bounding box:  xmin: 1746511 ymin: 472799.6 xmax: 1760254 ymax: 487615.1
+#> Projected CRS: Albers
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(crimes\_sf) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_sf}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{homic\_rate)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ rooselvelt\_sf, }\AttributeTok{color =} \StringTok{"yellow"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/ggplot-sf-addlayer-1.pdf}}
+
+Homicide rate is a continuous variable and is indicated in legend by \texttt{ggplot} as such. To modify the legend to resemble more closely `choropleth' map legend we need to convert our continuous variable into a categorical one, according to whichever brackets we want to use.
 
 This requires two steps:
 
-\begin{itemize}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Determine the quantile breaks.
+  Determine the quantile breaks.\\
 \item
   Add a categorical variable to the object which assigns each continious vaule to a bracket.
-\end{itemize}
+\end{enumerate}
 
 We will use the \texttt{classInt} package to explicitly determine the quantile breaks.
 
@@ -1840,8 +2065,10 @@ We will use the \texttt{classInt} package to explicitly determine the quantile b
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(classInt)}
 \CommentTok{\# get quantile breaks. Add .00001 offset to catch the lowest value}
-\NormalTok{breaks\_qt }\OtherTok{\textless{}{-}} \FunctionTok{classIntervals}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{min}\NormalTok{(philly\_crimes\_sf}\SpecialCharTok{$}\NormalTok{homic\_rate) }\SpecialCharTok{{-}}\NormalTok{ .}\DecValTok{00001}\NormalTok{,}
-\NormalTok{                              philly\_crimes\_sf}\SpecialCharTok{$}\NormalTok{homic\_rate), }\AttributeTok{n =} \DecValTok{7}\NormalTok{, }\AttributeTok{style =} \StringTok{"quantile"}\NormalTok{)}
+\NormalTok{breaks\_qt }\OtherTok{\textless{}{-}} \FunctionTok{classIntervals}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{min}\NormalTok{(crimes\_sf}\SpecialCharTok{$}\NormalTok{homic\_rate) }\SpecialCharTok{{-}}\NormalTok{ .}\DecValTok{00001}\NormalTok{,}
+\NormalTok{                              crimes\_sf}\SpecialCharTok{$}\NormalTok{homic\_rate), }
+                            \AttributeTok{n =} \DecValTok{7}\NormalTok{,}
+                            \AttributeTok{style =} \StringTok{"quantile"}\NormalTok{)}
 
 \FunctionTok{str}\NormalTok{(breaks\_qt)}
 \end{Highlighting}
@@ -1853,20 +2080,20 @@ We will use the \texttt{classInt} package to explicitly determine the quantile b
 #>  $ brks: num [1:8] 0.3 1.86 4.81 8.5 16.14 ...
 #>  - attr(*, "style")= chr "quantile"
 #>  - attr(*, "nobs")= int 385
-#>  - attr(*, "call")= language classIntervals(var = c(min(philly_crimes_sf$homic_rate) - 1e-05, philly_crimes_sf$homic_rate),      n = 7, style = "quantile")
+#>  - attr(*, "call")= language classIntervals(var = c(min(crimes_sf$homic_rate) - 1e-05, crimes_sf$homic_rate),      n = 7, style = "quantile")
 #>  - attr(*, "intervalClosure")= chr "left"
 #>  - attr(*, "class")= chr "classIntervals"
 \end{verbatim}
 
 Ok. We can retrieve the breaks with \texttt{breaks\$brks}.
 
-We use \texttt{cut} to divicde \texttt{homic\_rate} into intervals and code them according to which interval they are in.
+We use \texttt{cut} to divide \texttt{homic\_rate} into intervals and code them according to which interval they are in.
 
 Lastly, we can use \texttt{scale\_fill\_brewer} and add our color palette.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{philly\_crimes\_sf }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{crimes\_sf }\SpecialCharTok{\%\textgreater{}\%} 
   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{homic\_rate\_cat =} \FunctionTok{cut}\NormalTok{(homic\_rate, breaks\_qt}\SpecialCharTok{$}\NormalTok{brks)) }\SpecialCharTok{\%\textgreater{}\%} 
   \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+} 
     \FunctionTok{geom\_sf}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\NormalTok{homic\_rate\_cat)) }\SpecialCharTok{+}
@@ -1874,14 +2101,13 @@ Lastly, we can use \texttt{scale\_fill\_brewer} and add our color palette.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/ggplot-sf-categorical-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/ggplot-sf-categorical-1.pdf}}
 
-\hypertarget{raster-and-ggplot}{%
-\section{Raster and ggplot}\label{raster-and-ggplot}}
+\section{Raster and ggplot}\label{raster-and-ggplot}
 
 To visualize raster data using \texttt{ggplot2}, we will use the raster with the values for the digital terrain model (DTM).
 
-Before using ggplot we need to convert it to a dataframe. The \texttt{terra} package has an built-in function for conversion to a plotable dataframe.
+Before using ggplot we need to convert it to a dataframe. The \texttt{terra} package has an built-in function for conversion to a plot-able dataframe.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1911,17 +2137,16 @@ We can now use \texttt{ggplot()} to plot this data frame. We will set the color 
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/ggplot-rast-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/ggplot-rast-1.pdf}}
 
-\hypertarget{choropleth-with-tmap}{%
-\section{\texorpdfstring{Choropleth with \texttt{tmap}}{Choropleth with tmap}}\label{choropleth-with-tmap}}
+\section{\texorpdfstring{Choropleth with \texttt{tmap}}{Choropleth with tmap}}\label{choropleth-with-tmap}
 
-\texttt{tmap} is specifically designed to make creation of thematic maps more convenient. It borrows from the ggplot syntax and takes care of a lot of the styling and aesthetics. This reduces our amount of code significantly. We only need:
+\texttt{tmap} is specifically designed to make creation of thematic maps more convenient. It borrows from the ggplot syntax and takes care of a lot of the styling and aesthetics. This reduces our amount of code significantly. We need:
 
 \begin{itemize}
 \tightlist
 \item
-  \texttt{tm\_shape()} where we provide
+  \texttt{tm\_shape()} -- where we provide:
 
   \begin{itemize}
   \tightlist
@@ -1929,7 +2154,7 @@ We can now use \texttt{ggplot()} to plot this data frame. We will set the color 
     the \texttt{sf} object
   \end{itemize}
 \item
-  \texttt{tm\_polygons()} where we set
+  \texttt{tm\_polygons()} -- where we set:
 
   \begin{itemize}
   \tightlist
@@ -1945,14 +2170,15 @@ We can now use \texttt{ggplot()} to plot this data frame. We will set the color 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(tmap)}
-\FunctionTok{tm\_shape}\NormalTok{(philly\_crimes\_sf) }\SpecialCharTok{+}
-  \FunctionTok{tm\_polygons}\NormalTok{(}\StringTok{"homic\_rate"}\NormalTok{, }
-              \AttributeTok{style=}\StringTok{"quantile"}\NormalTok{, }
-              \AttributeTok{title=}\StringTok{"Philadelphia }\SpecialCharTok{\textbackslash{}n}\StringTok{homicide density }\SpecialCharTok{\textbackslash{}n}\StringTok{per sqKm"}\NormalTok{)}
+
+\FunctionTok{tm\_shape}\NormalTok{(crimes\_sf) }\SpecialCharTok{+}
+  \FunctionTok{tm\_polygons}\NormalTok{(}\AttributeTok{fill =} \StringTok{"homic\_rate"}\NormalTok{,}
+              \AttributeTok{fill.scale =} \FunctionTok{tm\_scale\_intervals}\NormalTok{(}\AttributeTok{style=}\StringTok{"quantile"}\NormalTok{),}
+              \AttributeTok{fill.legend =} \FunctionTok{tm\_legend}\NormalTok{(}\AttributeTok{title =} \StringTok{"Philadelphia }\SpecialCharTok{\textbackslash{}n}\StringTok{homicides }\SpecialCharTok{\textbackslash{}n}\StringTok{per sqKm}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{R-spatial_files/figure-latex/tmap-plot-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/tmap-plot-1.pdf}}
 
 \texttt{tmap} has a very nice feature that allows us to give basic interactivity to the map. We can switch from ``plot'' mode into ``view'' mode and call the last plot, like so:
 
@@ -1967,8 +2193,7 @@ Cool huh?
 
 The \texttt{tmap} library also includes functions for simple spatial operations, geocoding and reverse geocoding using OSM. For more check \texttt{vignette("tmap-getstarted")}.
 
-\hypertarget{raster-with-tmap}{%
-\section{\texorpdfstring{Raster with \texttt{tmap}}{Raster with tmap}}\label{raster-with-tmap}}
+\section{\texorpdfstring{Raster with \texttt{tmap}}{Raster with tmap}}\label{raster-with-tmap}
 
 \texttt{tmap} can also plot raster files natively, for example:
 
@@ -1979,7 +2204,7 @@ The \texttt{tmap} library also includes functions for simple spatial operations,
 \end{Shaded}
 
 \begin{verbatim}
-#> tmap mode set to plotting
+#> i tmap modes "plot" - "view"
 \end{verbatim}
 
 \begin{Shaded}
@@ -1991,15 +2216,19 @@ The \texttt{tmap} library also includes functions for simple spatial operations,
 \end{Shaded}
 
 \begin{verbatim}
-#> stars object downsampled to 1114 by 897 cells. See tm_shape manual (argument raster.downsample)
+#> 
+#> -- tmap v3 code detected -------------------------------------------------------
+#> [v3->v4] `tm_raster()`: instead of `style = "cont"`, use col.scale =
+#> `tm_scale_continuous()`.
+#> i Migrate the argument(s) 'palette' (rename to 'values') to
+#>   'tm_scale_continuous(<HERE>)'
 \end{verbatim}
 
-\includegraphics{R-spatial_files/figure-latex/unnamed-chunk-11-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{R-spatial_files/figure-latex/unnamed-chunk-15-1.pdf}}
 
 See \href{https://r-tmap.github.io/tmap-book/}{Elegant and informative maps with \texttt{tmap}} for more options.
 
-\hypertarget{web-mapping-with-leaflet}{%
-\section{\texorpdfstring{Web mapping with \texttt{leaflet}}{Web mapping with leaflet}}\label{web-mapping-with-leaflet}}
+\section{\texorpdfstring{Web mapping with \texttt{leaflet}}{Web mapping with leaflet}}\label{web-mapping-with-leaflet}
 
 \texttt{leaflet} provides bindings to the \href{http://leafletjs.com}{`Leaflet' JavaScript library}, ``the leading open-source JavaScript library for mobile-friendly interactive maps''. We have already seen a simple use of leaflet in the \texttt{tmap} example.
 
@@ -2011,14 +2240,14 @@ Let's build up the map step by step.
 
 First we load the \texttt{leaflet} library. Use the \texttt{leaflet()} function with an \texttt{sp} or \texttt{Spatial*} object and pipe it to \texttt{addPolygons()} function. It is not required, but improves readability if you use \href{https://github.com/tidyverse/magrittr}{the pipe operator \texttt{\%\textgreater{}\%}} to chain the elements together when building up a map with \texttt{leaflet}.
 
-And while \texttt{tmap} was tolerant about our AEA projection of \texttt{philly\_crimes\_sf}, \texttt{leaflet} does require us to explicitly reproject the \texttt{sf} object.
+And while \texttt{tmap} was tolerant about our AEA projection of \texttt{crimes\_sf}, \texttt{leaflet} does require us to explicitly reproject the \texttt{sf} object.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(leaflet) }
 
 \CommentTok{\# reproject}
-\NormalTok{philly\_WGS84 }\OtherTok{\textless{}{-}} \FunctionTok{st\_transform}\NormalTok{(philly\_crimes\_sf, }\DecValTok{4326}\NormalTok{)}
+\NormalTok{philly\_WGS84 }\OtherTok{\textless{}{-}} \FunctionTok{st\_transform}\NormalTok{(crimes\_sf, }\DecValTok{4326}\NormalTok{)}
 
 \FunctionTok{leaflet}\NormalTok{(philly\_WGS84) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{addPolygons}\NormalTok{()}
@@ -2150,6 +2379,6 @@ If you'd like to take this further here are a few pointers.
 
 \href{https://cengel.shinyapps.io/RioSlaveMarket/}{Here is an example} using \texttt{ggplot}, \texttt{leaflet}, \texttt{shiny}, and \href{http://rmarkdown.rstudio.com/flexdashboard/}{RStudio's flexdashboard} template to bring it all together.
 
-  \bibliography{book.bib,packages.bib}
+\bibliography{book.bib,packages.bib}
 
 \end{document}

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Page not found | Using Spatial Data with R</title>
   <meta name="description" content="Workshop materials for Using Spatial Data with R" />
-  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.45 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Page not found | Using Spatial Data with R" />
   <meta property="og:type" content="book" />
@@ -51,19 +51,21 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
 <script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.2.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -157,7 +159,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction to spatial data in R</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#the-sf-package"><i class="fa fa-check"></i><b>1.1</b> The <code>sf</code> package</a></li>
-<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#creating-a-spatial-object-from-a-latlon-table"><i class="fa fa-check"></i><b>1.2</b> Creating a spatial object from a lat/lon table</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#creating-a-spatial-object-from-a-table-with-coordinates"><i class="fa fa-check"></i><b>1.2</b> Creating a spatial object from a table with coordinates</a></li>
 <li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#loading-shape-files-into-r"><i class="fa fa-check"></i><b>1.3</b> Loading shape files into R</a></li>
 <li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#raster-data-in-r"><i class="fa fa-check"></i><b>1.4</b> Raster data in R</a></li>
 </ul></li>
@@ -169,7 +171,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.3.1" data-path="spatialops.html"><a href="spatialops.html#raster-reprojection"><i class="fa fa-check"></i><b>2.3.1</b> Raster reprojection</a></li>
 </ul></li>
-<li class="chapter" data-level="2.4" data-path="spatialops.html"><a href="spatialops.html#spatial-aggregation-points-in-polygons"><i class="fa fa-check"></i><b>2.4</b> Spatial Aggregation: Points in Polygons</a></li>
+<li class="chapter" data-level="2.4" data-path="spatialops.html"><a href="spatialops.html#spatial-aggregation-points-in-polygon"><i class="fa fa-check"></i><b>2.4</b> Spatial Aggregation: Points in Polygon</a></li>
 <li class="chapter" data-level="2.5" data-path="spatialops.html"><a href="spatialops.html#raster-calculations-with-terra"><i class="fa fa-check"></i><b>2.5</b> Raster calculations with <code>terra</code></a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="mapping.html"><a href="mapping.html"><i class="fa fa-check"></i><b>3</b> Making Maps in R</a>
@@ -226,42 +228,42 @@ the table of contents to find the page you are looking for.</p>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": true,
-"facebook": false,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/cengel/R-spatial/edit/master/%s",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["R-spatial.pdf", "R-spatial.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": true,
+    "facebook": false,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/cengel/R-spatial/edit/master/%s",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["R-spatial.pdf", "R-spatial.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

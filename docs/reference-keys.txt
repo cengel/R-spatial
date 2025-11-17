@@ -4,7 +4,7 @@ fig:wkt-multipart
 fig:raster-terraDownloads
 intro
 the-sf-package
-creating-a-spatial-object-from-a-latlon-table
+creating-a-spatial-object-from-a-table-with-coordinates
 loading-shape-files-into-r
 raster-data-in-r
 spatialops
@@ -12,7 +12,7 @@ attribute-join
 topological-subsetting-select-polygons-by-location
 reprojecting
 raster-reprojection
-spatial-aggregation-points-in-polygons
+spatial-aggregation-points-in-polygon
 raster-calculations-with-terra
 mapping
 choropleth-mapping-with-ggplot2
